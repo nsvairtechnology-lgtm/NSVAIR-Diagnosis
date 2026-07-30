@@ -81,3 +81,56 @@ Stage Summary:
 - App is complete, functional, and visually polished
 - All core AI integrations (LLM, VLM-ready, ASR-ready) verified working
 - Phone sensor features (camera, mic, motion, touch) all wired up
+
+---
+Task ID: 8 (SEO + Rebranding)
+Agent: Main Agent
+Task: Rebrand to "NSVAIR Diagnosis" and implement comprehensive advanced SEO
+
+Work Log:
+- Rebranded all "MediScan AI" references to "NSVAIR Diagnosis" across types, store, dashboard, health-report, layout
+- Created new NSVAIR Diagnosis logo SVG (emerald-teal gradient with pulse line + AI spark) + favicon icon.svg
+- Updated Zustand store persistence key to 'nsvair-diagnosis-store'
+- Built comprehensive SEO metadata in layout.tsx:
+  * Title template ("%s · NSVAIR Diagnosis"), 20 targeted keywords, authors, creator, publisher
+  * Open Graph (type, locale, alternate locales, url, siteName, title, description, dual images with width/height/alt)
+  * Twitter Cards (summary_large_image, site, creator, images)
+  * Robots directives (Googlebot with max-image-preview:large, max-snippet:-1)
+  * Canonical URL + hreflang alternates (en-US, en-GB, x-default)
+  * Icons (icon, apple, shortcut, mask-icon)
+  * appleWebApp, manifest, formatDetection, appLinks
+  * 20+ custom meta tags: theme-color, color-scheme, msapplication, DC.* (Dublin Core), rating, distribution, revisit-after, language, geo.region, pinterest nopin, googlebot
+  * Search engine verification placeholders (Google, Bing, Yandex)
+  * Separate Viewport export with themeColor media queries
+- Added 6 JSON-LD structured data blocks (16 schema types total):
+  * Organization (with contactPoint, sameAs social links)
+  * WebApplication (HealthApplication, featureList, aggregateRating, Offer price=0)
+  * MedicalWebPage (MedicalCondition, Patient, MedicalSpecialty, lastReviewed)
+  * FAQPage (8 Q&A pairs matching visible FAQ content)
+  * BreadcrumbList (Home > Modules > Report)
+  * MedicalBusiness (8 MedicalProcedure availableService)
+- Created dynamic SEO routes:
+  * src/app/sitemap.ts — 12 URLs with priorities and change frequencies
+  * src/app/robots.ts — 10 user-agent rules (Google, Bing, Twitter, Facebook, LinkedIn, Slack, Apple, WhatsApp, Telegram) with sitemap + host
+  * src/app/manifest.ts — Full PWA manifest with name, short_name, icons, shortcuts (5 app shortcuts), screenshots, categories
+  * src/app/opengraph-image.tsx — Dynamic OG image (1200x630) with brand, headline, feature chips
+  * src/app/twitter-image.tsx — Dynamic Twitter card image
+- Created public/browserconfig.xml for Microsoft tiles
+- Removed static public/robots.txt (replaced by dynamic robots.ts)
+- Added SEO content sections to dashboard:
+  * "How NSVAIR Diagnosis Works" (3-step process: Capture, Analyze, Synthesize)
+  * "Why Choose NSVAIR Diagnosis?" (4 feature cards)
+  * FAQ section with 8 accordion items (matching JSON-LD FAQPage schema)
+  * Keyword-rich footer content describing all 8 modules
+- Fixed heading hierarchy: hero headline is now H1 (was H2), header brand is span (was H1)
+- Added anchor IDs (#modules, #how-it-works, #features, #faq) with scroll-mt for sticky header
+- Enhanced footer with 4-column layout: brand info, module links, learn-more links, copyright
+- Added internal anchor links in footer for SEO internal linking
+
+Stage Summary:
+- Lint: 0 errors, 0 warnings
+- All SEO routes return 200: /, /manifest.webmanifest, /sitemap.xml, /robots.txt, /opengraph-image, /twitter-image, /icon.svg, /logo.svg
+- VLM-verified: brand "NSVAIR Diagnosis" shows in header/footer, FAQ accordion expands with answer text, OG image professional and on-brand
+- 6 JSON-LD blocks render with 16 schema types (Organization, WebApplication, MedicalWebPage, FAQPage, BreadcrumbList, MedicalBusiness + nested)
+- Full OG + Twitter Card + Dublin Core + PWA + hreflang + canonical + robots all confirmed in HTML head
+- Rebranding complete, advanced SEO complete

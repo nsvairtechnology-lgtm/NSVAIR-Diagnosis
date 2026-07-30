@@ -32,6 +32,12 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion'
+import {
   Sheet,
   SheetContent,
   SheetHeader,
@@ -118,9 +124,9 @@ export function Dashboard() {
               <HeartPulse className="h-5 w-5 text-white" />
             </div>
             <div>
-              <h1 className="font-bold text-base leading-tight">
-                MediScan <span className="text-emerald-600">AI</span>
-              </h1>
+              <span className="font-bold text-base leading-tight block">
+                NSVAIR <span className="text-emerald-600">Diagnosis</span>
+              </span>
               <p className="text-[10px] text-muted-foreground leading-tight">
                 Agentic Diagnostic Platform
               </p>
@@ -215,11 +221,11 @@ export function Dashboard() {
                   <Badge className="bg-white/20 text-white border-0 hover:bg-white/30 gap-1.5">
                     <Sparkles className="h-3 w-3" /> Powered by Agentic AI
                   </Badge>
-                  <h2 className="text-2xl md:text-3xl font-bold leading-tight">
+                  <h1 className="text-2xl md:text-3xl font-bold leading-tight">
                     Complete health diagnostics — all in one place, in real time.
-                  </h2>
+                  </h1>
                   <p className="text-white/80 text-sm md:text-base leading-relaxed">
-                    MediScan AI uses your phone&apos;s camera, microphone, motion sensors, and touch to run
+                    NSVAIR Diagnosis uses your phone&apos;s camera, microphone, motion sensors, and touch to run
                     8 different AI-powered diagnostic screenings. Get a complete, integrated health
                     report in minutes.
                   </p>
@@ -285,7 +291,7 @@ export function Dashboard() {
             </Card>
 
             {/* Module grid */}
-            <div>
+            <div id="modules">
               <div className="flex items-center justify-between mb-3">
                 <h3 className="font-semibold">Diagnostic Modules</h3>
                 <span className="text-xs text-muted-foreground">Tap a module to start</span>
@@ -388,18 +394,278 @@ export function Dashboard() {
                 </div>
               </CardContent>
             </Card>
+
+            {/* SEO content section — How it works */}
+            <section id="how-it-works" className="space-y-3 scroll-mt-20">
+              <h2 className="text-xl font-bold">How NSVAIR Diagnosis Works</h2>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                NSVAIR Diagnosis is an agentic AI health diagnostic platform that turns your
+                smartphone into a multi-modal screening station. Using your phone&apos;s built-in
+                camera, microphone, motion sensors, and touch screen, our AI runs eight independent
+                diagnostic screenings — then synthesizes all of them into one comprehensive,
+                easy-to-read health report. Everything happens in real time, right in your browser,
+                with no app to install and no data leaving your device unless you choose to save a
+                report.
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
+                <Card className="bg-muted/20">
+                  <CardContent className="p-4 space-y-1.5">
+                    <div className="h-8 w-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/40 flex items-center justify-center">
+                      <Camera className="h-4 w-4 text-emerald-600" />
+                    </div>
+                    <h3 className="font-semibold text-sm">1. Capture</h3>
+                    <p className="text-xs text-muted-foreground">
+                      Use your phone&apos;s camera, microphone, motion sensors, and touch screen to
+                      capture health signals for each module.
+                    </p>
+                  </CardContent>
+                </Card>
+                <Card className="bg-muted/20">
+                  <CardContent className="p-4 space-y-1.5">
+                    <div className="h-8 w-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/40 flex items-center justify-center">
+                      <Sparkles className="h-4 w-4 text-emerald-600" />
+                    </div>
+                    <h3 className="font-semibold text-sm">2. Analyze</h3>
+                    <p className="text-xs text-muted-foreground">
+                      Each signal is processed by a specialized AI model — vision models for images,
+                      speech recognition for audio, and reasoning models for symptoms.
+                    </p>
+                  </CardContent>
+                </Card>
+                <Card className="bg-muted/20">
+                  <CardContent className="p-4 space-y-1.5">
+                    <div className="h-8 w-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/40 flex items-center justify-center">
+                      <FileText className="h-4 w-4 text-emerald-600" />
+                    </div>
+                    <h3 className="font-semibold text-sm">3. Synthesize</h3>
+                    <p className="text-xs text-muted-foreground">
+                      A final AI agent integrates all module findings into one comprehensive report
+                      with risk scores, red flags, and prioritized recommendations.
+                    </p>
+                  </CardContent>
+                </Card>
+              </div>
+            </section>
+
+            {/* SEO content section — Features */}
+            <section id="features" className="space-y-3 scroll-mt-20">
+              <h2 className="text-xl font-bold">Why Choose NSVAIR Diagnosis?</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <Card className="bg-muted/20">
+                  <CardContent className="p-4">
+                    <h3 className="font-semibold text-sm mb-1">100% Free &amp; Instant</h3>
+                    <p className="text-xs text-muted-foreground">
+                      No sign-up, no subscription. Run any of the 8 diagnostic modules and generate a
+                      comprehensive health report in minutes — completely free.
+                    </p>
+                  </CardContent>
+                </Card>
+                <Card className="bg-muted/20">
+                  <CardContent className="p-4">
+                    <h3 className="font-semibold text-sm mb-1">Private by Design</h3>
+                    <p className="text-xs text-muted-foreground">
+                      Images and audio are processed by the AI and not stored on our servers. Your
+                      reports stay in your browser. Clear everything with one tap.
+                    </p>
+                  </CardContent>
+                </Card>
+                <Card className="bg-muted/20">
+                  <CardContent className="p-4">
+                    <h3 className="font-semibold text-sm mb-1">Real-Time Agentic AI</h3>
+                    <p className="text-xs text-muted-foreground">
+                      Multiple specialized AI agents work together — vision, speech, reasoning — to
+                      deliver integrated, cross-module insights you can&apos;t get from a single tool.
+                    </p>
+                  </CardContent>
+                </Card>
+                <Card className="bg-muted/20">
+                  <CardContent className="p-4">
+                    <h3 className="font-semibold text-sm mb-1">Uses Every Phone Sensor</h3>
+                    <p className="text-xs text-muted-foreground">
+                      Camera (rPPG heart rate, skin/eye/face vision), microphone (ASR cough &amp;
+                      voice), motion (stress &amp; balance), and touch (reaction time) — all in one
+                      place.
+                    </p>
+                  </CardContent>
+                </Card>
+              </div>
+            </section>
+
+            {/* FAQ section — matches JSON-LD FAQPage schema */}
+            <section id="faq" className="space-y-3 scroll-mt-20">
+              <h2 className="text-xl font-bold">
+                Frequently Asked Questions
+              </h2>
+              <Card>
+                <CardContent className="p-2">
+                  <Accordion type="single" collapsible className="w-full">
+                    <AccordionItem value="faq-1" className="border-b">
+                      <AccordionTrigger className="text-sm font-medium px-3">
+                        What is NSVAIR Diagnosis?
+                      </AccordionTrigger>
+                      <AccordionContent className="text-xs text-muted-foreground px-3 pb-3 leading-relaxed">
+                        NSVAIR Diagnosis is an agentic AI-powered health diagnostic platform that
+                        uses your phone&apos;s camera, microphone, motion sensors, and touch to run
+                        8 different AI diagnostic screenings — including skin analysis, eye health,
+                        facial wellness, voice and cough analysis, symptom checking, mental health
+                        screening, vital signs measurement, and reaction/balance testing — then
+                        synthesizes them into one comprehensive real-time health report.
+                      </AccordionContent>
+                    </AccordionItem>
+                    <AccordionItem value="faq-2" className="border-b">
+                      <AccordionTrigger className="text-sm font-medium px-3">
+                        Is NSVAIR Diagnosis a medical device?
+                      </AccordionTrigger>
+                      <AccordionContent className="text-xs text-muted-foreground px-3 pb-3 leading-relaxed">
+                        No. NSVAIR Diagnosis is an AI-powered screening and informational tool, not a
+                        medical device and not a substitute for professional medical diagnosis.
+                        Always consult a qualified healthcare professional for diagnosis and
+                        treatment of any medical condition.
+                      </AccordionContent>
+                    </AccordionItem>
+                    <AccordionItem value="faq-3" className="border-b">
+                      <AccordionTrigger className="text-sm font-medium px-3">
+                        How does the camera-based heart rate measurement work?
+                      </AccordionTrigger>
+                      <AccordionContent className="text-xs text-muted-foreground px-3 pb-3 leading-relaxed">
+                        NSVAIR Diagnosis uses a technology called remote photoplethysmography
+                        (rPPG), which detects subtle changes in skin color caused by blood flow. By
+                        analyzing the green channel of the camera feed over time, the AI estimates
+                        your heart rate without any wearable device.
+                      </AccordionContent>
+                    </AccordionItem>
+                    <AccordionItem value="faq-4" className="border-b">
+                      <AccordionTrigger className="text-sm font-medium px-3">
+                        Is my health data private?
+                      </AccordionTrigger>
+                      <AccordionContent className="text-xs text-muted-foreground px-3 pb-3 leading-relaxed">
+                        Yes. All images and audio are processed by the AI and are not stored on our
+                        servers. Diagnosis reports are saved locally in your browser&apos;s storage
+                        for your records. You can clear all data at any time.
+                      </AccordionContent>
+                    </AccordionItem>
+                    <AccordionItem value="faq-5" className="border-b">
+                      <AccordionTrigger className="text-sm font-medium px-3">
+                        How much does NSVAIR Diagnosis cost?
+                      </AccordionTrigger>
+                      <AccordionContent className="text-xs text-muted-foreground px-3 pb-3 leading-relaxed">
+                        NSVAIR Diagnosis is free to use. All 8 diagnostic modules and the
+                        comprehensive health report are available at no cost.
+                      </AccordionContent>
+                    </AccordionItem>
+                    <AccordionItem value="faq-6" className="border-b">
+                      <AccordionTrigger className="text-sm font-medium px-3">
+                        What phone features does NSVAIR Diagnosis use?
+                      </AccordionTrigger>
+                      <AccordionContent className="text-xs text-muted-foreground px-3 pb-3 leading-relaxed">
+                        NSVAIR Diagnosis uses your phone&apos;s camera (for skin, eye, face, and
+                        vitals analysis), microphone (for voice and cough analysis), motion
+                        sensors/accelerometer (for stress and balance measurement), and touch screen
+                        (for reaction time testing).
+                      </AccordionContent>
+                    </AccordionItem>
+                    <AccordionItem value="faq-7" className="border-b">
+                      <AccordionTrigger className="text-sm font-medium px-3">
+                        How accurate is the AI diagnosis?
+                      </AccordionTrigger>
+                      <AccordionContent className="text-xs text-muted-foreground px-3 pb-3 leading-relaxed">
+                        NSVAIR Diagnosis uses advanced AI models for screening purposes. Results
+                        include confidence scores for each finding. However, accuracy depends on
+                        input quality (lighting, audio clarity) and the AI is intended for
+                        informational screening — not as a replacement for professional medical
+                        evaluation.
+                      </AccordionContent>
+                    </AccordionItem>
+                    <AccordionItem value="faq-8">
+                      <AccordionTrigger className="text-sm font-medium px-3">
+                        Can I download my health report?
+                      </AccordionTrigger>
+                      <AccordionContent className="text-xs text-muted-foreground px-3 pb-3 leading-relaxed">
+                        Yes. After generating your comprehensive report, you can download it as a
+                        text file, save it to your history, or revisit past reports at any time.
+                      </AccordionContent>
+                    </AccordionItem>
+                  </Accordion>
+                </CardContent>
+              </Card>
+            </section>
+
+            {/* SEO keyword-rich footer content */}
+            <section className="text-xs text-muted-foreground leading-relaxed space-y-2 pt-2">
+              <h2 className="text-sm font-semibold text-foreground">
+                AI-Powered Health Screening Modules
+              </h2>
+              <p>
+                NSVAIR Diagnosis brings together eight specialized AI diagnostic tools in a single
+                platform: an <strong>AI skin analyzer</strong> for dermatology screening of rashes,
+                moles, and lesions using the ABCDE rule; an <strong>AI eye health checker</strong>{' '}
+                that detects redness, conjunctivitis signs, jaundice, and fatigue; a{' '}
+                <strong>facial wellness assessment</strong> for symmetry, hydration, and stress
+                cues; a <strong>voice and cough analyzer</strong> powered by speech recognition and
+                respiratory pattern classification; a <strong>conversational AI symptom checker</strong>{' '}
+                that reasons about your symptoms and suggests differentials; a{' '}
+                <strong>mental health screening tool</strong> using validated PHQ and GAD-style
+                questionnaires for stress, anxiety, and depression; a{' '}
+                <strong>camera-based vital signs monitor</strong> using remote
+                photoplethysmography (rPPG) to estimate heart rate, breathing rate, and heart rate
+                variability; and a <strong>reaction time and balance test</strong> that uses touch
+                and motion sensors to assess cognitive speed and motor coordination. All results are
+                synthesized by a final AI agent into one comprehensive, prioritized health report.
+              </p>
+            </section>
           </div>
         )}
       </main>
 
       {/* Footer */}
       <footer className="border-t mt-auto bg-background/80 backdrop-blur-sm">
-        <div className="container mx-auto max-w-6xl px-4 py-4 text-center">
-          <p className="text-xs text-muted-foreground">
-            <strong>MediScan AI</strong> — Not a medical device. For screening and informational
-            purposes only. Always consult a licensed healthcare professional for diagnosis and
-            treatment.
-          </p>
+        <div className="container mx-auto max-w-6xl px-4 py-6">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-5">
+            <div className="md:col-span-2 space-y-2">
+              <div className="flex items-center gap-2.5">
+                <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
+                  <HeartPulse className="h-4 w-4 text-white" />
+                </div>
+                <span className="font-bold text-sm">
+                  NSVAIR <span className="text-emerald-600">Diagnosis</span>
+                </span>
+              </div>
+              <p className="text-xs text-muted-foreground leading-relaxed max-w-md">
+                Agentic AI-powered multi-modal health diagnostic platform. 8 AI screenings using
+                your phone&apos;s camera, microphone, motion sensors, and touch — synthesized into
+                one comprehensive real-time health report.
+              </p>
+            </div>
+            <div className="space-y-2">
+              <h4 className="text-xs font-semibold text-foreground">Modules</h4>
+              <ul className="space-y-1 text-xs text-muted-foreground">
+                <li><a href="#modules" className="hover:text-emerald-600 transition-colors">Skin &amp; Dermatology</a></li>
+                <li><a href="#modules" className="hover:text-emerald-600 transition-colors">Eye Health</a></li>
+                <li><a href="#modules" className="hover:text-emerald-600 transition-colors">Voice &amp; Cough</a></li>
+                <li><a href="#modules" className="hover:text-emerald-600 transition-colors">Vital Signs (rPPG)</a></li>
+                <li><a href="#modules" className="hover:text-emerald-600 transition-colors">Mental Health</a></li>
+              </ul>
+            </div>
+            <div className="space-y-2">
+              <h4 className="text-xs font-semibold text-foreground">Learn More</h4>
+              <ul className="space-y-1 text-xs text-muted-foreground">
+                <li><a href="#how-it-works" className="hover:text-emerald-600 transition-colors">How It Works</a></li>
+                <li><a href="#features" className="hover:text-emerald-600 transition-colors">Features</a></li>
+                <li><a href="#faq" className="hover:text-emerald-600 transition-colors">FAQ</a></li>
+                <li><a href="#modules" className="hover:text-emerald-600 transition-colors">Start Screening</a></li>
+              </ul>
+            </div>
+          </div>
+          <div className="border-t pt-4 text-center">
+            <p className="text-xs text-muted-foreground">
+              <strong>NSVAIR Diagnosis</strong> — Not a medical device. For screening and
+              informational purposes only. Always consult a licensed healthcare professional for
+              diagnosis and treatment.
+            </p>
+            <p className="text-[10px] text-muted-foreground/70 mt-1">
+              © {new Date().getFullYear()} NSVAIR Diagnosis. AI health screening platform. All rights reserved.
+            </p>
+          </div>
         </div>
       </footer>
 

@@ -1,4 +1,4 @@
-// Core diagnosis types for MediScan AI
+// Core diagnosis types for NSVAIR Diagnosis
 
 export type ModuleId =
   | 'skin'

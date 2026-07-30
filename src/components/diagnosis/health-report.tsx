@@ -133,7 +133,7 @@ export function HealthReport({ onClose }: { onClose: () => void }) {
 
   const download = () => {
     if (!lastReport) return
-    const text = `MEDISCAN AI — COMPREHENSIVE HEALTH REPORT
+    const text = `NSVAIR DIAGNOSIS — COMPREHENSIVE HEALTH REPORT
 ============================================
 Generated: ${new Date(lastReport.createdAt).toLocaleString()}
 Patient: ${userProfile.name || 'Anonymous'} | Age: ${userProfile.age || 'N/A'} | Gender: ${userProfile.gender || 'N/A'}
@@ -173,7 +173,7 @@ Always consult a qualified healthcare professional for medical advice.
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
-    a.download = `mediscan-report-${Date.now()}.txt`
+    a.download = `nsvair-diagnosis-report-${Date.now()}.txt`
     a.click()
     URL.revokeObjectURL(url)
     toast.success('Report downloaded')

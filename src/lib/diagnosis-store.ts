@@ -117,7 +117,7 @@ export const useDiagnosisStore = create<DiagnosisState>()(
       setLastReport: (r) => set({ lastReport: r }),
     }),
     {
-      name: 'mediscan-store',
+      name: 'nsvair-diagnosis-store',
       // Only persist user profile and results, not loading/active state
       partialize: (state) => ({
         userProfile: state.userProfile,
