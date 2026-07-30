@@ -1,0 +1,38 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model DiagnosisReport {
+  id        String   @id @default(cuid())
+  userName  String?
+  userAge   String?
+  userGender String?
+  summary   String
+  riskScore Int
+  redFlags  String   // JSON array
+  recommendations String // JSON array
+  nextSteps String   // JSON array
+  topFindings String // JSON array
+  resultsJson String // Full results as JSON
+  createdAt DateTime @default(now())
+}
+
+model UserProfile {
+  id        String   @id @default(cuid())
+  name      String?
+  age       String?
+  gender    String?
+  height    String?
+  weight    String?
+  conditions String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
