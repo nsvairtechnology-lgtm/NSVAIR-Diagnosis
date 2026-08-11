@@ -1,11 +1,43 @@
-<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="NSVAIR Diagnosis icon">
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="NSVAIR Diagnosis Icon">
   <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#10b981"/>
-      <stop offset="1" stop-color="#0d9488"/>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#064e3b"/>
+      <stop offset="45%" stop-color="#059669"/>
+      <stop offset="85%" stop-color="#0d9488"/>
+      <stop offset="100%" stop-color="#0284c7"/>
     </linearGradient>
+    <linearGradient id="pulseGrad" x1="60" y1="256" x2="452" y2="256" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="50%" stop-color="#fef08a"/>
+      <stop offset="100%" stop-color="#6ee7b7"/>
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+    <radialGradient id="halo" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#34d399" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#34d399" stop-opacity="0"/>
+    </radialGradient>
   </defs>
-  <rect width="64" height="64" rx="14" fill="url(#g)"/>
-  <path d="M 10 40 L 22 40 L 26 28 L 31 48 L 36 22 L 40 40 L 54 40" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-  <circle cx="40" cy="40" r="2.5" fill="#ffffff"/>
+
+  <!-- Background rounded squircle -->
+  <rect width="512" height="512" rx="118" fill="url(#bgGrad)"/>
+  <rect x="12" y="12" width="488" height="488" rx="106" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="3"/>
+  <circle cx="256" cy="256" r="180" fill="url(#halo)"/>
+
+  <!-- Medical Cross Watermark -->
+  <path d="M 232 120 H 280 V 208 H 368 V 256 H 280 V 344 H 232 V 256 H 144 V 208 H 232 Z" fill="#ffffff" fill-opacity="0.1" rx="8"/>
+
+  <!-- Glowing Pulse / Heartbeat Wave -->
+  <path d="M 72 276 L 152 276 L 192 188 L 236 364 L 284 140 L 324 308 L 356 248 L 380 276 L 440 276" 
+        stroke="url(#pulseGrad)" stroke-width="20" stroke-linecap="round" stroke-linejoin="round" fill="none" filter="url(#glow)"/>
+
+  <!-- Center Heartbeat Focus Node -->
+  <circle cx="324" cy="308" r="10" fill="#fef08a" filter="url(#glow)"/>
+  <circle cx="284" cy="140" r="8" fill="#ffffff"/>
+  <circle cx="236" cy="364" r="8" fill="#34d399"/>
+
+  <!-- Golden NSVAIR Star Accent -->
+  <path d="M 390 120 L 398 140 L 418 144 L 402 158 L 406 178 L 390 168 L 374 178 L 378 158 L 362 144 L 382 140 Z" fill="#fbbf24"/>
 </svg>

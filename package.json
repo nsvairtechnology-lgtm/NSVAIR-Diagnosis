@@ -1,6 +1,8 @@
 {
-  "name": "nextjs_tailwind_shadcn_ts",
-  "version": "0.2.1",
+  "name": "nsvair-diagnosis",
+  "version": "1.0.0",
+  "description": "NSVAIR Diagnosis — AI-Powered Complete Health Diagnostic Platform | Powered by NSVAIR GROUP OF INDUSTRY",
+  "author": "NSVAIR GROUP OF INDUSTRY",
   "private": true,
   "scripts": {
     "dev": "next dev -p 3000 2>&1 | tee dev.log",

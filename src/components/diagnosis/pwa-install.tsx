@@ -139,6 +139,9 @@ export function PWAInstall() {
             </div>
             <div className="flex-1 min-w-0">
               <p className="font-semibold text-sm">Install NSVAIR Diagnosis</p>
+              <p className="text-[10px] text-emerald-600 dark:text-emerald-400 font-semibold uppercase tracking-wider">
+                Powered by NSVAIR GROUP OF INDUSTRY
+              </p>
               <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
                 {platform === 'ios'
                   ? 'Add to your Home Screen for one-tap access — works offline like a native app.'

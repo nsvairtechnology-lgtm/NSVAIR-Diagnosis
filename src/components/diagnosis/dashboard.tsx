@@ -31,6 +31,11 @@ import {
   Ear,
   Download,
   LayoutGrid,
+  Building2,
+  Award,
+  Globe,
+  Lock,
+  ChevronRight,
 } from 'lucide-react'
 import { useDiagnosisStore } from '@/lib/diagnosis-store'
 import {
@@ -176,26 +181,28 @@ export function Dashboard() {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-background via-background to-muted/30">
       {/* Header */}
-      <header className="sticky top-0 z-40 border-b bg-background/80 backdrop-blur-md">
-        <div className="container mx-auto max-w-6xl px-4 py-3 flex items-center justify-between gap-3">
-          <div className="flex items-center gap-2.5">
-            <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-sm">
+      <header className="sticky top-0 z-40 border-b bg-background/85 backdrop-blur-md">
+        <div className="container mx-auto max-w-6xl px-4 py-2.5 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-emerald-500 via-teal-600 to-cyan-700 flex items-center justify-center shadow-md ring-1 ring-white/20">
               <HeartPulse className="h-5 w-5 text-white" />
             </div>
             <div>
-              <span className="font-bold text-base leading-tight block">
-                NSVAIR <span className="text-emerald-600">Diagnosis</span>
-              </span>
-              <p className="text-[10px] text-muted-foreground leading-tight">
-                Agentic Diagnostic Platform
+              <div className="flex items-center gap-1.5">
+                <span className="font-extrabold text-base tracking-tight leading-tight block">
+                  NSVAIR <span className="text-emerald-600 dark:text-emerald-400">Diagnosis</span>
+                </span>
+              </div>
+              <p className="text-[10px] font-semibold text-emerald-700 dark:text-emerald-300 uppercase tracking-wider leading-tight flex items-center gap-1">
+                <Building2 className="h-2.5 w-2.5 inline" /> Powered by NSVAIR GROUP OF INDUSTRY
               </p>
             </div>
           </div>
 
           <div className="flex items-center gap-2">
-            <Badge variant="secondary" className="hidden md:flex gap-1.5">
+            <Badge variant="secondary" className="hidden md:flex gap-1.5 font-medium">
               <Sparkles className="h-3 w-3 text-emerald-500" />
-              {completed}/{totalModules} done
+              {completed}/{totalModules} completed
             </Badge>
             <Button
               size="sm"
@@ -222,7 +229,7 @@ export function Dashboard() {
               size="sm"
               onClick={() => setReportOpen(true)}
               disabled={completed === 0}
-              className="gap-1.5 bg-emerald-600 hover:bg-emerald-700"
+              className="gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm"
             >
               <FileText className="h-3.5 w-3.5" />
               <span className="hidden sm:inline">Report</span>
@@ -230,9 +237,9 @@ export function Dashboard() {
           </div>
         </div>
         {/* progress bar */}
-        <div className="h-0.5 bg-muted">
+        <div className="h-1 bg-muted/60">
           <div
-            className="h-full bg-gradient-to-r from-emerald-500 to-teal-500 transition-all duration-500"
+            className="h-full bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 transition-all duration-500"
             style={{ width: `${progress}%` }}
           />
         </div>
@@ -247,13 +254,13 @@ export function Dashboard() {
                 variant="ghost"
                 size="sm"
                 onClick={() => setActiveModule(null)}
-                className="gap-1.5"
+                className="gap-1.5 hover:bg-muted"
               >
-                <ArrowLeft className="h-4 w-4" /> All Modules
+                <ArrowLeft className="h-4 w-4" /> All Diagnostic Modules
               </Button>
               <div className="flex items-center gap-2">
                 {results[active.id] && (
-                  <Badge className="gap-1 bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">
+                  <Badge className="gap-1 bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
                     <CheckCircle2 className="h-3 w-3" /> Completed
                   </Badge>
                 )}
@@ -265,7 +272,7 @@ export function Dashboard() {
             <div className="flex items-center gap-3">
               <div
                 className={cn(
-                  'h-11 w-11 rounded-xl bg-gradient-to-br flex items-center justify-center',
+                  'h-12 w-12 rounded-xl bg-gradient-to-br flex items-center justify-center shadow-sm',
                   active.gradient
                 )}
               >
@@ -284,21 +291,27 @@ export function Dashboard() {
         ) : (
           // Dashboard view
           <div className="space-y-6">
-            {/* Hero */}
-            <Card className="overflow-hidden border-0 bg-gradient-to-br from-emerald-600 via-teal-600 to-cyan-700 text-white">
+            {/* Hero Card */}
+            <Card className="overflow-hidden border-0 bg-gradient-to-br from-emerald-700 via-teal-700 to-cyan-800 text-white shadow-lg">
               <CardContent className="p-6 md:p-8 relative">
-                <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_top_right,white,transparent_50%)]" />
-                <div className="relative space-y-4 max-w-2xl">
-                  <Badge className="bg-white/20 text-white border-0 hover:bg-white/30 gap-1.5">
-                    <Sparkles className="h-3 w-3" /> Powered by Agentic AI
-                  </Badge>
-                  <h1 className="text-2xl md:text-3xl font-bold leading-tight">
-                    Complete health diagnostics — all in one place, in real time.
+                <div className="absolute inset-0 opacity-15 bg-[radial-gradient(circle_at_top_right,white,transparent_60%)]" />
+                <div className="relative space-y-4 max-w-3xl">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <Badge className="bg-white/20 hover:bg-white/30 text-white border-0 gap-1.5 font-semibold text-xs py-1 px-3 backdrop-blur-sm">
+                      <Sparkles className="h-3.5 w-3.5 text-amber-300" /> Powered by NSVAIR GROUP OF INDUSTRY
+                    </Badge>
+                    <Badge className="bg-emerald-950/40 text-emerald-200 border border-emerald-400/30 gap-1 text-xs py-1 px-3 backdrop-blur-sm">
+                      <Building2 className="h-3.5 w-3.5" /> Health AI Division
+                    </Badge>
+                  </div>
+                  <h1 className="text-2xl md:text-4xl font-extrabold leading-tight tracking-tight">
+                    Complete Agentic AI Health Diagnostics in Real Time
                   </h1>
-                  <p className="text-white/80 text-sm md:text-base leading-relaxed">
-                    NSVAIR Diagnosis uses your phone&apos;s camera, microphone, motion sensors, and touch to run
-                    16 different AI-powered diagnostic screenings. Get a complete, integrated health
-                    report in minutes.
+                  <p className="text-white/90 text-sm md:text-base leading-relaxed">
+                    <strong>NSVAIR Diagnosis</strong>, developed by <strong>NSVAIR GROUP OF INDUSTRY</strong>,
+                    transforms your smartphone into a clinical-grade multi-modal screening platform.
+                    Using your device&apos;s camera, microphone, motion sensors, and touch screen, our AI
+                    orchestrates 16 specialized diagnostic evaluations and synthesizes them into an integrated health report.
                   </p>
                   <div className="flex flex-wrap gap-2 pt-1">
                     {Object.values(sensorLabels).map((s) => {
@@ -306,14 +319,14 @@ export function Dashboard() {
                       return (
                         <span
                           key={s.label}
-                          className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-xs font-medium"
+                          className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-xs font-medium backdrop-blur-sm"
                         >
                           <Icon className="h-3 w-3" /> {s.label}
                         </span>
                       )
                     })}
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-xs font-medium">
-                      <Wifi className="h-3 w-3" /> Real-time AI
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-xs font-medium backdrop-blur-sm">
+                      <Wifi className="h-3 w-3" /> Instant Real-time AI
                     </span>
                   </div>
                 </div>
@@ -321,7 +334,7 @@ export function Dashboard() {
             </Card>
 
             {/* Progress summary */}
-            <Card>
+            <Card className="border shadow-sm">
               <CardContent className="p-5">
                 <div className="flex items-center justify-between gap-3 flex-wrap">
                   <div className="space-y-1">
@@ -330,7 +343,7 @@ export function Dashboard() {
                       Your Diagnostic Progress
                     </h3>
                     <p className="text-xs text-muted-foreground">
-                      Complete modules to build your comprehensive health report.
+                      Complete modules across vision, audio, sensors, and questionnaires to build your report.
                     </p>
                   </div>
                   <div className="flex items-center gap-3">
@@ -339,7 +352,7 @@ export function Dashboard() {
                         {completed}
                         <span className="text-sm text-muted-foreground">/{totalModules}</span>
                       </div>
-                      <p className="text-xs text-muted-foreground">modules</p>
+                      <p className="text-xs text-muted-foreground">screenings complete</p>
                     </div>
                     {completed > 0 && (
                       <Button
@@ -362,30 +375,39 @@ export function Dashboard() {
             </Card>
 
             {/* Module grid */}
-            <div id="modules">
-              <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
-                <h3 className="font-semibold flex items-center gap-2">
-                  <LayoutGrid className="h-4 w-4 text-emerald-500" />
-                  Diagnostic Modules
-                </h3>
-                <span className="text-xs text-muted-foreground">{filteredModules.length} of {totalModules} shown · Tap to start</span>
+            <div id="modules" className="space-y-3">
+              <div className="flex items-center justify-between flex-wrap gap-2">
+                <div>
+                  <h3 className="font-bold text-lg flex items-center gap-2">
+                    <LayoutGrid className="h-5 w-5 text-emerald-500" />
+                    Diagnostic Modules
+                  </h3>
+                  <p className="text-xs text-muted-foreground">
+                    16 AI screening tools backed by NSVAIR GROUP OF INDUSTRY AI architecture
+                  </p>
+                </div>
+                <span className="text-xs text-muted-foreground font-medium">
+                  {filteredModules.length} of {totalModules} shown · Tap to begin
+                </span>
               </div>
 
               {/* Category filter tabs */}
-              <div className="flex flex-wrap gap-1.5 mb-4 p-1 bg-muted/40 rounded-lg w-fit max-w-full overflow-x-auto">
+              <div className="flex flex-wrap gap-1.5 p-1 bg-muted/50 rounded-xl w-fit max-w-full overflow-x-auto border">
                 {categoryTabs.map((tab) => (
                   <button
                     key={tab.id}
                     onClick={() => setActiveCategory(tab.id)}
                     className={cn(
-                      'px-3 py-1.5 rounded-md text-xs font-medium transition-colors whitespace-nowrap',
+                      'px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all whitespace-nowrap',
                       activeCategory === tab.id
-                        ? 'bg-background text-foreground shadow-sm'
-                        : 'text-muted-foreground hover:text-foreground'
+                        ? 'bg-background text-foreground shadow-sm ring-1 ring-border'
+                        : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
                     )}
                   >
                     {tab.label}
-                    <span className="ml-1.5 text-[10px] opacity-70">{tab.count}</span>
+                    <span className="ml-1.5 text-[10px] opacity-70 px-1.5 py-0.5 rounded-full bg-muted">
+                      {tab.count}
+                    </span>
                   </button>
                 ))}
               </div>
@@ -400,63 +422,62 @@ export function Dashboard() {
                       key={m.id}
                       onClick={() => setActiveModule(m.id)}
                       className={cn(
-                        'group cursor-pointer hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 relative overflow-hidden',
-                        isDone && 'ring-1 ring-emerald-500/40'
+                        'group cursor-pointer hover:shadow-md hover:-translate-y-1 transition-all duration-200 relative overflow-hidden border',
+                        isDone && 'ring-1 ring-emerald-500/50 bg-emerald-50/10 dark:bg-emerald-950/10'
                       )}
                     >
                       <CardContent className="p-5 space-y-3">
                         <div className="flex items-start justify-between">
                           <div
                             className={cn(
-                              'h-11 w-11 rounded-xl bg-gradient-to-br flex items-center justify-center',
+                              'h-11 w-11 rounded-xl bg-gradient-to-br flex items-center justify-center shadow-sm',
                               m.gradient
                             )}
                           >
                             <Icon className={cn('h-6 w-6', m.color)} />
                           </div>
                           {isDone ? (
-                            <Badge className="bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300 gap-1">
-                              <CheckCircle2 className="h-3 w-3" />
-                              Done
+                            <Badge className="bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300 gap-1 border border-emerald-300 dark:border-emerald-800 text-[11px]">
+                              <CheckCircle2 className="h-3 w-3" /> Done
                             </Badge>
                           ) : (
-                            <Badge variant="outline" className="gap-1 text-muted-foreground">
-                              <Clock className="h-3 w-3" /> {m.estimatedTime}
+                            <Badge variant="outline" className="text-[11px] text-muted-foreground font-normal">
+                              {m.estimatedTime}
                             </Badge>
                           )}
                         </div>
+
                         <div>
-                          <h4 className="font-semibold text-sm">{m.name}</h4>
-                          <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
+                          <h4 className="font-semibold text-sm group-hover:text-emerald-600 transition-colors flex items-center gap-1">
+                            {m.name}
+                            <ChevronRight className="h-3.5 w-3.5 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-emerald-500" />
+                          </h4>
+                          <p className="text-xs text-muted-foreground line-clamp-2 mt-1">
                             {m.description}
                           </p>
                         </div>
-                        <div className="flex flex-wrap gap-1">
-                          {m.sensors.length === 0 ? (
-                            <span className="inline-flex items-center gap-1 text-[10px] rounded-md bg-muted px-1.5 py-0.5 text-muted-foreground">
-                              <Stethoscope className="h-2.5 w-2.5" /> AI Chat
-                            </span>
-                          ) : (
-                            m.sensors.map((s) => {
-                              const SIcon = sensorLabels[s]?.icon
-                              return (
-                                <span
-                                  key={s}
-                                  className="inline-flex items-center gap-1 text-[10px] rounded-md bg-muted px-1.5 py-0.5 text-muted-foreground"
-                                >
-                                  {SIcon && <SIcon className="h-2.5 w-2.5" />}
-                                  {sensorLabels[s]?.label}
-                                </span>
-                              )
-                            })
-                          )}
+
+                        <div className="flex flex-wrap gap-1 pt-1">
+                          {m.sensorType.map((s) => {
+                            const SensorIcon = sensorLabels[s]?.icon || Activity
+                            return (
+                              <span
+                                key={s}
+                                className="inline-flex items-center gap-1 rounded bg-muted/80 px-2 py-0.5 text-[10px] text-muted-foreground"
+                              >
+                                <SensorIcon className="h-2.5 w-2.5" />
+                                {sensorLabels[s]?.label || s}
+                              </span>
+                            )
+                          })}
                         </div>
+
                         {isDone && (
                           <div className="pt-2 border-t flex items-center justify-between">
-                            <span className="text-xs text-muted-foreground">Risk score</span>
+                            <span className="text-xs text-muted-foreground font-medium">Risk score</span>
                             <span
                               className={cn(
-                                'text-sm font-semibold',
+                                'text-sm font-bold font-mono',
                                 result!.riskScore < 30
                                   ? 'text-emerald-600'
                                   : result!.riskScore < 60
@@ -475,31 +496,75 @@ export function Dashboard() {
               </div>
             </div>
 
+            {/* Corporate Spotlight: NSVAIR Diagnosis & NSVAIR GROUP OF INDUSTRY */}
+            <Card id="about-nsvair" className="border bg-gradient-to-r from-emerald-50/50 via-teal-50/30 to-background dark:from-emerald-950/20 dark:via-teal-950/10 dark:to-background">
+              <CardContent className="p-6 md:p-8 space-y-4">
+                <div className="flex flex-wrap items-center justify-between gap-3 border-b pb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-emerald-600 to-teal-700 flex items-center justify-center text-white shadow-md">
+                      <Building2 className="h-6 w-6" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold">NSVAIR GROUP OF INDUSTRY</h3>
+                      <p className="text-xs text-emerald-700 dark:text-emerald-400 font-semibold tracking-wide">
+                        Enterprise AI Innovation &amp; Healthcare Diagnostics Division
+                      </p>
+                    </div>
+                  </div>
+                  <Badge variant="outline" className="bg-background/80 border-emerald-300 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300">
+                    <Award className="h-3.5 w-3.5 mr-1" /> Flagship Health AI Platform
+                  </Badge>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+                  <div className="space-y-1.5 p-3 rounded-lg bg-background/60 border">
+                    <div className="flex items-center gap-2 text-emerald-600 font-semibold text-sm">
+                      <Cpu className="h-4 w-4" /> Agentic Multi-Agent AI
+                    </div>
+                    <p className="text-xs text-muted-foreground leading-relaxed">
+                      NSVAIR Diagnosis employs autonomous domain-specialized vision, speech, and clinical reasoning agents engineered under NSVAIR GROUP OF INDUSTRY.
+                    </p>
+                  </div>
+                  <div className="space-y-1.5 p-3 rounded-lg bg-background/60 border">
+                    <div className="flex items-center gap-2 text-emerald-600 font-semibold text-sm">
+                      <Lock className="h-4 w-4" /> Zero-Retention Privacy
+                    </div>
+                    <p className="text-xs text-muted-foreground leading-relaxed">
+                      Zero server image persistence. Signals are evaluated in real time in memory, ensuring personal biometric and audio data remains completely private.
+                    </p>
+                  </div>
+                  <div className="space-y-1.5 p-3 rounded-lg bg-background/60 border">
+                    <div className="flex items-center gap-2 text-emerald-600 font-semibold text-sm">
+                      <Globe className="h-4 w-4" /> Free Global Healthcare Access
+                    </div>
+                    <p className="text-xs text-muted-foreground leading-relaxed">
+                      Part of NSVAIR GROUP OF INDUSTRY&apos;s mission to democratize preventative health screening for every smartphone owner worldwide.
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
             {/* Privacy notice */}
             <Card className="bg-muted/30 border-dashed">
               <CardContent className="p-4 flex gap-3 items-start">
                 <ShieldCheck className="h-5 w-5 text-emerald-500 shrink-0 mt-0.5" />
                 <div className="text-xs text-muted-foreground space-y-1">
-                  <p className="font-medium text-foreground">Your privacy is protected</p>
+                  <p className="font-semibold text-foreground">Your biometric privacy is protected</p>
                   <p>
-                    All images and audio are processed securely by the AI and are not stored on our
-                    servers. Diagnosis reports are saved locally to your device for your records.
+                    All diagnostic images, sensor logs, and voice recordings are processed in real-time by AI and are never retained on our servers. Diagnostic reports are stored locally in your browser.
                   </p>
                 </div>
               </CardContent>
             </Card>
 
-            {/* SEO content section — How it works */}
+            {/* How it works */}
             <section id="how-it-works" className="space-y-3 scroll-mt-20">
               <h2 className="text-xl font-bold">How NSVAIR Diagnosis Works</h2>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                NSVAIR Diagnosis is an agentic AI health diagnostic platform that turns your
-                smartphone into a multi-modal screening station. Using your phone&apos;s built-in
-                camera, microphone, motion sensors, and touch screen, our AI runs eight independent
-                diagnostic screenings — then synthesizes all of them into one comprehensive,
-                easy-to-read health report. Everything happens in real time, right in your browser,
-                with no app to install and no data leaving your device unless you choose to save a
-                report.
+                NSVAIR Diagnosis turns your standard smartphone into a 16-in-1 multi-modal clinical screening station.
+                Using your phone&apos;s camera, microphone, motion sensors, and touch screen, specialized AI agents analyze
+                independent health indicators and synthesize them into one cohesive health report.
               </p>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
                 <Card className="bg-muted/20">
@@ -507,10 +572,9 @@ export function Dashboard() {
                     <div className="h-8 w-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/40 flex items-center justify-center">
                       <Camera className="h-4 w-4 text-emerald-600" />
                     </div>
-                    <h3 className="font-semibold text-sm">1. Capture</h3>
+                    <h3 className="font-semibold text-sm">1. Multi-Sensor Capture</h3>
                     <p className="text-xs text-muted-foreground">
-                      Use your phone&apos;s camera, microphone, motion sensors, and touch screen to
-                      capture health signals for each module.
+                      Capture optical, audio, movement, and interactive signals using your device sensors.
                     </p>
                   </CardContent>
                 </Card>
@@ -519,10 +583,9 @@ export function Dashboard() {
                     <div className="h-8 w-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/40 flex items-center justify-center">
                       <Sparkles className="h-4 w-4 text-emerald-600" />
                     </div>
-                    <h3 className="font-semibold text-sm">2. Analyze</h3>
+                    <h3 className="font-semibold text-sm">2. Agentic AI Analysis</h3>
                     <p className="text-xs text-muted-foreground">
-                      Each signal is processed by a specialized AI model — vision models for images,
-                      speech recognition for audio, and reasoning models for symptoms.
+                      Deep neural vision, acoustic ASR, and reasoning agents analyze your signals in real time.
                     </p>
                   </CardContent>
                 </Card>
@@ -531,61 +594,55 @@ export function Dashboard() {
                     <div className="h-8 w-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/40 flex items-center justify-center">
                       <FileText className="h-4 w-4 text-emerald-600" />
                     </div>
-                    <h3 className="font-semibold text-sm">3. Synthesize</h3>
+                    <h3 className="font-semibold text-sm">3. Synthesis Report</h3>
                     <p className="text-xs text-muted-foreground">
-                      A final AI agent integrates all module findings into one comprehensive report
-                      with risk scores, red flags, and prioritized recommendations.
+                      A central medical synthesis agent correlates cross-module findings, red flags, and next steps.
                     </p>
                   </CardContent>
                 </Card>
               </div>
             </section>
 
-            {/* SEO content section — Features */}
+            {/* Why choose */}
             <section id="features" className="space-y-3 scroll-mt-20">
               <h2 className="text-xl font-bold">Why Choose NSVAIR Diagnosis?</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <Card className="bg-muted/20">
                   <CardContent className="p-4">
-                    <h3 className="font-semibold text-sm mb-1">100% Free &amp; Instant</h3>
+                    <h3 className="font-semibold text-sm mb-1">100% Free &amp; Instant Access</h3>
                     <p className="text-xs text-muted-foreground">
-                      No sign-up, no subscription. Run any of the 16 diagnostic modules and generate a
-                      comprehensive health report in minutes — completely free.
+                      No paywalls, subscriptions, or login requirements. Run all 16 diagnostic modules and export comprehensive health reports completely free.
                     </p>
                   </CardContent>
                 </Card>
                 <Card className="bg-muted/20">
                   <CardContent className="p-4">
-                    <h3 className="font-semibold text-sm mb-1">Private by Design</h3>
+                    <h3 className="font-semibold text-sm mb-1">Backed by NSVAIR GROUP OF INDUSTRY</h3>
                     <p className="text-xs text-muted-foreground">
-                      Images and audio are processed by the AI and not stored on our servers. Your
-                      reports stay in your browser. Clear everything with one tap.
+                      Built upon enterprise AI engineering, robust infrastructure, and continuous algorithmic improvements from the NSVAIR GROUP OF INDUSTRY team.
                     </p>
                   </CardContent>
                 </Card>
                 <Card className="bg-muted/20">
                   <CardContent className="p-4">
-                    <h3 className="font-semibold text-sm mb-1">Real-Time Agentic AI</h3>
+                    <h3 className="font-semibold text-sm mb-1">16 Specialized AI Modules</h3>
                     <p className="text-xs text-muted-foreground">
-                      Multiple specialized AI agents work together — vision, speech, reasoning — to
-                      deliver integrated, cross-module insights you can&apos;t get from a single tool.
+                      Comprehensive coverage: Dermatology, Ophthalmology, Dental, Nail, Hair, Posture, Voice/Cough, rPPG Vitals, Mental Health, Sleep, Nutrition, Hearing, Vision &amp; Reactions.
                     </p>
                   </CardContent>
                 </Card>
                 <Card className="bg-muted/20">
                   <CardContent className="p-4">
-                    <h3 className="font-semibold text-sm mb-1">Uses Every Phone Sensor</h3>
+                    <h3 className="font-semibold text-sm mb-1">Universal PWA Compatibility</h3>
                     <p className="text-xs text-muted-foreground">
-                      Camera (rPPG heart rate, skin/eye/face vision), microphone (ASR cough &amp;
-                      voice), motion (stress &amp; balance), and touch (reaction time) — all in one
-                      place.
+                      Install seamlessly on Android, iOS, Windows, and macOS with one tap. Works offline and provides a native app experience.
                     </p>
                   </CardContent>
                 </Card>
               </div>
             </section>
 
-            {/* FAQ section — matches JSON-LD FAQPage schema */}
+            {/* FAQ section */}
             <section id="faq" className="space-y-3 scroll-mt-20">
               <h2 className="text-xl font-bold">
                 Frequently Asked Questions
@@ -598,86 +655,55 @@ export function Dashboard() {
                         What is NSVAIR Diagnosis?
                       </AccordionTrigger>
                       <AccordionContent className="text-xs text-muted-foreground px-3 pb-3 leading-relaxed">
-                        NSVAIR Diagnosis is an agentic AI-powered health diagnostic platform that
-                        uses your phone&apos;s camera, microphone, motion sensors, and touch to run
-                        16 different AI diagnostic screenings — including skin, eye, facial wellness,
-                        dental, nail, hair, posture, voice & cough, symptom checking, mental health,
-                        vital signs, reaction/balance, vision test, hearing test, sleep, and nutrition — then
-                        synthesizes them into one comprehensive real-time health report. Installable as a
-                        PWA on Android and iOS.
+                        NSVAIR Diagnosis is an agentic AI-powered multi-modal health screening platform developed by NSVAIR GROUP OF INDUSTRY. It utilizes your smartphone&apos;s camera, microphone, motion sensors, and touch screen to conduct 16 comprehensive health evaluations and synthesizes them into one actionable health report.
                       </AccordionContent>
                     </AccordionItem>
                     <AccordionItem value="faq-2" className="border-b">
                       <AccordionTrigger className="text-sm font-medium px-3">
-                        Is NSVAIR Diagnosis a medical device?
+                        What is NSVAIR GROUP OF INDUSTRY?
                       </AccordionTrigger>
                       <AccordionContent className="text-xs text-muted-foreground px-3 pb-3 leading-relaxed">
-                        No. NSVAIR Diagnosis is an AI-powered screening and informational tool, not a
-                        medical device and not a substitute for professional medical diagnosis.
-                        Always consult a qualified healthcare professional for diagnosis and
-                        treatment of any medical condition.
+                        NSVAIR GROUP OF INDUSTRY is a diversified technology group developing frontier artificial intelligence, multi-modal diagnostic systems, and intelligent digital platforms. NSVAIR Diagnosis operates as the primary digital health division of NSVAIR GROUP OF INDUSTRY.
                       </AccordionContent>
                     </AccordionItem>
                     <AccordionItem value="faq-3" className="border-b">
                       <AccordionTrigger className="text-sm font-medium px-3">
-                        How does the camera-based heart rate measurement work?
+                        Is NSVAIR Diagnosis a certified medical device?
                       </AccordionTrigger>
                       <AccordionContent className="text-xs text-muted-foreground px-3 pb-3 leading-relaxed">
-                        NSVAIR Diagnosis uses a technology called remote photoplethysmography
-                        (rPPG), which detects subtle changes in skin color caused by blood flow. By
-                        analyzing the green channel of the camera feed over time, the AI estimates
-                        your heart rate without any wearable device.
+                        No. NSVAIR Diagnosis is an AI-powered screening and informational wellness tool, not a certified medical diagnostic device. Always consult a licensed healthcare professional for clinical diagnosis, prescriptions, and medical treatment.
                       </AccordionContent>
                     </AccordionItem>
                     <AccordionItem value="faq-4" className="border-b">
                       <AccordionTrigger className="text-sm font-medium px-3">
-                        Is my health data private?
+                        How does camera-based rPPG heart rate measurement work?
                       </AccordionTrigger>
                       <AccordionContent className="text-xs text-muted-foreground px-3 pb-3 leading-relaxed">
-                        Yes. All images and audio are processed by the AI and are not stored on our
-                        servers. Diagnosis reports are saved locally in your browser&apos;s storage
-                        for your records. You can clear all data at any time.
+                        Remote photoplethysmography (rPPG) detects subtle micro-changes in skin light absorption caused by arterial blood pulsation. By analyzing video frames from your smartphone camera, the AI accurately estimates pulse and respiratory rate.
                       </AccordionContent>
                     </AccordionItem>
                     <AccordionItem value="faq-5" className="border-b">
                       <AccordionTrigger className="text-sm font-medium px-3">
-                        How much does NSVAIR Diagnosis cost?
+                        Is my personal health data private and safe?
                       </AccordionTrigger>
                       <AccordionContent className="text-xs text-muted-foreground px-3 pb-3 leading-relaxed">
-                        NSVAIR Diagnosis is free to use. All 16 diagnostic modules and the
-                        comprehensive health report are available at no cost.
+                        Yes. All sensor signals, audio files, and images are analyzed in real time in memory and never stored permanently on external servers. Saved reports remain inside your browser storage under your direct control.
                       </AccordionContent>
                     </AccordionItem>
                     <AccordionItem value="faq-6" className="border-b">
                       <AccordionTrigger className="text-sm font-medium px-3">
-                        What phone features does NSVAIR Diagnosis use?
+                        How much does NSVAIR Diagnosis cost?
                       </AccordionTrigger>
                       <AccordionContent className="text-xs text-muted-foreground px-3 pb-3 leading-relaxed">
-                        NSVAIR Diagnosis uses your phone&apos;s camera (for skin, eye, face, and
-                        vitals analysis), microphone (for voice and cough analysis), motion
-                        sensors/accelerometer (for stress and balance measurement), and touch screen
-                        (for reaction time testing).
+                        NSVAIR Diagnosis is 100% free. All 16 diagnostic modules, AI analysis agents, and comprehensive health synthesis reports are freely accessible.
                       </AccordionContent>
                     </AccordionItem>
-                    <AccordionItem value="faq-7" className="border-b">
+                    <AccordionItem value="faq-7">
                       <AccordionTrigger className="text-sm font-medium px-3">
-                        How accurate is the AI diagnosis?
+                        Can I download and share my health report?
                       </AccordionTrigger>
                       <AccordionContent className="text-xs text-muted-foreground px-3 pb-3 leading-relaxed">
-                        NSVAIR Diagnosis uses advanced AI models for screening purposes. Results
-                        include confidence scores for each finding. However, accuracy depends on
-                        input quality (lighting, audio clarity) and the AI is intended for
-                        informational screening — not as a replacement for professional medical
-                        evaluation.
-                      </AccordionContent>
-                    </AccordionItem>
-                    <AccordionItem value="faq-8">
-                      <AccordionTrigger className="text-sm font-medium px-3">
-                        Can I download my health report?
-                      </AccordionTrigger>
-                      <AccordionContent className="text-xs text-muted-foreground px-3 pb-3 leading-relaxed">
-                        Yes. After generating your comprehensive report, you can download it as a
-                        text file, save it to your history, or revisit past reports at any time.
+                        Yes. After running any number of screenings, click &quot;Report&quot; to synthesize all findings. You can view, save to history, or download a formatted text health report to share with your doctor.
                       </AccordionContent>
                     </AccordionItem>
                   </Accordion>
@@ -685,36 +711,13 @@ export function Dashboard() {
               </Card>
             </section>
 
-            {/* SEO keyword-rich footer content */}
-            <section className="text-xs text-muted-foreground leading-relaxed space-y-2 pt-2">
+            {/* Keyword rich footer notes */}
+            <section className="text-xs text-muted-foreground leading-relaxed space-y-2 pt-2 border-t">
               <h2 className="text-sm font-semibold text-foreground">
-                AI-Powered Health Screening Modules
+                NSVAIR Diagnosis — 16 Intelligent Health Modules
               </h2>
               <p>
-                NSVAIR Diagnosis brings together sixteen specialized AI diagnostic tools in a single
-                platform. Camera AI modules include an <strong>AI skin analyzer</strong> for
-                dermatology screening of rashes, moles, and lesions using the ABCDE rule; an{' '}
-                <strong>AI eye health checker</strong> that detects redness, conjunctivitis signs,
-                jaundice, and fatigue; a <strong>facial wellness assessment</strong> for symmetry,
-                hydration, and stress cues; a <strong>dental and oral health checker</strong> for
-                teeth, gums, and tongue; a <strong>nail health analyzer</strong> that detects
-                color changes, ridges, clubbing, and deficiency indicators; a{' '}
-                <strong>hair and scalp analyzer</strong> for scalp condition and hair-loss patterns;
-                and a <strong>posture analysis</strong> tool that assesses body alignment and
-                ergonomic cues. Audio modules include a <strong>voice and cough analyzer</strong>{' '}
-                powered by speech recognition. Sensor modules include a{' '}
-                <strong>camera-based vital signs monitor</strong> using remote
-                photoplethysmography (rPPG) to estimate heart rate, breathing rate, and heart rate
-                variability; a <strong>reaction time and balance test</strong> using touch and
-                motion sensors; an interactive <strong>vision test</strong> with Ishihara-style
-                color plates; and a <strong>hearing test</strong> with calibrated audio tones.
-                Assessment modules include a <strong>conversational AI symptom checker</strong>, a{' '}
-                <strong>mental health screening tool</strong> using validated PHQ and GAD-style
-                questionnaires, a <strong>sleep quality assessment</strong> (PSQI-style), and a{' '}
-                <strong>nutrition check</strong> for dietary deficiencies. All results are
-                synthesized by a final AI agent into one comprehensive, prioritized health report.
-                Install NSVAIR Diagnosis as a PWA on Android or iOS for one-tap access to all
-                sixteen modules.
+                NSVAIR Diagnosis delivers sixteen specialized screening tools: <strong>AI Skin &amp; Dermatology Analyzer</strong> (ABCDE criteria), <strong>AI Eye Health Checker</strong>, <strong>Facial Wellness &amp; Hydration Assessment</strong>, <strong>Dental &amp; Oral Health Checker</strong>, <strong>Nail Health Analyzer</strong>, <strong>Hair &amp; Scalp Density Check</strong>, <strong>Posture &amp; Ergonomic Alignment</strong>, <strong>Voice &amp; Cough Respiratory Analyzer</strong> (ASR speech), <strong>Conversational AI Symptom Checker</strong>, <strong>Vital Signs Monitor</strong> (rPPG heart rate), <strong>Mental Health Screening</strong> (PHQ/GAD questionnaires), <strong>Sleep Quality Assessment</strong> (PSQI index), <strong>Nutrition &amp; Dietary Check</strong>, <strong>Visual Acuity &amp; Color Vision Test</strong> (Ishihara plates), <strong>Tone Frequency Hearing Test</strong>, and <strong>Reaction Time &amp; Motor Balance Test</strong>.
               </p>
             </section>
           </div>
@@ -722,53 +725,67 @@ export function Dashboard() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t mt-auto bg-background/80 backdrop-blur-sm">
-        <div className="container mx-auto max-w-6xl px-4 py-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-5">
-            <div className="md:col-span-2 space-y-2">
+      <footer className="border-t mt-auto bg-background/90 backdrop-blur-md">
+        <div className="container mx-auto max-w-6xl px-4 py-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-6">
+            <div className="md:col-span-2 space-y-3">
               <div className="flex items-center gap-2.5">
-                <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
-                  <HeartPulse className="h-4 w-4 text-white" />
+                <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-emerald-500 via-teal-600 to-cyan-700 flex items-center justify-center shadow-sm">
+                  <HeartPulse className="h-5 w-5 text-white" />
                 </div>
-                <span className="font-bold text-sm">
-                  NSVAIR <span className="text-emerald-600">Diagnosis</span>
-                </span>
+                <div>
+                  <span className="font-extrabold text-base leading-tight block">
+                    NSVAIR <span className="text-emerald-600">Diagnosis</span>
+                  </span>
+                  <span className="text-[10px] font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider">
+                    Powered by NSVAIR GROUP OF INDUSTRY
+                  </span>
+                </div>
               </div>
               <p className="text-xs text-muted-foreground leading-relaxed max-w-md">
-                Agentic AI-powered multi-modal health diagnostic platform. 8 AI screenings using
-                your phone&apos;s camera, microphone, motion sensors, and touch — synthesized into
-                one comprehensive real-time health report.
+                NSVAIR Diagnosis is the agentic AI healthcare and screening platform developed by <strong>NSVAIR GROUP OF INDUSTRY</strong>. Integrating 16 multi-modal sensors to deliver real-time health intelligence worldwide.
               </p>
+              <div className="flex items-center gap-2 pt-1">
+                <Badge variant="outline" className="text-[10px] bg-emerald-50/50 dark:bg-emerald-950/20 border-emerald-300 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300">
+                  <Building2 className="h-3 w-3 mr-1" /> NSVAIR GROUP OF INDUSTRY
+                </Badge>
+                <Badge variant="outline" className="text-[10px]">
+                  Agentic AI v2.1
+                </Badge>
+              </div>
             </div>
+
             <div className="space-y-2">
-              <h4 className="text-xs font-semibold text-foreground">Modules</h4>
-              <ul className="space-y-1 text-xs text-muted-foreground">
+              <h4 className="text-xs font-bold text-foreground uppercase tracking-wider">Screening Modules</h4>
+              <ul className="space-y-1.5 text-xs text-muted-foreground">
                 <li><a href="#modules" className="hover:text-emerald-600 transition-colors">Skin &amp; Dermatology</a></li>
-                <li><a href="#modules" className="hover:text-emerald-600 transition-colors">Dental &amp; Oral</a></li>
-                <li><a href="#modules" className="hover:text-emerald-600 transition-colors">Nail &amp; Hair Health</a></li>
+                <li><a href="#modules" className="hover:text-emerald-600 transition-colors">Eye &amp; Facial Wellness</a></li>
+                <li><a href="#modules" className="hover:text-emerald-600 transition-colors">Dental, Nail &amp; Hair</a></li>
                 <li><a href="#modules" className="hover:text-emerald-600 transition-colors">Vital Signs (rPPG)</a></li>
-                <li><a href="#modules" className="hover:text-emerald-600 transition-colors">Vision &amp; Hearing Test</a></li>
-                <li><a href="#modules" className="hover:text-emerald-600 transition-colors">Sleep &amp; Nutrition</a></li>
+                <li><a href="#modules" className="hover:text-emerald-600 transition-colors">Voice, Cough &amp; Symptoms</a></li>
+                <li><a href="#modules" className="hover:text-emerald-600 transition-colors">Mental Health &amp; Sleep</a></li>
+                <li><a href="#modules" className="hover:text-emerald-600 transition-colors">Vision &amp; Hearing Tests</a></li>
               </ul>
             </div>
+
             <div className="space-y-2">
-              <h4 className="text-xs font-semibold text-foreground">Learn More</h4>
-              <ul className="space-y-1 text-xs text-muted-foreground">
-                <li><a href="#how-it-works" className="hover:text-emerald-600 transition-colors">How It Works</a></li>
-                <li><a href="#features" className="hover:text-emerald-600 transition-colors">Features</a></li>
-                <li><a href="#faq" className="hover:text-emerald-600 transition-colors">FAQ</a></li>
-                <li><a href="#modules" className="hover:text-emerald-600 transition-colors">Start Screening</a></li>
+              <h4 className="text-xs font-bold text-foreground uppercase tracking-wider">Group &amp; Platform</h4>
+              <ul className="space-y-1.5 text-xs text-muted-foreground">
+                <li><a href="#about-nsvair" className="hover:text-emerald-600 transition-colors">About NSVAIR GROUP</a></li>
+                <li><a href="#how-it-works" className="hover:text-emerald-600 transition-colors">How AI Diagnostics Work</a></li>
+                <li><a href="#features" className="hover:text-emerald-600 transition-colors">Platform Features</a></li>
+                <li><a href="#faq" className="hover:text-emerald-600 transition-colors">FAQ &amp; Support</a></li>
+                <li><a href="#modules" className="hover:text-emerald-600 transition-colors">Start Health Screening</a></li>
               </ul>
             </div>
           </div>
-          <div className="border-t pt-4 text-center">
-            <p className="text-xs text-muted-foreground">
-              <strong>NSVAIR Diagnosis</strong> — Not a medical device. For screening and
-              informational purposes only. Always consult a licensed healthcare professional for
-              diagnosis and treatment.
+
+          <div className="border-t pt-5 space-y-2 text-center">
+            <p className="text-xs text-muted-foreground max-w-3xl mx-auto">
+              <strong>Medical Disclaimer:</strong> NSVAIR Diagnosis is an AI-assisted screening and informational wellness tool developed under NSVAIR GROUP OF INDUSTRY. It is not a certified medical device and is not intended to replace clinical examination, professional medical advice, diagnosis, or treatment. Always consult a licensed medical doctor for health concerns.
             </p>
-            <p className="text-[10px] text-muted-foreground/70 mt-1">
-              © {new Date().getFullYear()} NSVAIR Diagnosis. AI health screening platform. All rights reserved.
+            <p className="text-[11px] text-muted-foreground/80 font-medium">
+              © {new Date().getFullYear()} NSVAIR Diagnosis · Powered by NSVAIR GROUP OF INDUSTRY. All rights reserved.
             </p>
           </div>
         </div>
@@ -786,7 +803,7 @@ export function Dashboard() {
               Comprehensive Health Report
             </SheetTitle>
             <SheetDescription>
-              AI-synthesized summary across all completed diagnostic modules
+              AI-synthesized multi-modal report powered by NSVAIR GROUP OF INDUSTRY
             </SheetDescription>
           </SheetHeader>
           <div className="px-6 pb-6">
@@ -801,7 +818,7 @@ export function Dashboard() {
           <SheetHeader className="px-6">
             <SheetTitle>Your Health Profile</SheetTitle>
             <SheetDescription>
-              Helps the AI personalize your diagnosis (optional)
+              Personalizes AI diagnosis findings and recommendations
             </SheetDescription>
           </SheetHeader>
           <div className="px-6 pb-6">

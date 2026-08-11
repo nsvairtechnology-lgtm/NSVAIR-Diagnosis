@@ -133,8 +133,10 @@ export function HealthReport({ onClose }: { onClose: () => void }) {
 
   const download = () => {
     if (!lastReport) return
-    const text = `NSVAIR DIAGNOSIS — COMPREHENSIVE HEALTH REPORT
-============================================
+    const text = `================================================================================
+NSVAIR DIAGNOSIS — COMPREHENSIVE HEALTH REPORT
+POWERED BY NSVAIR GROUP OF INDUSTRY
+================================================================================
 Generated: ${new Date(lastReport.createdAt).toLocaleString()}
 Patient: ${userProfile.name || 'Anonymous'} | Age: ${userProfile.age || 'N/A'} | Gender: ${userProfile.gender || 'N/A'}
 
@@ -162,12 +164,17 @@ ${lastReport.prioritizedRecommendations.map((r, i) => `${i + 1}. ${r}`).join('\n
 NEXT STEPS:
 ${lastReport.nextSteps.map((s, i) => `${i + 1}. ${s}`).join('\n')}
 
---------------------------------------------
-Modules completed: ${completed.length}
+--------------------------------------------------------------------------------
+MODULES EVALUATED: ${completed.length}
 ${completed.map((r) => `• ${r.moduleName}: risk ${r.riskScore}/100 (${r.riskLevel})`).join('\n')}
 
-DISCLAIMER: This AI screening is for informational purposes only and is not a medical diagnosis.
-Always consult a qualified healthcare professional for medical advice.
+================================================================================
+DISCLAIMER:
+NSVAIR Diagnosis is an AI-powered screening and informational wellness tool
+developed under NSVAIR GROUP OF INDUSTRY. It is not a certified medical device
+and is not a substitute for professional medical diagnosis. Always consult a
+licensed healthcare provider for diagnosis and treatment.
+================================================================================
 `
     const blob = new Blob([text], { type: 'text/plain' })
     const url = URL.createObjectURL(blob)
@@ -479,9 +486,7 @@ Always consult a qualified healthcare professional for medical advice.
           <div className="rounded-lg bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900 p-3 flex gap-2">
             <ShieldAlert className="h-4 w-4 text-amber-600 shrink-0 mt-0.5" />
             <p className="text-xs text-amber-800 dark:text-amber-300">
-              This AI-generated report is for informational and screening purposes only. It is not a
-              medical diagnosis. Always consult a qualified healthcare professional for diagnosis and
-              treatment of any medical condition.
+              <strong>NSVAIR Diagnosis (Powered by NSVAIR GROUP OF INDUSTRY)</strong> — This AI-generated report is for informational and wellness screening purposes only. It is not a medical device or clinical diagnosis. Always consult a licensed healthcare professional for medical diagnosis and treatment.
             </p>
           </div>
         </div>

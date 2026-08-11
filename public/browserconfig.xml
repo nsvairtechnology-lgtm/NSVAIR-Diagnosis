@@ -2,14 +2,11 @@
 <browserconfig>
   <msapplication>
     <tile>
+      <square70x70logo src="/icon.svg"/>
       <square150x150logo src="/icon.svg"/>
-      <TileColor>#10b981</TileColor>
+      <wide310x150logo src="/icon.svg"/>
+      <square310x310logo src="/icon.svg"/>
+      <TileColor>#059669</TileColor>
     </tile>
-    <notification>
-      <template tileTemplate="TileSquareImage"/>
-      <binding template="TileSquareImage">
-        <image id="1" src="/icon.svg"/>
-      </binding>
-    </notification>
   </msapplication>
 </browserconfig>
