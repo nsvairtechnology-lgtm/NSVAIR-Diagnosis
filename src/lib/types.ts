@@ -17,12 +17,14 @@ export type ModuleId =
   | 'nutrition'
   | 'vision'
   | 'hearing'
+  | 'radiology'
+  | 'lab-report'
 
 export type Severity = 'normal' | 'mild' | 'moderate' | 'high' | 'critical'
 
 export type RiskLevel = 'low' | 'moderate' | 'high' | 'critical'
 
-export type ModuleCategory = 'camera' | 'sensors' | 'assessment' | 'audio'
+export type ModuleCategory = 'camera' | 'imaging' | 'records' | 'sensors' | 'assessment' | 'audio'
 
 export interface Finding {
   condition: string
@@ -30,6 +32,15 @@ export interface Finding {
   severity: Severity
   description: string
   recommendation: string
+}
+
+export interface BiomarkerResult {
+  name: string
+  value: string
+  unit: string
+  referenceRange: string
+  status: 'normal' | 'high' | 'low' | 'critical'
+  explanation: string
 }
 
 export interface DiagnosisResult {
@@ -87,16 +98,45 @@ export interface ModuleMeta {
   color: string
   gradient: string
   estimatedTime: string
+  isNew?: boolean
 }
 
 export const CATEGORY_LABELS: Record<ModuleCategory, string> = {
   camera: 'Camera AI',
+  imaging: 'Radiology & Imaging',
+  records: 'Lab Reports & Docs',
   sensors: 'Sensors',
   assessment: 'Assessment',
   audio: 'Audio',
 }
 
 export const MODULES: ModuleMeta[] = [
+  // === Radiology & Imaging (NEW) ===
+  {
+    id: 'radiology',
+    name: 'X-Ray, MRI & Ultrasound AI',
+    description: 'Upload radiographic film (X-Ray, Ultrasound, MRI, CT Scans) for instant multi-modal clinical interpretation',
+    icon: 'ScanLine',
+    sensors: ['camera'],
+    category: 'imaging',
+    color: 'text-sky-500',
+    gradient: 'from-sky-500/20 to-blue-500/10',
+    estimatedTime: '40s',
+    isNew: true,
+  },
+  // === Medical Lab Reports (NEW) ===
+  {
+    id: 'lab-report',
+    name: 'Lab Report & Blood Test AI',
+    description: 'Upload blood work, pathology sheets, and medical PDF/image documents for OCR biomarker analysis',
+    icon: 'FileText',
+    sensors: ['camera'],
+    category: 'records',
+    color: 'text-emerald-500',
+    gradient: 'from-emerald-500/20 to-teal-500/10',
+    estimatedTime: '35s',
+    isNew: true,
+  },
   // === Camera AI ===
   {
     id: 'skin',

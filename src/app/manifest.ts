@@ -38,6 +38,18 @@ export default function manifest(): MetadataRoute.Manifest {
     ],
     shortcuts: [
       {
+        name: 'X-Ray & MRI AI Scanner',
+        short_name: 'Radiology',
+        description: 'AI medical imaging for X-Ray, Ultrasound, MRI & CT scans',
+        url: '/?module=radiology',
+      },
+      {
+        name: 'Lab Report & Blood Test AI',
+        short_name: 'Lab Report',
+        description: 'OCR biomarker extraction & lab report interpretation',
+        url: '/?module=lab-report',
+      },
+      {
         name: 'Skin Scanner',
         short_name: 'Skin',
         description: 'AI skin & dermatology analysis',

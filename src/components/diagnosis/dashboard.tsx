@@ -79,6 +79,8 @@ import { SleepAssessment } from '@/components/diagnosis/modules/sleep-assessment
 import { NutritionAssessment } from '@/components/diagnosis/modules/nutrition-assessment'
 import { VisionTest } from '@/components/diagnosis/modules/vision-test'
 import { HearingTest } from '@/components/diagnosis/modules/hearing-test'
+import { RadiologyScanner } from '@/components/diagnosis/modules/radiology-scanner'
+import { LabReportAnalyzer } from '@/components/diagnosis/modules/lab-report-analyzer'
 import { HealthReport } from '@/components/diagnosis/health-report'
 import { UserProfileCard } from '@/components/diagnosis/user-profile-card'
 import { PWAInstall } from '@/components/diagnosis/pwa-install'
@@ -98,6 +100,8 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Moon,
   Apple,
   Ear,
+  ScanLine: HeartPulse,
+  FileText,
 }
 
 const sensorLabels: Record<string, { icon: React.ComponentType<{ className?: string }>; label: string }> = {
@@ -161,6 +165,10 @@ export function Dashboard() {
         return <VisionTest />
       case 'hearing':
         return <HearingTest />
+      case 'radiology':
+        return <RadiologyScanner />
+      case 'lab-report':
+        return <LabReportAnalyzer />
     }
   }
 
@@ -436,15 +444,22 @@ export function Dashboard() {
                           >
                             <Icon className={cn('h-6 w-6', m.color)} />
                           </div>
-                          {isDone ? (
-                            <Badge className="bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300 gap-1 border border-emerald-300 dark:border-emerald-800 text-[11px]">
-                              <CheckCircle2 className="h-3 w-3" /> Done
-                            </Badge>
-                          ) : (
-                            <Badge variant="outline" className="text-[11px] text-muted-foreground font-normal">
-                              {m.estimatedTime}
-                            </Badge>
-                          )}
+                          <div className="flex items-center gap-1.5">
+                            {m.isNew && !isDone && (
+                              <Badge className="bg-gradient-to-r from-sky-500 to-emerald-500 text-white text-[10px] font-bold px-1.5 py-0 border-0 shadow-sm">
+                                NEW
+                              </Badge>
+                            )}
+                            {isDone ? (
+                              <Badge className="bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300 gap-1 border border-emerald-300 dark:border-emerald-800 text-[11px]">
+                                <CheckCircle2 className="h-3 w-3" /> Done
+                              </Badge>
+                            ) : (
+                              <Badge variant="outline" className="text-[11px] text-muted-foreground font-normal">
+                                {m.estimatedTime}
+                              </Badge>
+                            )}
+                          </div>
                         </div>
 
                         <div>

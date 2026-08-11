@@ -4,8 +4,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://nsvair-diagnosis.onrender.com'
   const now = new Date()
 
-  // All 16 diagnostic tests / modules
+  // All 18 diagnostic tests / modules
   const allTests = [
+    { id: 'radiology', anchor: 'radiology-scan', name: 'X-Ray, Ultrasound & MRI AI Diagnostics', priority: 1.0 },
+    { id: 'lab-report', anchor: 'lab-report-analyzer', name: 'Medical Lab Report & Blood Test AI', priority: 1.0 },
+    { id: 'symptom', anchor: 'symptom-checker', name: 'Conversational AI Symptom Checker', priority: 1.0 },
+    { id: 'vitals', anchor: 'vital-signs', name: 'Camera-Based Vital Signs (rPPG Heart Rate)', priority: 1.0 },
     { id: 'skin', anchor: 'skin-scanner', name: 'AI Skin & Dermatology Analysis', priority: 0.95 },
     { id: 'eye', anchor: 'eye-health', name: 'AI Eye Health & Jaundice Check', priority: 0.95 },
     { id: 'face', anchor: 'facial-wellness', name: 'AI Facial Wellness Assessment', priority: 0.90 },
@@ -14,8 +18,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { id: 'hair', anchor: 'hair-scalp', name: 'AI Hair & Scalp Health Check', priority: 0.90 },
     { id: 'posture', anchor: 'posture-analysis', name: 'AI Posture & Ergonomic Screening', priority: 0.90 },
     { id: 'voice', anchor: 'voice-cough-analyzer', name: 'AI Voice & Cough Respiratory Analyzer', priority: 0.95 },
-    { id: 'symptom', anchor: 'symptom-checker', name: 'Conversational AI Symptom Checker', priority: 1.0 },
-    { id: 'vitals', anchor: 'vital-signs', name: 'Camera-Based Vital Signs (rPPG Heart Rate)', priority: 1.0 },
     { id: 'mental', anchor: 'mental-health', name: 'Mental Health Screening (PHQ/GAD)', priority: 0.95 },
     { id: 'sleep', anchor: 'sleep-quality', name: 'Sleep Quality & Circadian Assessment', priority: 0.90 },
     { id: 'nutrition', anchor: 'nutrition-check', name: 'Nutrition & Dietary Balance Check', priority: 0.90 },

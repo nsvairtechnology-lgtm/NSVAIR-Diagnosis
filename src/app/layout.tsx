@@ -456,6 +456,8 @@ const jsonLdService = {
   image: `${SITE_URL}/opengraph-image.png`,
   priceRange: "$0",
   availableService: [
+    "AI Radiology & Medical Imaging (X-Ray, Ultrasound, MRI, CT)",
+    "AI Medical Lab Report & Biomarker OCR Analyzer",
     "AI Skin Analysis",
     "AI Eye Health Check",
     "AI Facial Wellness Assessment",
