@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: nsvair-diagnosis
+    runtime: node
+    plan: free
+    region: oregon
+    buildCommand: npm install && npm run build
+    startCommand: node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        value: file:./db/custom.db
