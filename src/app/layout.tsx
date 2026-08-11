@@ -200,8 +200,9 @@ export const metadata: Metadata = {
   },
 
   verification: {
-    google: "google-site-verification-code",
+    google: "SPA2LAQzrQ8EX_0s0u5SCHYSvw4J7qnS11kGs1fics8",
     other: {
+      "google-site-verification": "SPA2LAQzrQ8EX_0s0u5SCHYSvw4J7qnS11kGs1fics8",
       "msvalidate.01": "bing-site-verification-code",
       "yandex-verification": "yandex-verification-code",
     },
@@ -488,6 +489,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        {/* Google Site Verification for Search Console & Indexing */}
+        <meta name="google-site-verification" content="SPA2LAQzrQ8EX_0s0u5SCHYSvw4J7qnS11kGs1fics8" />
+
         {/* Performance preconnects */}
         <link rel="dns-prefetch" href="//fonts.googleapis.com" />
         <link rel="dns-prefetch" href="//fonts.gstatic.com" crossOrigin="" />
