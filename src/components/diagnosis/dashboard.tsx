@@ -458,7 +458,7 @@ export function Dashboard() {
                         </div>
 
                         <div className="flex flex-wrap gap-1 pt-1">
-                          {m.sensorType.map((s) => {
+                          {(m.sensors || []).map((s) => {
                             const SensorIcon = sensorLabels[s]?.icon || Activity
                             return (
                               <span

@@ -59,14 +59,14 @@ export function DiagnosisResultView({ result }: { result: DiagnosisResult }) {
           {result.summary}
         </p>
 
-        {result.findings.length > 0 && (
+        {result?.findings && result.findings.length > 0 && (
           <div className="space-y-3">
             <h4 className="text-sm font-semibold flex items-center gap-1.5">
               <Info className="h-4 w-4 text-primary" />
               Findings ({result.findings.length})
             </h4>
             <div className="space-y-2 max-h-80 overflow-y-auto pr-1 custom-scroll">
-              {result.findings.map((f, i) => (
+              {(result.findings || []).map((f, i) => (
                 <div
                   key={i}
                   className="rounded-lg border p-3 bg-muted/20 space-y-1.5"
@@ -97,7 +97,7 @@ export function DiagnosisResultView({ result }: { result: DiagnosisResult }) {
           </div>
         )}
 
-        {result.recommendations.length > 0 && (
+        {result?.recommendations && result.recommendations.length > 0 && (
           <>
             <Separator />
             <div className="space-y-2">
@@ -106,7 +106,7 @@ export function DiagnosisResultView({ result }: { result: DiagnosisResult }) {
                 Recommendations
               </h4>
               <ul className="space-y-1.5">
-                {result.recommendations.map((r, i) => (
+                {(result.recommendations || []).map((r, i) => (
                   <li key={i} className="text-xs flex gap-2 text-foreground/80">
                     <span className="text-primary mt-0.5">•</span>
                     <span>{r}</span>
@@ -130,7 +130,7 @@ export function DiagnosisResultView({ result }: { result: DiagnosisResult }) {
 }
 
 export function RedFlagBanner({ flags }: { flags: string[] }) {
-  if (flags.length === 0) return null
+  if (!flags || flags.length === 0) return null
   return (
     <div className="rounded-lg bg-red-50 dark:bg-red-950/40 border border-red-300 dark:border-red-800 p-4">
       <div className="flex items-center gap-2 mb-2">
@@ -140,7 +140,7 @@ export function RedFlagBanner({ flags }: { flags: string[] }) {
         </h4>
       </div>
       <ul className="space-y-1">
-        {flags.map((f, i) => (
+        {(flags || []).map((f, i) => (
           <li key={i} className="text-sm text-red-800 dark:text-red-300 flex gap-2">
             <span>•</span>
             <span>{f}</span>

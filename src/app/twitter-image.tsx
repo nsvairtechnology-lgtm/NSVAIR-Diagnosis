@@ -1,6 +1,6 @@
 import { ImageResponse } from 'next/og'
 
-export const runtime = 'edge'
+export const runtime = 'nodejs'
 export const alt = 'NSVAIR Diagnosis — AI-Powered Multi-Modal Health Diagnostic Platform | Powered by NSVAIR GROUP OF INDUSTRY'
 export const size = {
   width: 1200,

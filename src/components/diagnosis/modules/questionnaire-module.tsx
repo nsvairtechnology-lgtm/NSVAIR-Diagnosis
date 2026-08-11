@@ -174,7 +174,7 @@ export function QuestionnaireModule({
               }}
               className="space-y-2"
             >
-              {q.options.map((o) => (
+              {(q?.options || []).map((o) => (
                 <div
                   key={o.value}
                   className="flex items-center gap-3 rounded-lg border p-3 hover:bg-muted/50 transition-colors cursor-pointer"

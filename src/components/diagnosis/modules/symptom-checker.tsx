@@ -76,8 +76,8 @@ export function SymptomChecker() {
     return (
       <div className="space-y-4">
         <DiagnosisResultView result={result} />
-        {result.rawData?.followUpQuestions &&
-          (result.rawData.followUpQuestions as string[]).length > 0 && (
+        {Array.isArray(result?.rawData?.followUpQuestions) &&
+          result.rawData.followUpQuestions.length > 0 && (
             <Card>
               <CardContent className="p-4 space-y-2">
                 <p className="text-xs font-medium text-muted-foreground">

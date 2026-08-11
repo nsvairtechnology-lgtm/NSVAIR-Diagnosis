@@ -372,92 +372,100 @@ licensed healthcare provider for diagnosis and treatment.
           </Card>
 
           {/* Red flags */}
-          {lastReport.redFlags.length > 0 && <RedFlagBanner flags={lastReport.redFlags} />}
+          {lastReport?.redFlags && lastReport.redFlags.length > 0 && (
+            <RedFlagBanner flags={lastReport.redFlags} />
+          )}
 
           {/* Top findings */}
-          <Card>
-            <CardContent className="p-5 space-y-3">
-              <h4 className="text-sm font-semibold flex items-center gap-1.5">
-                <AlertTriangle className="h-4 w-4 text-orange-500" />
-                Top Findings
-              </h4>
-              <div className="space-y-2 max-h-80 overflow-y-auto pr-1">
-                {lastReport.topFindings.map((f, i) => (
-                  <div key={i} className="rounded-lg border p-3 space-y-1.5">
-                    <div className="flex items-start justify-between gap-2">
-                      <span className="text-sm font-medium flex items-center gap-2">
-                        <span className="text-muted-foreground text-xs">#{i + 1}</span>
-                        {f.condition}
-                      </span>
-                      <div className="flex items-center gap-1.5">
-                        <Badge
-                          variant="secondary"
-                          className={cn(
-                            'text-[10px] capitalize',
-                            f.severity === 'normal'
-                              ? 'bg-emerald-100 text-emerald-700'
-                              : f.severity === 'mild'
-                              ? 'bg-yellow-100 text-yellow-700'
-                              : f.severity === 'moderate'
-                              ? 'bg-orange-100 text-orange-700'
-                              : 'bg-red-100 text-red-700'
-                          )}
-                        >
-                          {f.severity}
-                        </Badge>
-                        <Badge variant="outline" className="text-[10px]">
-                          {f.source}
-                        </Badge>
+          {lastReport?.topFindings && lastReport.topFindings.length > 0 && (
+            <Card>
+              <CardContent className="p-5 space-y-3">
+                <h4 className="text-sm font-semibold flex items-center gap-1.5">
+                  <AlertTriangle className="h-4 w-4 text-orange-500" />
+                  Top Findings
+                </h4>
+                <div className="space-y-2 max-h-80 overflow-y-auto pr-1">
+                  {(lastReport.topFindings || []).map((f, i) => (
+                    <div key={i} className="rounded-lg border p-3 space-y-1.5">
+                      <div className="flex items-start justify-between gap-2">
+                        <span className="text-sm font-medium flex items-center gap-2">
+                          <span className="text-muted-foreground text-xs">#{i + 1}</span>
+                          {f.condition}
+                        </span>
+                        <div className="flex items-center gap-1.5">
+                          <Badge
+                            variant="secondary"
+                            className={cn(
+                              'text-[10px] capitalize',
+                              f.severity === 'normal'
+                                ? 'bg-emerald-100 text-emerald-700'
+                                : f.severity === 'mild'
+                                ? 'bg-yellow-100 text-yellow-700'
+                                : f.severity === 'moderate'
+                                ? 'bg-orange-100 text-orange-700'
+                                : 'bg-red-100 text-red-700'
+                            )}
+                          >
+                            {f.severity}
+                          </Badge>
+                          <Badge variant="outline" className="text-[10px]">
+                            {f.source}
+                          </Badge>
+                        </div>
                       </div>
+                      <p className="text-xs text-muted-foreground">{f.description}</p>
+                      <p className="text-xs text-foreground/80">
+                        <ArrowRight className="inline h-3 w-3 mr-1" />
+                        {f.recommendation}
+                      </p>
                     </div>
-                    <p className="text-xs text-muted-foreground">{f.description}</p>
-                    <p className="text-xs text-foreground/80">
-                      <ArrowRight className="inline h-3 w-3 mr-1" />
-                      {f.recommendation}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
           {/* Prioritized recommendations */}
-          <Card>
-            <CardContent className="p-5 space-y-3">
-              <h4 className="text-sm font-semibold flex items-center gap-1.5">
-                <ListChecks className="h-4 w-4 text-emerald-500" />
-                Prioritized Recommendations
-              </h4>
-              <ol className="space-y-2">
-                {lastReport.prioritizedRecommendations.map((r, i) => (
-                  <li key={i} className="text-sm flex gap-3">
-                    <span className="flex-shrink-0 h-5 w-5 rounded-full bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 text-xs font-bold flex items-center justify-center">
-                      {i + 1}
-                    </span>
-                    <span className="text-foreground/90 pt-0.5">{r}</span>
-                  </li>
-                ))}
-              </ol>
-            </CardContent>
-          </Card>
+          {lastReport?.prioritizedRecommendations && lastReport.prioritizedRecommendations.length > 0 && (
+            <Card>
+              <CardContent className="p-5 space-y-3">
+                <h4 className="text-sm font-semibold flex items-center gap-1.5">
+                  <ListChecks className="h-4 w-4 text-emerald-500" />
+                  Prioritized Recommendations
+                </h4>
+                <ol className="space-y-2">
+                  {(lastReport.prioritizedRecommendations || []).map((r, i) => (
+                    <li key={i} className="text-sm flex gap-3">
+                      <span className="flex-shrink-0 h-5 w-5 rounded-full bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 text-xs font-bold flex items-center justify-center">
+                        {i + 1}
+                      </span>
+                      <span className="text-foreground/90 pt-0.5">{r}</span>
+                    </li>
+                  ))}
+                </ol>
+              </CardContent>
+            </Card>
+          )}
 
           {/* Next steps */}
-          <Card>
-            <CardContent className="p-5 space-y-3">
-              <h4 className="text-sm font-semibold flex items-center gap-1.5">
-                <ArrowRight className="h-4 w-4 text-sky-500" />
-                Next Steps
-              </h4>
-              <ul className="space-y-2">
-                {lastReport.nextSteps.map((s, i) => (
-                  <li key={i} className="text-sm flex gap-2 text-foreground/90">
-                    <CheckCircle2 className="h-4 w-4 text-sky-500 shrink-0 mt-0.5" />
-                    <span>{s}</span>
-                  </li>
-                ))}
-              </ul>
-            </CardContent>
-          </Card>
+          {lastReport?.nextSteps && lastReport.nextSteps.length > 0 && (
+            <Card>
+              <CardContent className="p-5 space-y-3">
+                <h4 className="text-sm font-semibold flex items-center gap-1.5">
+                  <ArrowRight className="h-4 w-4 text-sky-500" />
+                  Next Steps
+                </h4>
+                <ul className="space-y-2">
+                  {(lastReport.nextSteps || []).map((s, i) => (
+                    <li key={i} className="text-sm flex gap-2 text-foreground/90">
+                      <CheckCircle2 className="h-4 w-4 text-sky-500 shrink-0 mt-0.5" />
+                      <span>{s}</span>
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
+          )}
 
           {/* Module breakdown */}
           <Card>
@@ -465,7 +473,7 @@ licensed healthcare provider for diagnosis and treatment.
               <h4 className="text-sm font-semibold">Module Breakdown</h4>
               <Separator />
               <div className="space-y-2">
-                {completed.map((r) => (
+                {(completed || []).map((r) => (
                   <div key={r.moduleId} className="flex items-center gap-3">
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium truncate">{r.moduleName}</p>
