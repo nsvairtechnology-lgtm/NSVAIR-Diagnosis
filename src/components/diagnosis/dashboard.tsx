@@ -23,9 +23,22 @@ import {
   Camera,
   Smartphone,
   Wifi,
+  Pizza,
+  Wind,
+  PersonStanding,
+  Moon,
+  Apple,
+  Ear,
+  Download,
+  LayoutGrid,
 } from 'lucide-react'
 import { useDiagnosisStore } from '@/lib/diagnosis-store'
-import { MODULES, type ModuleId } from '@/lib/types'
+import {
+  MODULES,
+  CATEGORY_LABELS,
+  type ModuleId,
+  type ModuleCategory,
+} from '@/lib/types'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
@@ -53,8 +66,17 @@ import { SymptomChecker } from '@/components/diagnosis/modules/symptom-checker'
 import { MentalHealth } from '@/components/diagnosis/modules/mental-health'
 import { VitalSigns } from '@/components/diagnosis/modules/vital-signs'
 import { ReactionTest } from '@/components/diagnosis/modules/reaction-test'
+import { DentalChecker } from '@/components/diagnosis/modules/dental-checker'
+import { NailChecker } from '@/components/diagnosis/modules/nail-checker'
+import { HairAnalyzer } from '@/components/diagnosis/modules/hair-analyzer'
+import { PostureAnalysis } from '@/components/diagnosis/modules/posture-analysis'
+import { SleepAssessment } from '@/components/diagnosis/modules/sleep-assessment'
+import { NutritionAssessment } from '@/components/diagnosis/modules/nutrition-assessment'
+import { VisionTest } from '@/components/diagnosis/modules/vision-test'
+import { HearingTest } from '@/components/diagnosis/modules/hearing-test'
 import { HealthReport } from '@/components/diagnosis/health-report'
 import { UserProfileCard } from '@/components/diagnosis/user-profile-card'
+import { PWAInstall } from '@/components/diagnosis/pwa-install'
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Hand,
@@ -65,6 +87,12 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Brain,
   HeartPulse,
   Timer,
+  Pizza,
+  Wind,
+  PersonStanding,
+  Moon,
+  Apple,
+  Ear,
 }
 
 const sensorLabels: Record<string, { icon: React.ComponentType<{ className?: string }>; label: string }> = {
@@ -86,6 +114,7 @@ export function Dashboard() {
 
   const [reportOpen, setReportOpen] = React.useState(false)
   const [profileOpen, setProfileOpen] = React.useState(false)
+  const [activeCategory, setActiveCategory] = React.useState<ModuleCategory | 'all'>('all')
 
   const totalModules = MODULES.length
   const completed = completedCount()
@@ -111,8 +140,38 @@ export function Dashboard() {
         return <VitalSigns />
       case 'reaction':
         return <ReactionTest />
+      case 'dental':
+        return <DentalChecker />
+      case 'nail':
+        return <NailChecker />
+      case 'hair':
+        return <HairAnalyzer />
+      case 'posture':
+        return <PostureAnalysis />
+      case 'sleep':
+        return <SleepAssessment />
+      case 'nutrition':
+        return <NutritionAssessment />
+      case 'vision':
+        return <VisionTest />
+      case 'hearing':
+        return <HearingTest />
     }
   }
+
+  const filteredModules = React.useMemo(() => {
+    if (activeCategory === 'all') return MODULES
+    return MODULES.filter((m) => m.category === activeCategory)
+  }, [activeCategory])
+
+  const categoryTabs: Array<{ id: ModuleCategory | 'all'; label: string; count: number }> = [
+    { id: 'all', label: 'All Modules', count: MODULES.length },
+    ...(Object.keys(CATEGORY_LABELS) as ModuleCategory[]).map((cat) => ({
+      id: cat,
+      label: CATEGORY_LABELS[cat],
+      count: MODULES.filter((m) => m.category === cat).length,
+    })),
+  ]
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-background via-background to-muted/30">
@@ -134,10 +193,22 @@ export function Dashboard() {
           </div>
 
           <div className="flex items-center gap-2">
-            <Badge variant="secondary" className="hidden sm:flex gap-1.5">
+            <Badge variant="secondary" className="hidden md:flex gap-1.5">
               <Sparkles className="h-3 w-3 text-emerald-500" />
               {completed}/{totalModules} done
             </Badge>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => {
+                const event = new Event('nsvair-show-install')
+                window.dispatchEvent(event)
+              }}
+              className="gap-1.5"
+            >
+              <Download className="h-3.5 w-3.5" />
+              <span className="hidden sm:inline">Install App</span>
+            </Button>
             <Button
               size="sm"
               variant="outline"
@@ -226,7 +297,7 @@ export function Dashboard() {
                   </h1>
                   <p className="text-white/80 text-sm md:text-base leading-relaxed">
                     NSVAIR Diagnosis uses your phone&apos;s camera, microphone, motion sensors, and touch to run
-                    8 different AI-powered diagnostic screenings. Get a complete, integrated health
+                    16 different AI-powered diagnostic screenings. Get a complete, integrated health
                     report in minutes.
                   </p>
                   <div className="flex flex-wrap gap-2 pt-1">
@@ -292,12 +363,35 @@ export function Dashboard() {
 
             {/* Module grid */}
             <div id="modules">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="font-semibold">Diagnostic Modules</h3>
-                <span className="text-xs text-muted-foreground">Tap a module to start</span>
+              <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
+                <h3 className="font-semibold flex items-center gap-2">
+                  <LayoutGrid className="h-4 w-4 text-emerald-500" />
+                  Diagnostic Modules
+                </h3>
+                <span className="text-xs text-muted-foreground">{filteredModules.length} of {totalModules} shown · Tap to start</span>
               </div>
+
+              {/* Category filter tabs */}
+              <div className="flex flex-wrap gap-1.5 mb-4 p-1 bg-muted/40 rounded-lg w-fit max-w-full overflow-x-auto">
+                {categoryTabs.map((tab) => (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveCategory(tab.id)}
+                    className={cn(
+                      'px-3 py-1.5 rounded-md text-xs font-medium transition-colors whitespace-nowrap',
+                      activeCategory === tab.id
+                        ? 'bg-background text-foreground shadow-sm'
+                        : 'text-muted-foreground hover:text-foreground'
+                    )}
+                  >
+                    {tab.label}
+                    <span className="ml-1.5 text-[10px] opacity-70">{tab.count}</span>
+                  </button>
+                ))}
+              </div>
+
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                {MODULES.map((m) => {
+                {filteredModules.map((m) => {
                   const Icon = iconMap[m.icon] || Activity
                   const result = results[m.id]
                   const isDone = !!result
@@ -455,7 +549,7 @@ export function Dashboard() {
                   <CardContent className="p-4">
                     <h3 className="font-semibold text-sm mb-1">100% Free &amp; Instant</h3>
                     <p className="text-xs text-muted-foreground">
-                      No sign-up, no subscription. Run any of the 8 diagnostic modules and generate a
+                      No sign-up, no subscription. Run any of the 16 diagnostic modules and generate a
                       comprehensive health report in minutes — completely free.
                     </p>
                   </CardContent>
@@ -506,10 +600,11 @@ export function Dashboard() {
                       <AccordionContent className="text-xs text-muted-foreground px-3 pb-3 leading-relaxed">
                         NSVAIR Diagnosis is an agentic AI-powered health diagnostic platform that
                         uses your phone&apos;s camera, microphone, motion sensors, and touch to run
-                        8 different AI diagnostic screenings — including skin analysis, eye health,
-                        facial wellness, voice and cough analysis, symptom checking, mental health
-                        screening, vital signs measurement, and reaction/balance testing — then
-                        synthesizes them into one comprehensive real-time health report.
+                        16 different AI diagnostic screenings — including skin, eye, facial wellness,
+                        dental, nail, hair, posture, voice & cough, symptom checking, mental health,
+                        vital signs, reaction/balance, vision test, hearing test, sleep, and nutrition — then
+                        synthesizes them into one comprehensive real-time health report. Installable as a
+                        PWA on Android and iOS.
                       </AccordionContent>
                     </AccordionItem>
                     <AccordionItem value="faq-2" className="border-b">
@@ -549,7 +644,7 @@ export function Dashboard() {
                         How much does NSVAIR Diagnosis cost?
                       </AccordionTrigger>
                       <AccordionContent className="text-xs text-muted-foreground px-3 pb-3 leading-relaxed">
-                        NSVAIR Diagnosis is free to use. All 8 diagnostic modules and the
+                        NSVAIR Diagnosis is free to use. All 16 diagnostic modules and the
                         comprehensive health report are available at no cost.
                       </AccordionContent>
                     </AccordionItem>
@@ -596,21 +691,30 @@ export function Dashboard() {
                 AI-Powered Health Screening Modules
               </h2>
               <p>
-                NSVAIR Diagnosis brings together eight specialized AI diagnostic tools in a single
-                platform: an <strong>AI skin analyzer</strong> for dermatology screening of rashes,
-                moles, and lesions using the ABCDE rule; an <strong>AI eye health checker</strong>{' '}
-                that detects redness, conjunctivitis signs, jaundice, and fatigue; a{' '}
-                <strong>facial wellness assessment</strong> for symmetry, hydration, and stress
-                cues; a <strong>voice and cough analyzer</strong> powered by speech recognition and
-                respiratory pattern classification; a <strong>conversational AI symptom checker</strong>{' '}
-                that reasons about your symptoms and suggests differentials; a{' '}
-                <strong>mental health screening tool</strong> using validated PHQ and GAD-style
-                questionnaires for stress, anxiety, and depression; a{' '}
+                NSVAIR Diagnosis brings together sixteen specialized AI diagnostic tools in a single
+                platform. Camera AI modules include an <strong>AI skin analyzer</strong> for
+                dermatology screening of rashes, moles, and lesions using the ABCDE rule; an{' '}
+                <strong>AI eye health checker</strong> that detects redness, conjunctivitis signs,
+                jaundice, and fatigue; a <strong>facial wellness assessment</strong> for symmetry,
+                hydration, and stress cues; a <strong>dental and oral health checker</strong> for
+                teeth, gums, and tongue; a <strong>nail health analyzer</strong> that detects
+                color changes, ridges, clubbing, and deficiency indicators; a{' '}
+                <strong>hair and scalp analyzer</strong> for scalp condition and hair-loss patterns;
+                and a <strong>posture analysis</strong> tool that assesses body alignment and
+                ergonomic cues. Audio modules include a <strong>voice and cough analyzer</strong>{' '}
+                powered by speech recognition. Sensor modules include a{' '}
                 <strong>camera-based vital signs monitor</strong> using remote
                 photoplethysmography (rPPG) to estimate heart rate, breathing rate, and heart rate
-                variability; and a <strong>reaction time and balance test</strong> that uses touch
-                and motion sensors to assess cognitive speed and motor coordination. All results are
+                variability; a <strong>reaction time and balance test</strong> using touch and
+                motion sensors; an interactive <strong>vision test</strong> with Ishihara-style
+                color plates; and a <strong>hearing test</strong> with calibrated audio tones.
+                Assessment modules include a <strong>conversational AI symptom checker</strong>, a{' '}
+                <strong>mental health screening tool</strong> using validated PHQ and GAD-style
+                questionnaires, a <strong>sleep quality assessment</strong> (PSQI-style), and a{' '}
+                <strong>nutrition check</strong> for dietary deficiencies. All results are
                 synthesized by a final AI agent into one comprehensive, prioritized health report.
+                Install NSVAIR Diagnosis as a PWA on Android or iOS for one-tap access to all
+                sixteen modules.
               </p>
             </section>
           </div>
@@ -640,10 +744,11 @@ export function Dashboard() {
               <h4 className="text-xs font-semibold text-foreground">Modules</h4>
               <ul className="space-y-1 text-xs text-muted-foreground">
                 <li><a href="#modules" className="hover:text-emerald-600 transition-colors">Skin &amp; Dermatology</a></li>
-                <li><a href="#modules" className="hover:text-emerald-600 transition-colors">Eye Health</a></li>
-                <li><a href="#modules" className="hover:text-emerald-600 transition-colors">Voice &amp; Cough</a></li>
+                <li><a href="#modules" className="hover:text-emerald-600 transition-colors">Dental &amp; Oral</a></li>
+                <li><a href="#modules" className="hover:text-emerald-600 transition-colors">Nail &amp; Hair Health</a></li>
                 <li><a href="#modules" className="hover:text-emerald-600 transition-colors">Vital Signs (rPPG)</a></li>
-                <li><a href="#modules" className="hover:text-emerald-600 transition-colors">Mental Health</a></li>
+                <li><a href="#modules" className="hover:text-emerald-600 transition-colors">Vision &amp; Hearing Test</a></li>
+                <li><a href="#modules" className="hover:text-emerald-600 transition-colors">Sleep &amp; Nutrition</a></li>
               </ul>
             </div>
             <div className="space-y-2">
@@ -704,6 +809,9 @@ export function Dashboard() {
           </div>
         </SheetContent>
       </Sheet>
+
+      {/* PWA one-click install banner (Android & iOS) */}
+      <PWAInstall />
     </div>
   )
 }

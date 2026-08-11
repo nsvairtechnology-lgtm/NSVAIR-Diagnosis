@@ -134,3 +134,59 @@ Stage Summary:
 - 6 JSON-LD blocks render with 16 schema types (Organization, WebApplication, MedicalWebPage, FAQPage, BreadcrumbList, MedicalBusiness + nested)
 - Full OG + Twitter Card + Dublin Core + PWA + hreflang + canonical + robots all confirmed in HTML head
 - Rebranding complete, advanced SEO complete
+
+---
+Task ID: 9 (More Diagnostics + PWA Install + Easy-to-use)
+Agent: Main Agent
+Task: Add 8 more diagnostic modules, Android/iOS one-click PWA install, category filtering for easy navigation
+
+Work Log:
+- Added 8 NEW diagnostic modules (total now 16):
+  Camera AI (4 new): Dental & Oral (VLM), Nail Health (VLM), Hair & Scalp (VLM), Posture Analysis (VLM)
+  Assessment (2 new): Sleep Quality (PSQI-style questionnaire + LLM), Nutrition Check (questionnaire + LLM)
+  Sensors (2 new): Vision Test (interactive Ishihara color plates + LLM), Hearing Test (Web Audio API tones + LLM)
+- Added ModuleCategory system (camera/sensors/assessment/audio) with CATEGORY_LABELS and getModulesByCategory
+- Refixed Zustand store to build empty results/loading maps dynamically from MODULES array (future-proof)
+- Created 8 backend API routes (/api/diagnose/{dental,nail,hair,posture,sleep,nutrition,vision,hearing})
+- Built reusable CameraModule component (used by 4 new camera modules to reduce duplication)
+- Built reusable QuestionnaireModule component (used by Sleep + Nutrition assessments)
+- Built Vision Test with custom SVG Ishihara-style color plates (renders dot patterns forming numbers 12,8,29,5,3,15)
+- Built Hearing Test using Web Audio API (OscillatorNode + StereoPanner for left/right ear, 6 frequencies 250-8000Hz)
+- Built PWAInstall component:
+  * Detects platform (Android/iOS/desktop) via UserAgent
+  * Listens for beforeinstallprompt (Android/Chrome) for native one-click install
+  * iOS Safari: shows step-by-step "Add to Home Screen" guide with Share/Add icons
+  * Desktop without beforeinstallprompt: shows browser-menu install instructions
+  * Auto-shows banner after delay (dismissible, remembered via localStorage)
+  * Header "Install App" button dispatches custom event to trigger banner
+  * Detects standalone mode (already installed) and hides banner
+- Updated Dashboard:
+  * Category filter tabs (All Modules 16, Camera AI 7, Sensors 4, Assessment 4, Audio 1)
+  * "Install App" button in header
+  * PWAInstall banner rendered globally
+  * Updated hero text "16 different AI-powered diagnostic screenings"
+  * Updated FAQ answers to reflect 16 modules + PWA installability
+  * Updated keyword-rich footer content listing all 16 modules by category
+  * Updated footer module links to include new categories
+- Updated SEO metadata:
+  * layout.tsx: SITE_DESCRIPTION mentions 16 modules + PWA installable; 30 keywords (added dental/nail/hair/posture/sleep/nutrition/vision/hearing/PWA)
+  * WebApplication featureList: 18 features (added 9 new module entries + PWA)
+  * MedicalBusiness availableService: 16 MedicalProcedure entries (was 8)
+  * FAQ JSON-LD: updated answers to "16 different screenings" + PWA installable
+- Updated sitemap.ts: 18 URLs (added 8 new module anchors)
+- Updated manifest.ts: 8 app shortcuts (added Dental, Vision, Hearing)
+- Fixed naming conflict in hearing-test.tsx (results state variable shadowed store results)
+
+Stage Summary:
+- Lint: 0 errors, 0 warnings
+- All SEO routes return 200: /, /sitemap.xml, /robots.txt, /manifest.webmanifest, /opengraph-image, /twitter-image
+- Agent Browser verified:
+  * Dashboard renders all 16 module cards in a grid
+  * Category filter tabs work (All 16, Camera AI 7, Sensors 4, Assessment 4, Audio 1)
+  * "Install App" button in header opens install banner → install guide sheet
+  * Vision Test: Ishihara plate renders correctly (VLM saw "29" in the dots), number options work
+  * Hearing Test: intro screen with instructions loads
+  * Sleep Quality: questionnaire with first question loads
+  * VLM confirmed: "exactly 16 diagnostic module cards", "category filter tabs clearly visible", "Install App button in header", "clean professional aesthetic"
+- 16 MedicalProcedure entries confirmed in JSON-LD structured data
+- PWA installable on Android (beforeinstallprompt) and iOS (Add to Home Screen guide)

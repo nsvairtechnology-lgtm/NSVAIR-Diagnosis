@@ -9,10 +9,20 @@ export type ModuleId =
   | 'mental'
   | 'vitals'
   | 'reaction'
+  | 'dental'
+  | 'nail'
+  | 'hair'
+  | 'posture'
+  | 'sleep'
+  | 'nutrition'
+  | 'vision'
+  | 'hearing'
 
 export type Severity = 'normal' | 'mild' | 'moderate' | 'high' | 'critical'
 
 export type RiskLevel = 'low' | 'moderate' | 'high' | 'critical'
+
+export type ModuleCategory = 'camera' | 'sensors' | 'assessment' | 'audio'
 
 export interface Finding {
   condition: string
@@ -26,6 +36,7 @@ export interface DiagnosisResult {
   moduleId: ModuleId
   moduleName: string
   icon: string
+  category: ModuleCategory
   summary: string
   findings: Finding[]
   riskLevel: RiskLevel
@@ -72,18 +83,28 @@ export interface ModuleMeta {
   description: string
   icon: string
   sensors: PhoneSensor['type'][]
+  category: ModuleCategory
   color: string
   gradient: string
   estimatedTime: string
 }
 
+export const CATEGORY_LABELS: Record<ModuleCategory, string> = {
+  camera: 'Camera AI',
+  sensors: 'Sensors',
+  assessment: 'Assessment',
+  audio: 'Audio',
+}
+
 export const MODULES: ModuleMeta[] = [
+  // === Camera AI ===
   {
     id: 'skin',
     name: 'Skin & Dermatology',
     description: 'Analyze skin conditions, rashes, moles, and lesions using AI vision',
     icon: 'Hand',
     sensors: ['camera'],
+    category: 'camera',
     color: 'text-rose-500',
     gradient: 'from-rose-500/20 to-pink-500/10',
     estimatedTime: '30s',
@@ -94,6 +115,7 @@ export const MODULES: ModuleMeta[] = [
     description: 'Detect redness, irritation, jaundice, and eye-related conditions',
     icon: 'Eye',
     sensors: ['camera'],
+    category: 'camera',
     color: 'text-cyan-500',
     gradient: 'from-cyan-500/20 to-teal-500/10',
     estimatedTime: '30s',
@@ -104,46 +126,75 @@ export const MODULES: ModuleMeta[] = [
     description: 'Assess facial symmetry, fatigue signs, and overall wellness indicators',
     icon: 'Smile',
     sensors: ['camera'],
+    category: 'camera',
     color: 'text-amber-500',
     gradient: 'from-amber-500/20 to-orange-500/10',
     estimatedTime: '45s',
   },
+  {
+    id: 'dental',
+    name: 'Dental & Oral',
+    description: 'Check teeth, gums, and tongue for oral health signs and hygiene',
+    icon: 'Pizza',
+    sensors: ['camera'],
+    category: 'camera',
+    color: 'text-orange-500',
+    gradient: 'from-orange-500/20 to-amber-500/10',
+    estimatedTime: '30s',
+  },
+  {
+    id: 'nail',
+    name: 'Nail Health',
+    description: 'Detect nail color, ridges, clubbing, and deficiency indicators',
+    icon: 'Hand',
+    sensors: ['camera'],
+    category: 'camera',
+    color: 'text-fuchsia-500',
+    gradient: 'from-fuchsia-500/20 to-pink-500/10',
+    estimatedTime: '30s',
+  },
+  {
+    id: 'hair',
+    name: 'Hair & Scalp',
+    description: 'Analyze scalp condition, hair density, and hair-loss patterns',
+    icon: 'Wind',
+    sensors: ['camera'],
+    category: 'camera',
+    color: 'text-yellow-600',
+    gradient: 'from-yellow-500/20 to-amber-500/10',
+    estimatedTime: '30s',
+  },
+  {
+    id: 'posture',
+    name: 'Posture Analysis',
+    description: 'Assess body posture, shoulder alignment, and spinal cues from a photo',
+    icon: 'PersonStanding',
+    sensors: ['camera'],
+    category: 'camera',
+    color: 'text-lime-500',
+    gradient: 'from-lime-500/20 to-green-500/10',
+    estimatedTime: '30s',
+  },
+  // === Audio ===
   {
     id: 'voice',
     name: 'Voice & Cough',
     description: 'Analyze cough patterns, voice hoarseness, and respiratory indicators',
     icon: 'Mic',
     sensors: ['microphone'],
+    category: 'audio',
     color: 'text-violet-500',
     gradient: 'from-violet-500/20 to-purple-500/10',
     estimatedTime: '20s',
   },
-  {
-    id: 'symptom',
-    name: 'Symptom Checker',
-    description: 'Conversational AI that analyzes your symptoms and suggests conditions',
-    icon: 'Stethoscope',
-    sensors: [],
-    color: 'text-emerald-500',
-    gradient: 'from-emerald-500/20 to-green-500/10',
-    estimatedTime: '2min',
-  },
-  {
-    id: 'mental',
-    name: 'Mental Health',
-    description: 'Screening for stress, anxiety, and depression with validated questionnaires',
-    icon: 'Brain',
-    sensors: [],
-    color: 'text-indigo-500',
-    gradient: 'from-indigo-500/20 to-blue-500/10',
-    estimatedTime: '3min',
-  },
+  // === Sensors ===
   {
     id: 'vitals',
     name: 'Vital Signs (rPPG)',
     description: 'Camera-based heart rate estimation, breathing, and stress via motion sensors',
     icon: 'HeartPulse',
     sensors: ['camera', 'motion'],
+    category: 'sensors',
     color: 'text-red-500',
     gradient: 'from-red-500/20 to-rose-500/10',
     estimatedTime: '45s',
@@ -154,12 +205,84 @@ export const MODULES: ModuleMeta[] = [
     description: 'Test reaction time and motor coordination via touch and motion sensors',
     icon: 'Timer',
     sensors: ['touch', 'motion'],
+    category: 'sensors',
     color: 'text-sky-500',
     gradient: 'from-sky-500/20 to-blue-500/10',
     estimatedTime: '1min',
+  },
+  {
+    id: 'vision',
+    name: 'Vision Test',
+    description: 'Screen for color blindness (Ishihara-style) and visual sharpness interactively',
+    icon: 'Eye',
+    sensors: ['touch'],
+    category: 'sensors',
+    color: 'text-indigo-500',
+    gradient: 'from-indigo-500/20 to-blue-500/10',
+    estimatedTime: '2min',
+  },
+  {
+    id: 'hearing',
+    name: 'Hearing Test',
+    description: 'Test hearing thresholds across frequencies using calibrated audio tones',
+    icon: 'Ear',
+    sensors: ['touch'],
+    category: 'sensors',
+    color: 'text-teal-500',
+    gradient: 'from-teal-500/20 to-cyan-500/10',
+    estimatedTime: '2min',
+  },
+  // === Assessment ===
+  {
+    id: 'symptom',
+    name: 'Symptom Checker',
+    description: 'Conversational AI that analyzes your symptoms and suggests conditions',
+    icon: 'Stethoscope',
+    sensors: [],
+    category: 'assessment',
+    color: 'text-emerald-500',
+    gradient: 'from-emerald-500/20 to-green-500/10',
+    estimatedTime: '2min',
+  },
+  {
+    id: 'mental',
+    name: 'Mental Health',
+    description: 'Screening for stress, anxiety, and depression with validated questionnaires',
+    icon: 'Brain',
+    sensors: [],
+    category: 'assessment',
+    color: 'text-indigo-500',
+    gradient: 'from-indigo-500/20 to-blue-500/10',
+    estimatedTime: '3min',
+  },
+  {
+    id: 'sleep',
+    name: 'Sleep Quality',
+    description: 'PSQI-style sleep assessment for insomnia, apnea risk, and sleep hygiene',
+    icon: 'Moon',
+    sensors: [],
+    category: 'assessment',
+    color: 'text-blue-500',
+    gradient: 'from-blue-500/20 to-indigo-500/10',
+    estimatedTime: '3min',
+  },
+  {
+    id: 'nutrition',
+    name: 'Nutrition Check',
+    description: 'Diet and nutrition screening for deficiencies and healthy-eating guidance',
+    icon: 'Apple',
+    sensors: [],
+    category: 'assessment',
+    color: 'text-green-500',
+    gradient: 'from-green-500/20 to-emerald-500/10',
+    estimatedTime: '2min',
   },
 ]
 
 export function getModule(id: ModuleId): ModuleMeta {
   return MODULES.find((m) => m.id === id)!
+}
+
+export function getModulesByCategory(category: ModuleCategory): ModuleMeta[] {
+  return MODULES.filter((m) => m.category === category)
 }

@@ -44,6 +44,12 @@ export default function manifest(): MetadataRoute.Manifest {
         url: '/?module=skin',
       },
       {
+        name: 'Dental Check',
+        short_name: 'Dental',
+        description: 'AI dental & oral health check',
+        url: '/?module=dental',
+      },
+      {
         name: 'Symptom Checker',
         short_name: 'Symptoms',
         description: 'Conversational AI symptom analysis',
@@ -60,6 +66,18 @@ export default function manifest(): MetadataRoute.Manifest {
         short_name: 'Mental',
         description: 'Stress, anxiety & depression screening',
         url: '/?module=mental',
+      },
+      {
+        name: 'Vision Test',
+        short_name: 'Vision',
+        description: 'Color blindness & sharpness test',
+        url: '/?module=vision',
+      },
+      {
+        name: 'Hearing Test',
+        short_name: 'Hearing',
+        description: 'Tone frequency hearing screening',
+        url: '/?module=hearing',
       },
       {
         name: 'Comprehensive Report',

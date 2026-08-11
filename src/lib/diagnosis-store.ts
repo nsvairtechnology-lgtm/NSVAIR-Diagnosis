@@ -2,10 +2,11 @@
 
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import type {
-  DiagnosisResult,
-  ModuleId,
-  UserProfile,
+import {
+  MODULES,
+  type DiagnosisResult,
+  type ModuleId,
+  type UserProfile,
 } from '@/lib/types'
 
 interface DiagnosisState {
@@ -48,27 +49,17 @@ interface DiagnosisState {
   setLastReport: (r: DiagnosisState['lastReport']) => void
 }
 
-const emptyResults: Record<ModuleId, DiagnosisResult | null> = {
-  skin: null,
-  eye: null,
-  face: null,
-  voice: null,
-  symptom: null,
-  mental: null,
-  vitals: null,
-  reaction: null,
+// Build empty result/loading maps dynamically from the MODULES list so new
+// modules are automatically supported without manual updates.
+function buildEmpty<T>(value: T): Record<ModuleId, T> {
+  return MODULES.reduce((acc, m) => {
+    acc[m.id] = value
+    return acc
+  }, {} as Record<ModuleId, T>)
 }
 
-const emptyLoading: Record<ModuleId, boolean> = {
-  skin: false,
-  eye: false,
-  face: false,
-  voice: false,
-  symptom: false,
-  mental: false,
-  vitals: false,
-  reaction: false,
-}
+const emptyResults: Record<ModuleId, DiagnosisResult | null> = buildEmpty<DiagnosisResult | null>(null)
+const emptyLoading: Record<ModuleId, boolean> = buildEmpty<boolean>(false)
 
 export const useDiagnosisStore = create<DiagnosisState>()(
   persist(

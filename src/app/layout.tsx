@@ -22,7 +22,7 @@ const SITE_URL = "https://nsvair-diagnosis.app";
 const SITE_NAME = "NSVAIR Diagnosis";
 const SITE_TITLE = "NSVAIR Diagnosis — AI-Powered Complete Health Diagnostic Platform";
 const SITE_DESCRIPTION =
-  "NSVAIR Diagnosis is an agentic AI health diagnostic platform that uses your phone's camera, microphone, motion sensors, and touch to run 8 AI-powered screenings — skin, eye, facial wellness, voice & cough, symptoms, mental health, vital signs, and reaction time — and synthesizes them into one comprehensive real-time health report. Free, private, and instant.";
+  "NSVAIR Diagnosis is an agentic AI health diagnostic platform that uses your phone's camera, microphone, motion sensors, and touch to run 16 AI-powered screenings — skin, eye, facial wellness, dental, nail, hair, posture, voice & cough, symptoms, mental health, vital signs (rPPG), reaction, vision test, hearing test, sleep, and nutrition — and synthesizes them into one comprehensive real-time health report. Free, private, installable as a PWA on Android and iOS.";
 const KEYWORDS = [
   "NSVAIR Diagnosis",
   "AI health diagnosis",
@@ -31,9 +31,17 @@ const KEYWORDS = [
   "AI dermatology",
   "skin analyzer AI",
   "eye health check AI",
+  "dental AI checker",
+  "nail health analyzer",
+  "hair scalp analysis AI",
+  "posture analysis AI",
   "rPPG heart rate camera",
   "cough analyzer AI",
   "mental health screening",
+  "sleep quality test",
+  "nutrition assessment AI",
+  "color blindness vision test",
+  "online hearing test",
   "AI diagnostic tool",
   "telemedicine AI",
   "remote health screening",
@@ -44,6 +52,8 @@ const KEYWORDS = [
   "reaction time test",
   "balance test app",
   "AI medical assistant",
+  "PWA health app",
+  "installable web app medical",
 ];
 
 export const metadata: Metadata = {
@@ -258,13 +268,22 @@ const jsonLdWebApp = {
   featureList: [
     "AI Skin & Dermatology analysis",
     "AI Eye Health screening",
-    "Facial Wellness assessment",
-    "Voice & Cough analysis with ASR",
+    "AI Facial Wellness assessment",
+    "AI Dental & Oral Health check",
+    "AI Nail Health analyzer",
+    "AI Hair & Scalp analysis",
+    "AI Posture Analysis",
+    "AI Voice & Cough analysis with ASR",
     "Conversational AI Symptom Checker",
     "Mental Health screening (PHQ/GAD-style)",
+    "Sleep Quality assessment (PSQI-style)",
+    "Nutrition Check for dietary deficiencies",
     "Camera-based Vital Signs (rPPG heart rate)",
     "Reaction time & balance testing",
+    "Interactive Vision Test (Ishihara color plates)",
+    "Hearing Test with calibrated audio tones",
     "Comprehensive AI-synthesized health report",
+    "PWA installable on Android and iOS",
   ],
   aggregateRating: {
     "@type": "AggregateRating",
@@ -309,7 +328,7 @@ const jsonLdFaq = {
       name: "What is NSVAIR Diagnosis?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "NSVAIR Diagnosis is an agentic AI-powered health diagnostic platform that uses your phone's camera, microphone, motion sensors, and touch to run 8 different AI diagnostic screenings — including skin analysis, eye health, facial wellness, voice and cough analysis, symptom checking, mental health screening, vital signs measurement, and reaction/balance testing — then synthesizes them into one comprehensive real-time health report.",
+        text: "NSVAIR Diagnosis is an agentic AI-powered health diagnostic platform that uses your phone's camera, microphone, motion sensors, and touch to run 16 different AI diagnostic screenings — including skin, eye, facial wellness, dental, nail, hair, posture, voice & cough, symptom checking, mental health, vital signs (rPPG), reaction/balance, vision test, hearing test, sleep, and nutrition — then synthesizes them into one comprehensive real-time health report. It's installable as a PWA on Android and iOS for one-tap access.",
       },
     },
     {
@@ -341,7 +360,7 @@ const jsonLdFaq = {
       name: "How much does NSVAIR Diagnosis cost?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "NSVAIR Diagnosis is free to use. All 8 diagnostic modules and the comprehensive health report are available at no cost.",
+        text: "NSVAIR Diagnosis is free to use. All 16 diagnostic modules and the comprehensive health report are available at no cost. You can also install it as an app on Android and iOS for free.",
       },
     },
     {
@@ -416,11 +435,19 @@ function MODULES_LIST_FOR_SCHEMA() {
     "AI Skin Analysis",
     "AI Eye Health Check",
     "AI Facial Wellness Assessment",
+    "AI Dental & Oral Health Check",
+    "AI Nail Health Analysis",
+    "AI Hair & Scalp Analysis",
+    "AI Posture Analysis",
     "AI Voice & Cough Analysis",
     "AI Symptom Checker",
     "AI Mental Health Screening",
+    "AI Sleep Quality Assessment",
+    "AI Nutrition Check",
     "AI Vital Signs Measurement",
     "AI Reaction & Balance Test",
+    "AI Vision Test",
+    "AI Hearing Test",
   ].map((name) => ({
     "@type": "MedicalProcedure",
     name,
