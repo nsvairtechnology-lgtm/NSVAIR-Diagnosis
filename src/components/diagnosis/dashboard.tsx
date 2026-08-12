@@ -305,8 +305,10 @@ export function Dashboard() {
                 <ArrowLeft className="h-4 w-4" /> Back to Dashboard
               </Button>
               <div className="flex items-center gap-2">
+                <Badge variant="outline" className="gap-1">
                   <Clock className="h-3 w-3" /> {active.estimatedTime}
                 </Badge>
+                <Badge variant="secondary">{CATEGORY_LABELS[active.category]}</Badge>
               </div>
             </div>
             <div className="flex items-center gap-3">
