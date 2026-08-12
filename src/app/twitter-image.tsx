@@ -107,7 +107,7 @@ export default async function Image() {
                   textTransform: 'uppercase',
                 }}
               >
-                ✦ POWERED BY NSVAIR GROUP OF INDUSTRY
+                POWERED BY NSVAIR GROUP OF INDUSTRY
               </span>
             </div>
           </div>
@@ -127,7 +127,7 @@ export default async function Image() {
               color: '#ffffff',
             }}
           >
-            <span>✨ 16 Multi-Modal Modules</span>
+            <span>18 Multi-Modal Modules</span>
           </div>
         </div>
 
@@ -150,7 +150,7 @@ export default async function Image() {
               display: 'flex',
             }}
           >
-            16 AI Diagnostic Screenings.
+            18 AI Diagnostic Screenings.
           </div>
           <div
             style={{
@@ -191,18 +191,20 @@ export default async function Image() {
           }}
         >
           {[
-            '📷 Skin Analyzer',
-            '👁 Eye Health',
-            '😊 Facial Wellness',
-            '🦷 Dental Check',
-            '💅 Nail Health',
-            '💇 Hair & Scalp',
-            '🧍 Posture AI',
-            '🎤 Voice & Cough',
-            '🩺 Symptoms AI',
-            '❤️ Vitals (rPPG)',
-            '🧠 Mental Health',
-            '💤 Sleep Quality',
+            'Skin Analyzer',
+            'Eye Health',
+            'Radiology X-Ray',
+            'Lab Report OCR',
+            'Facial Wellness',
+            'Dental Check',
+            'Nail Health',
+            'Hair & Scalp',
+            'Posture AI',
+            'Voice & Cough',
+            'Symptoms AI',
+            'Vitals (rPPG)',
+            'Mental Health',
+            'Sleep Quality',
           ].map((chip) => (
             <div
               key={chip}

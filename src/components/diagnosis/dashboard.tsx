@@ -37,6 +37,7 @@ import {
   Lock,
   ChevronRight,
   ShoppingBag,
+  Truck,
 } from 'lucide-react'
 import Link from 'next/link'
 import { useDiagnosisStore } from '@/lib/diagnosis-store'

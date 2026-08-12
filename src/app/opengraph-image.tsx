@@ -140,7 +140,7 @@ export default async function Image() {
                   textTransform: 'uppercase',
                 }}
               >
-                ✦ POWERED BY NSVAIR GROUP OF INDUSTRY
+                POWERED BY NSVAIR GROUP OF INDUSTRY
               </span>
             </div>
           </div>
@@ -160,7 +160,7 @@ export default async function Image() {
               color: '#ffffff',
             }}
           >
-            <span>⚡ 16 Agentic AI Screenings</span>
+            <span>18 Agentic AI Screenings</span>
           </div>
         </div>
 
@@ -209,12 +209,12 @@ export default async function Image() {
               display: 'flex',
             }}
           >
-            Turn your phone into a diagnostic lab with camera rPPG vitals, skin &amp; eye computer vision,
+            Turn your phone into a diagnostic lab with camera rPPG vitals, skin and eye computer vision,
             speech analysis, posture, and conversational symptom triage.
           </div>
         </div>
 
-        {/* 16 Module chips bar */}
+        {/* Module chips bar */}
         <div
           style={{
             display: 'flex',
@@ -224,22 +224,24 @@ export default async function Image() {
           }}
         >
           {[
-            '📷 Skin',
-            '👁 Eye',
-            '😊 Face',
-            '🦷 Dental',
-            '💅 Nail',
-            '💇 Hair',
-            '🧍 Posture',
-            '🎤 Voice & Cough',
-            '🩺 Symptoms',
-            '❤️ Vitals (rPPG)',
-            '🧠 Mental',
-            '💤 Sleep',
-            '🥗 Nutrition',
-            '👁️ Vision',
-            '👂 Hearing',
-            '⚡ Reaction',
+            'Skin',
+            'Eye',
+            'Radiology X-Ray',
+            'Lab Report OCR',
+            'Face',
+            'Dental',
+            'Nail',
+            'Hair',
+            'Posture',
+            'Voice & Cough',
+            'Symptoms',
+            'Vitals (rPPG)',
+            'Mental',
+            'Sleep',
+            'Nutrition',
+            'Vision',
+            'Hearing',
+            'Reaction',
           ].map((chip) => (
             <div
               key={chip}
