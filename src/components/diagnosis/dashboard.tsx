@@ -114,6 +114,7 @@ const sensorLabels: Record<string, { icon: React.ComponentType<{ className?: str
 
 export function Dashboard() {
   const {
+    userProfile,
     activeModule,
     setActiveModule,
     results,
@@ -367,7 +368,7 @@ export function Dashboard() {
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-[11px] font-bold text-emerald-600 uppercase tracking-wider">Step 1</span>
                       <Badge variant="outline" className="text-[10px] text-emerald-600 border-emerald-500/30">
-                        {userProfile.name ? 'Configured' : 'Required'}
+                        {userProfile?.name ? 'Configured' : 'Required'}
                       </Badge>
                     </div>
                     <h4 className="font-bold text-xs group-hover:text-emerald-600 transition-colors flex items-center gap-1">
@@ -375,7 +376,7 @@ export function Dashboard() {
                       <ChevronRight className="h-3 w-3 text-emerald-500" />
                     </h4>
                     <p className="text-[11px] text-muted-foreground mt-0.5 line-clamp-2">
-                      {userProfile.name
+                      {userProfile?.name
                         ? `${userProfile.name} • ${userProfile.age ? userProfile.age + 'y' : ''} ${userProfile.bloodGroup ? '• ' + userProfile.bloodGroup : ''}`
                         : 'Set name, age, blood group & medical history'}
                     </p>
