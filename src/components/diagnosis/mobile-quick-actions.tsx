@@ -14,7 +14,8 @@ import {
   Stethoscope,
   Smile,
   Hand,
-  Ear
+  Ear,
+  Wind
 } from 'lucide-react'
 import { useDiagnosisStore } from '@/lib/diagnosis-store'
 import { type ModuleId } from '@/lib/types'
@@ -30,11 +31,32 @@ interface QuickAction {
 
 const QUICK_ACTIONS: QuickAction[] = [
   {
+    id: 'blood-pressure',
+    label: 'BP & PWV',
+    icon: HeartPulse,
+    gradient: 'from-rose-600 to-red-700',
+    badge: 'AHA',
+  },
+  {
     id: 'radiology',
     label: 'X-Ray & MRI',
     icon: Scan,
     gradient: 'from-blue-600 to-indigo-700',
     badge: 'NEW',
+  },
+  {
+    id: 'spirometry',
+    label: 'Spirometry',
+    icon: Wind,
+    gradient: 'from-cyan-600 to-teal-700',
+    badge: 'FEV1',
+  },
+  {
+    id: 'pupillary-reflex',
+    label: 'Pupillary (PLR)',
+    icon: Eye,
+    gradient: 'from-amber-500 to-yellow-600',
+    badge: 'NPi',
   },
   {
     id: 'lab-report',

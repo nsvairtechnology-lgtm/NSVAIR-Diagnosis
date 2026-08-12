@@ -118,3 +118,23 @@ This hash is permanently stamped onto:
 1. Interactive Medical Report summary.
 2. Official PDF Clinical Health Certificates.
 3. Dispatched WhatsApp & Gmail records.
+
+---
+
+## 7. Specialized Sensor Calibration for Advanced Modules
+
+### 7.1 Optical Blood Pressure & Pulse Wave Velocity (PPG Calibration)
+- **Capillary Opacity Thresholding:** Detects finger placement through RGB red-channel absorption ($R / (R+G+B) \ge 0.85$).
+- **Pulse Wave Transit Normalization:** Synchronizes 60Hz frame timestamp delta to extract dicrotic notch inflection points.
+
+### 7.2 Quantitative Pupillometry & PLR Reflex Calibration
+- **Millimeter Scaling Factor:** Measures inter-canthal distance ($30\text{mm} - 35\text{mm}$ adult baseline) to convert pixel radius to true metric pupil diameter ($D_{mm}$).
+- **Timed Stimulus Engine:** Fires exact $200\text{ms}$ flash pulse to measure initial latency ($\text{LAT} \approx 200 - 250\text{ms}$) and constriction velocity ($\text{CV} \ge 3.5\text{ mm/s}$).
+
+### 7.3 Acoustic Spirometry & Pulmonary Mechanics Calibration
+- **Airflow Proximity Filter:** Normalizes microphone gain against high-velocity turbulent airflow at $15\text{cm}$ distance.
+- **Tiffeneau Index Integration:** Computes $\text{FEV}_1$, $\text{FVC}$, and $\text{FEV}_1/\text{FVC}$ ratio with GOLD standard pulmonary compliance.
+
+### 7.4 Digital Clock Drawing (Mini-Cog AI Touch Calibration)
+- **Stroke Sampling Density ($120\text{Hz}$):** Captures high-frequency Cartesian coordinates $(x, y, t)$ to evaluate circular contour closure, 12-hour spatial spacing, and target hand angle (11:10) for dementia screening.
+

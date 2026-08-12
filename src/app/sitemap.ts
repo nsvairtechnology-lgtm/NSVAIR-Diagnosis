@@ -25,6 +25,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { id: 'vision', anchor: 'vision-test', name: 'Interactive Ishihara Vision & Color Test', priority: 0.95 },
     { id: 'hearing', anchor: 'hearing-test', name: 'Calibrated Frequency Hearing Test', priority: 0.95 },
     { id: 'reaction', anchor: 'reaction-balance', name: 'Psychomotor Reaction & Balance Test', priority: 0.90 },
+    { id: 'blood-pressure', anchor: 'blood-pressure-pwv', name: 'Optical Blood Pressure & Pulse Wave Velocity AI', priority: 1.0 },
+    { id: 'pupillary-reflex', anchor: 'pupillary-reflex-plr', name: 'Pupillary Light Reflex & Concussion Screener', priority: 1.0 },
+    { id: 'spirometry', anchor: 'acoustic-spirometry-fev1', name: 'Acoustic Spirometry & Pulmonary Mechanics AI', priority: 1.0 },
+    { id: 'cognitive-clock', anchor: 'cognitive-clock-minicog', name: 'Digital Clock Drawing & Mini-Cog Dementia AI', priority: 0.95 },
   ]
 
   const entries: MetadataRoute.Sitemap = [

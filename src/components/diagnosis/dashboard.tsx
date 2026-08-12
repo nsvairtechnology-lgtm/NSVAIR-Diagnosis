@@ -97,6 +97,10 @@ import { VisionTest } from '@/components/diagnosis/modules/vision-test'
 import { HearingTest } from '@/components/diagnosis/modules/hearing-test'
 import { RadiologyScanner } from '@/components/diagnosis/modules/radiology-scanner'
 import { LabReportAnalyzer } from '@/components/diagnosis/modules/lab-report-analyzer'
+import { BloodPressureScanner } from '@/components/diagnosis/blood-pressure'
+import { PupillaryReflexScanner } from '@/components/diagnosis/pupillary-reflex'
+import { SpirometryAnalyzer } from '@/components/diagnosis/spirometry'
+import { CognitiveClockTest } from '@/components/diagnosis/cognitive-clock'
 import { HealthReport } from '@/components/diagnosis/health-report'
 import { UserProfileCard } from '@/components/diagnosis/user-profile-card'
 import { PWAInstall } from '@/components/diagnosis/pwa-install'
@@ -199,6 +203,14 @@ export function Dashboard() {
         return <RadiologyScanner />
       case 'lab-report':
         return <LabReportAnalyzer />
+      case 'blood-pressure':
+        return <BloodPressureScanner />
+      case 'pupillary-reflex':
+        return <PupillaryReflexScanner />
+      case 'spirometry':
+        return <SpirometryAnalyzer />
+      case 'cognitive-clock':
+        return <CognitiveClockTest />
       default:
         return null
     }

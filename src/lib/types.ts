@@ -19,6 +19,10 @@ export type ModuleId =
   | 'hearing'
   | 'radiology'
   | 'lab-report'
+  | 'blood-pressure'
+  | 'pupillary-reflex'
+  | 'spirometry'
+  | 'cognitive-clock'
 
 export type Severity = 'normal' | 'mild' | 'moderate' | 'high' | 'critical'
 
@@ -328,6 +332,55 @@ export const MODULES: ModuleMeta[] = [
     color: 'text-green-500',
     gradient: 'from-green-500/20 to-emerald-500/10',
     estimatedTime: '2min',
+  },
+  // === NEW Advanced Calibrated Diagnostics ===
+  {
+    id: 'blood-pressure',
+    name: 'Optical Blood Pressure & PWV',
+    description: 'Camera photoplethysmography (PPG) pulse wave velocity and systolic/diastolic arterial pressure estimation',
+    icon: 'HeartPulse',
+    sensors: ['camera', 'touch'],
+    category: 'sensors',
+    color: 'text-rose-600',
+    gradient: 'from-rose-600/20 to-red-500/10',
+    estimatedTime: '40s',
+    isNew: true,
+  },
+  {
+    id: 'pupillary-reflex',
+    name: 'Pupillary Light Reflex (PLR)',
+    description: 'Automated pupillometry measuring constriction velocity, latency, and Neurological Pupil Index (NPi) for concussion screening',
+    icon: 'Eye',
+    sensors: ['camera'],
+    category: 'camera',
+    color: 'text-amber-500',
+    gradient: 'from-amber-500/20 to-yellow-500/10',
+    estimatedTime: '25s',
+    isNew: true,
+  },
+  {
+    id: 'spirometry',
+    name: 'Acoustic Spirometry (FEV1/FVC)',
+    description: 'Calculates lung airflow volume, FEV1, FVC, and peak expiratory flow from forced exhalation acoustics',
+    icon: 'Wind',
+    sensors: ['microphone'],
+    category: 'audio',
+    color: 'text-cyan-600',
+    gradient: 'from-cyan-500/20 to-teal-500/10',
+    estimatedTime: '30s',
+    isNew: true,
+  },
+  {
+    id: 'cognitive-clock',
+    name: 'Clock Drawing (Mini-Cog AI)',
+    description: 'Digital clock drawing test analyzing executive function, spatial motor planning, and early dementia signs',
+    icon: 'Brain',
+    sensors: ['touch'],
+    category: 'assessment',
+    color: 'text-purple-600',
+    gradient: 'from-purple-500/20 to-indigo-500/10',
+    estimatedTime: '1min',
+    isNew: true,
   },
 ]
 
