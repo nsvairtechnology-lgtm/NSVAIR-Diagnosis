@@ -59,12 +59,24 @@ export interface DiagnosisResult {
 }
 
 export interface UserProfile {
+  id?: string
   name: string
   age: string
   gender: 'male' | 'female' | 'other' | ''
+  relationship?: 'self' | 'spouse' | 'child' | 'parent' | 'other'
+  bloodGroup?: string
+  dob?: string
+  email?: string
+  phone?: string
   height?: string
   weight?: string
+  bmi?: string
+  bmiCategory?: 'Underweight' | 'Normal' | 'Overweight' | 'Obese' | ''
+  bloodPressure?: string
+  allergies?: string
   conditions?: string
+  medications?: string
+  emergencyContact?: string
 }
 
 export interface ComprehensiveReport {

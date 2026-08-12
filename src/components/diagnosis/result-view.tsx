@@ -1,13 +1,25 @@
 'use client'
 
 import * as React from 'react'
-import { AlertTriangle, CheckCircle2, Info, ShieldAlert } from 'lucide-react'
+import {
+  AlertTriangle,
+  CheckCircle2,
+  Info,
+  ShieldAlert,
+  Download,
+  Printer,
+  FileText
+} from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
 import type { DiagnosisResult, RiskLevel, Severity } from '@/lib/types'
+import { useDiagnosisStore } from '@/lib/diagnosis-store'
+import { downloadSingleTestPdf } from '@/lib/pdf-generator'
+import { toast } from 'sonner'
 
 const severityStyles: Record<Severity, string> = {
   normal: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300',
@@ -25,36 +37,53 @@ const riskStyles: Record<RiskLevel, { bg: string; text: string; bar: string }> =
 }
 
 export function DiagnosisResultView({ result }: { result: DiagnosisResult }) {
+  const { userProfile } = useDiagnosisStore()
   const risk = riskStyles[result.riskLevel]
+
+  const handleDownloadPdf = () => {
+    downloadSingleTestPdf(result, userProfile)
+    toast.success(`Opening ${result.moduleName} PDF Report...`)
+  }
+
   return (
-    <Card className="overflow-hidden">
-      <CardHeader className="pb-3">
+    <Card className="overflow-hidden shadow-sm">
+      <CardHeader className="pb-3 border-b bg-muted/20">
         <div className="flex items-start justify-between gap-3 flex-wrap">
           <div>
             <CardTitle className="text-base flex items-center gap-2">
-              <span>Analysis Result</span>
+              <span>{result.moduleName} Analysis</span>
               <Badge variant="outline" className={cn('font-medium', risk.text)}>
                 {result.riskLevel.toUpperCase()} RISK
               </Badge>
             </CardTitle>
             <p className="text-xs text-muted-foreground mt-1">
-              {result.moduleName} • Completed{' '}
-              {new Date(result.completedAt).toLocaleTimeString()}
-              {result.duration ? ` • ${(result.duration / 1000).toFixed(1)}s` : ''}
+              Completed {new Date(result.completedAt).toLocaleTimeString()}
+              {result.duration ? ` • ${(result.duration / 1000).toFixed(1)}s processing` : ''}
+              {userProfile?.name ? ` • Patient: ${userProfile.name}` : ''}
             </p>
           </div>
-          <div className="text-right">
-            <div className={cn('text-2xl font-bold', risk.text)}>
-              {result.riskScore}
-              <span className="text-sm text-muted-foreground">/100</span>
+          <div className="flex items-center gap-3">
+            <div className="text-right">
+              <div className={cn('text-2xl font-bold', risk.text)}>
+                {result.riskScore}
+                <span className="text-sm text-muted-foreground">/100</span>
+              </div>
+              <p className="text-[10px] text-muted-foreground">Risk Index</p>
             </div>
-            <p className="text-xs text-muted-foreground">Risk Score</p>
+            <Button
+              onClick={handleDownloadPdf}
+              size="sm"
+              className="bg-emerald-600 hover:bg-emerald-700 text-white gap-1.5 shadow-sm text-xs"
+            >
+              <Download className="h-3.5 w-3.5" />
+              Download Test PDF
+            </Button>
           </div>
         </div>
         <Progress value={result.riskScore} className={cn('h-2 mt-2', risk.bar)} />
       </CardHeader>
 
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-4 pt-4">
         <p className="text-sm text-foreground/90 leading-relaxed">
           {result.summary}
         </p>
@@ -116,6 +145,19 @@ export function DiagnosisResultView({ result }: { result: DiagnosisResult }) {
             </div>
           </>
         )}
+
+        <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t text-xs text-muted-foreground">
+          <span>Official NSVAIR AI Diagnostic Document</span>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleDownloadPdf}
+            className="h-7 text-xs gap-1.5 text-emerald-600 dark:text-emerald-400"
+          >
+            <Printer className="h-3 w-3" />
+            Print / Save Certificate
+          </Button>
+        </div>
 
         <div className="rounded-lg bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900 p-3 flex gap-2">
           <ShieldAlert className="h-4 w-4 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />

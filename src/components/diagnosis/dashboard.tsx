@@ -341,6 +341,112 @@ export function Dashboard() {
               </CardContent>
             </Card>
 
+            {/* 4 Easy Steps to Professional Health Report */}
+            <Card className="border-emerald-500/30 bg-card shadow-sm overflow-hidden">
+              <div className="bg-gradient-to-r from-emerald-600/10 via-teal-600/10 to-transparent p-4 border-b border-border/60">
+                <div className="flex items-center justify-between flex-wrap gap-2">
+                  <div className="flex items-center gap-2">
+                    <span className="h-6 w-6 rounded-full bg-emerald-600 text-white text-xs font-bold flex items-center justify-center">
+                      ✓
+                    </span>
+                    <h3 className="font-bold text-sm">4 Easy Steps to Your Professional Medical PDF Report</h3>
+                  </div>
+                  <Badge className="bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300 text-[10px] font-semibold">
+                    Instant Real-Time AI
+                  </Badge>
+                </div>
+              </div>
+
+              <CardContent className="p-4 sm:p-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                  {/* Step 1 */}
+                  <div
+                    onClick={() => setProfileOpen(true)}
+                    className="p-3.5 rounded-xl border border-border/80 hover:border-emerald-500/60 bg-muted/20 hover:bg-emerald-50/20 dark:hover:bg-emerald-950/20 cursor-pointer transition-all group"
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-[11px] font-bold text-emerald-600 uppercase tracking-wider">Step 1</span>
+                      <Badge variant="outline" className="text-[10px] text-emerald-600 border-emerald-500/30">
+                        {userProfile.name ? 'Configured' : 'Required'}
+                      </Badge>
+                    </div>
+                    <h4 className="font-bold text-xs group-hover:text-emerald-600 transition-colors flex items-center gap-1">
+                      Patient Profile
+                      <ChevronRight className="h-3 w-3 text-emerald-500" />
+                    </h4>
+                    <p className="text-[11px] text-muted-foreground mt-0.5 line-clamp-2">
+                      {userProfile.name
+                        ? `${userProfile.name} • ${userProfile.age ? userProfile.age + 'y' : ''} ${userProfile.bloodGroup ? '• ' + userProfile.bloodGroup : ''}`
+                        : 'Set name, age, blood group & medical history'}
+                    </p>
+                  </div>
+
+                  {/* Step 2 */}
+                  <div
+                    onClick={() => {
+                      document.getElementById('modules')?.scrollIntoView({ behavior: 'smooth' })
+                    }}
+                    className="p-3.5 rounded-xl border border-border/80 hover:border-sky-500/60 bg-muted/20 hover:bg-sky-50/20 dark:hover:bg-sky-950/20 cursor-pointer transition-all group"
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-[11px] font-bold text-sky-600 uppercase tracking-wider">Step 2</span>
+                      <Badge variant="outline" className="text-[10px] text-sky-600 border-sky-500/30">
+                        18 Modules
+                      </Badge>
+                    </div>
+                    <h4 className="font-bold text-xs group-hover:text-sky-600 transition-colors flex items-center gap-1">
+                      Run Screenings
+                      <ChevronRight className="h-3 w-3 text-sky-500" />
+                    </h4>
+                    <p className="text-[11px] text-muted-foreground mt-0.5 line-clamp-2">
+                      Upload X-Ray/MRI film, Lab reports, or run Vitals, Skin, Voice & Eye checks
+                    </p>
+                  </div>
+
+                  {/* Step 3 */}
+                  <div className="p-3.5 rounded-xl border border-border/80 bg-muted/20">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-[11px] font-bold text-amber-600 uppercase tracking-wider">Step 3</span>
+                      <Badge variant="outline" className="text-[10px] text-amber-600 border-amber-500/30">
+                        {completed} Done
+                      </Badge>
+                    </div>
+                    <h4 className="font-bold text-xs">Real-Time AI Analysis</h4>
+                    <p className="text-[11px] text-muted-foreground mt-0.5 line-clamp-2">
+                      Instant multi-modal clinical findings, biomarker tables & risk scores
+                    </p>
+                  </div>
+
+                  {/* Step 4 */}
+                  <div
+                    onClick={() => setReportOpen(true)}
+                    className={cn(
+                      'p-3.5 rounded-xl border transition-all cursor-pointer group',
+                      completed > 0
+                        ? 'border-emerald-500 bg-gradient-to-br from-emerald-500/10 to-teal-500/10 shadow-sm hover:from-emerald-500/20 hover:to-teal-500/20'
+                        : 'border-border/80 bg-muted/10 opacity-70 cursor-not-allowed'
+                    )}
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-[11px] font-bold text-emerald-600 uppercase tracking-wider">Step 4</span>
+                      <Badge className={cn('text-[10px] font-bold', completed > 0 ? 'bg-emerald-600 text-white' : 'bg-muted text-muted-foreground')}>
+                        PDF Export
+                      </Badge>
+                    </div>
+                    <h4 className="font-bold text-xs text-emerald-700 dark:text-emerald-300 flex items-center gap-1">
+                      Download PDF Report
+                      <Download className="h-3 w-3" />
+                    </h4>
+                    <p className="text-[11px] text-muted-foreground mt-0.5 line-clamp-2">
+                      {completed > 0
+                        ? 'Click to generate & download official printable medical PDF'
+                        : 'Complete at least 1 test to generate report'}
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
             {/* Progress summary */}
             <Card className="border shadow-sm">
               <CardContent className="p-5">
@@ -351,7 +457,7 @@ export function Dashboard() {
                       Your Diagnostic Progress
                     </h3>
                     <p className="text-xs text-muted-foreground">
-                      Complete modules across vision, audio, sensors, and questionnaires to build your report.
+                      Complete modules across vision, radiology, lab reports, audio, sensors, and questionnaires.
                     </p>
                   </div>
                   <div className="flex items-center gap-3">

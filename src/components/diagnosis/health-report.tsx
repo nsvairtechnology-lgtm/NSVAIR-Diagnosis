@@ -13,8 +13,10 @@ import {
   History,
   Download,
   ShieldAlert,
+  Printer
 } from 'lucide-react'
 import { useDiagnosisStore } from '@/lib/diagnosis-store'
+import { downloadComprehensiveReportPdf } from '@/lib/pdf-generator'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -133,57 +135,8 @@ export function HealthReport({ onClose }: { onClose: () => void }) {
 
   const download = () => {
     if (!lastReport) return
-    const text = `================================================================================
-NSVAIR DIAGNOSIS — COMPREHENSIVE HEALTH REPORT
-POWERED BY NSVAIR GROUP OF INDUSTRY
-================================================================================
-Generated: ${new Date(lastReport.createdAt).toLocaleString()}
-Patient: ${userProfile.name || 'Anonymous'} | Age: ${userProfile.age || 'N/A'} | Gender: ${userProfile.gender || 'N/A'}
-
-OVERALL RISK SCORE: ${lastReport.overallRiskScore}/100
-
-OVERALL SUMMARY:
-${lastReport.overallSummary}
-
-${
-  lastReport.redFlags.length > 0
-    ? `RED FLAGS — SEEK MEDICAL ATTENTION:\n${lastReport.redFlags.map((f) => `• ${f}`).join('\n')}\n`
-    : ''
-}
-TOP FINDINGS:
-${lastReport.topFindings
-  .map(
-    (f, i) =>
-      `${i + 1}. ${f.condition} [${f.severity}, ${Math.round(f.confidence * 100)}% confidence] (${f.source})\n   ${f.description}\n   → ${f.recommendation}`
-  )
-  .join('\n\n')}
-
-PRIORITIZED RECOMMENDATIONS:
-${lastReport.prioritizedRecommendations.map((r, i) => `${i + 1}. ${r}`).join('\n')}
-
-NEXT STEPS:
-${lastReport.nextSteps.map((s, i) => `${i + 1}. ${s}`).join('\n')}
-
---------------------------------------------------------------------------------
-MODULES EVALUATED: ${completed.length}
-${completed.map((r) => `• ${r.moduleName}: risk ${r.riskScore}/100 (${r.riskLevel})`).join('\n')}
-
-================================================================================
-DISCLAIMER:
-NSVAIR Diagnosis is an AI-powered screening and informational wellness tool
-developed under NSVAIR GROUP OF INDUSTRY. It is not a certified medical device
-and is not a substitute for professional medical diagnosis. Always consult a
-licensed healthcare provider for diagnosis and treatment.
-================================================================================
-`
-    const blob = new Blob([text], { type: 'text/plain' })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = `nsvair-diagnosis-report-${Date.now()}.txt`
-    a.click()
-    URL.revokeObjectURL(url)
-    toast.success('Report downloaded')
+    downloadComprehensiveReportPdf(lastReport, completed, userProfile)
+    toast.success('Generated Comprehensive Medical PDF Report!')
   }
 
   React.useEffect(() => {
@@ -193,27 +146,30 @@ licensed healthcare provider for diagnosis and treatment.
   return (
     <div className="space-y-4">
       {/* Action bar */}
-      <div className="flex flex-wrap gap-2 sticky top-0 bg-background py-2 z-10">
+      <div className="flex flex-wrap gap-2 sticky top-0 bg-background py-2 z-10 border-b pb-3">
         <Button
           onClick={generate}
           disabled={reportLoading || completed.length === 0}
           size="sm"
-          className="gap-1.5 bg-emerald-600 hover:bg-emerald-700"
+          className="gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm"
         >
           {reportLoading ? (
             <Loader2 className="h-3.5 w-3.5 animate-spin" />
           ) : (
             <Sparkles className="h-3.5 w-3.5" />
           )}
-          {lastReport ? 'Regenerate' : 'Generate'} Report
+          {lastReport ? 'Regenerate Analysis' : 'Synthesize Report'}
         </Button>
         {lastReport && (
           <>
-            <Button onClick={save} size="sm" variant="outline" className="gap-1.5">
-              <Save className="h-3.5 w-3.5" /> Save
+            <Button onClick={download} size="sm" className="gap-1.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-sm">
+              <Download className="h-3.5 w-3.5" /> Download Official PDF
             </Button>
             <Button onClick={download} size="sm" variant="outline" className="gap-1.5">
-              <Download className="h-3.5 w-3.5" /> Download
+              <Printer className="h-3.5 w-3.5" /> Print Medical Report
+            </Button>
+            <Button onClick={save} size="sm" variant="outline" className="gap-1.5">
+              <Save className="h-3.5 w-3.5" /> Save to Cloud History
             </Button>
           </>
         )}
