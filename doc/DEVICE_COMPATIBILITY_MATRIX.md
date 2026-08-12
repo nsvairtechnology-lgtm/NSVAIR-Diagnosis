@@ -55,3 +55,17 @@ The NSVAIR Diagnosis platform is engineered for universal compatibility across d
 ### 3.4 Apple macOS Architecture
 - **Display:** Seamlessly handles P3 Wide Color Retina panels with automatic ICC profile harmonization.
 - **Acoustics:** Utilizes multi-channel Studio Mic arrays on MacBook Pro and iMac for ultra-low noise audio screening.
+
+---
+
+## 4. Missing Hardware & Degraded Sensor Fallback Architecture
+
+When calibrating on hardware lacking specific sensors (such as custom desktop Windows PCs without a webcam, workstations without microphones, or muted audio outputs), the engine provisions automatic fallback pathways:
+
+| Missing / Inoperative Sensor | Detected Scenario | Calibration Status & User Alert | Automatic Clinical Fallback Route |
+| :--- | :--- | :--- | :--- |
+| **📷 No Camera Found / Blocked** | Desktop PC with no webcam or driver permission denied | ⚠️ `Camera Not Detected` (Upload Mode) | All 7 vision & imaging modules (Dermatology, Eyes, Radiology, Nails, Teeth) switch to **Photo / Film File Upload Mode**. |
+| **🎙️ No Microphone Found** | Workstation with no audio input or mic disabled in Windows Settings | ⚠️ `Microphone Not Detected` (Questionnaire Mode) | Audio modules (Voice/Cough, Respiratory) switch to **Validated Clinical Questionnaire & Symptom Analysis**. |
+| **🔊 Speaker Output Muted / Blocked** | System volume at 0%, browser autoplay muted | ⚠️ `Audio Muted / Restricted` | Audiometry hearing test prompts user to unmute volume or connect 3.5mm/Bluetooth headphones. |
+| **📱 No Motion Gyroscope** | Standard desktop PC or laptop without IMU sensors | ℹ️ `Desktop PC Mode Active` | Tremor, posture, and reaction tests switch to **Interactive Pointer / Touch Area Coordinate Dynamics**. |
+

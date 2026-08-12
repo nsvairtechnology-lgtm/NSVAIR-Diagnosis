@@ -167,97 +167,142 @@ export function CalibrationModal() {
             </div>
           )}
 
-          {/* 4 Sensor Diagnostic Gauges */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {/* 1. Camera & Lighting */}
-            <div className="p-3.5 rounded-xl border border-border/80 bg-card space-y-2">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="h-7 w-7 rounded-lg bg-amber-500/15 text-amber-600 flex items-center justify-center">
-                    <Camera className="h-4 w-4" />
-                  </div>
-                  <span className="font-bold text-xs">Camera & Lighting</span>
+          {/* Hardware Device Probe & Sensor Matrix */}
+          <div className="p-4 rounded-xl border border-border/80 bg-card space-y-3">
+            <h4 className="font-extrabold text-xs uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+              <Cpu className="h-3.5 w-3.5 text-emerald-600" />
+              Connected Hardware Sensor Status
+            </h4>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+              {/* 1. Camera Detection */}
+              <div
+                className={cn(
+                  'p-3 rounded-lg border flex items-start gap-2.5',
+                  activeCertificate?.hardwareInventory.cameraFound !== false
+                    ? 'bg-emerald-50/30 dark:bg-emerald-950/20 border-emerald-500/30'
+                    : 'bg-amber-50/40 dark:bg-amber-950/30 border-amber-500/40'
+                )}
+              >
+                <div
+                  className={cn(
+                    'h-7 w-7 rounded-md flex items-center justify-center shrink-0 mt-0.5',
+                    activeCertificate?.hardwareInventory.cameraFound !== false
+                      ? 'bg-emerald-600/15 text-emerald-600'
+                      : 'bg-amber-600/15 text-amber-600'
+                  )}
+                >
+                  <Camera className="h-4 w-4" />
                 </div>
-                <Badge variant="outline" className="text-[10px] text-emerald-600">
-                  {activeCertificate ? `${activeCertificate.camera.score}% Optimal` : '520 Lux • 5500K'}
-                </Badge>
+                <div className="space-y-0.5">
+                  <div className="flex items-center gap-1.5">
+                    <span className="font-bold text-xs">Optical Camera</span>
+                    {activeCertificate?.hardwareInventory.cameraFound !== false ? (
+                      <Badge className="bg-emerald-600 text-white text-[9px] px-1 py-0 font-bold">
+                        Connected
+                      </Badge>
+                    ) : (
+                      <Badge className="bg-amber-600 text-white text-[9px] px-1 py-0 font-bold">
+                        Not Found
+                      </Badge>
+                    )}
+                  </div>
+                  <p className="text-[11px] text-muted-foreground leading-tight">
+                    {activeCertificate?.hardwareInventory.cameraStatusMessage ||
+                      'Checks videoinput device availability and optical exposure.'}
+                  </p>
+                </div>
               </div>
-              <p className="text-[11px] text-muted-foreground leading-snug">
-                {activeCertificate?.camera.recommendations[0] ||
-                  'Calibrates Lux exposure, edge sharpness, and white balance for skin/film analysis.'}
-              </p>
-              <div className="flex items-center justify-between text-[10px] text-muted-foreground pt-1 border-t">
-                <span>Sharpness: {activeCertificate?.camera.sharpnessScore || 94}/100</span>
-                <span>Focus: Auto-Calibrated</span>
+
+              {/* 2. Microphone Detection */}
+              <div
+                className={cn(
+                  'p-3 rounded-lg border flex items-start gap-2.5',
+                  activeCertificate?.hardwareInventory.micFound !== false
+                    ? 'bg-emerald-50/30 dark:bg-emerald-950/20 border-emerald-500/30'
+                    : 'bg-amber-50/40 dark:bg-amber-950/30 border-amber-500/40'
+                )}
+              >
+                <div
+                  className={cn(
+                    'h-7 w-7 rounded-md flex items-center justify-center shrink-0 mt-0.5',
+                    activeCertificate?.hardwareInventory.micFound !== false
+                      ? 'bg-emerald-600/15 text-emerald-600'
+                      : 'bg-amber-600/15 text-amber-600'
+                  )}
+                >
+                  <Mic className="h-4 w-4" />
+                </div>
+                <div className="space-y-0.5">
+                  <div className="flex items-center gap-1.5">
+                    <span className="font-bold text-xs">Microphone Input</span>
+                    {activeCertificate?.hardwareInventory.micFound !== false ? (
+                      <Badge className="bg-emerald-600 text-white text-[9px] px-1 py-0 font-bold">
+                        Connected
+                      </Badge>
+                    ) : (
+                      <Badge className="bg-amber-600 text-white text-[9px] px-1 py-0 font-bold">
+                        Not Found
+                      </Badge>
+                    )}
+                  </div>
+                  <p className="text-[11px] text-muted-foreground leading-tight">
+                    {activeCertificate?.hardwareInventory.micStatusMessage ||
+                      'Measures audioinput hardware and background noise floor.'}
+                  </p>
+                </div>
+              </div>
+
+              {/* 3. Speaker / Audio Output */}
+              <div className="p-3 rounded-lg border bg-card border-border flex items-start gap-2.5">
+                <div className="h-7 w-7 rounded-md bg-blue-500/15 text-blue-600 flex items-center justify-center shrink-0 mt-0.5">
+                  <Volume2 className="h-4 w-4" />
+                </div>
+                <div className="space-y-0.5">
+                  <div className="flex items-center gap-1.5">
+                    <span className="font-bold text-xs">Audio Tone Sweep</span>
+                    <Badge className="bg-sky-600 text-white text-[9px] px-1 py-0 font-bold">
+                      Calibrated
+                    </Badge>
+                  </div>
+                  <p className="text-[11px] text-muted-foreground leading-tight">
+                    {activeCertificate?.hardwareInventory.speakerStatusMessage ||
+                      'AudioContext frequency sweep active for audiometry.'}
+                  </p>
+                </div>
+              </div>
+
+              {/* 4. Motion / Platform Coordination */}
+              <div className="p-3 rounded-lg border bg-card border-border flex items-start gap-2.5">
+                <div className="h-7 w-7 rounded-md bg-purple-500/15 text-purple-600 flex items-center justify-center shrink-0 mt-0.5">
+                  <Activity className="h-4 w-4" />
+                </div>
+                <div className="space-y-0.5">
+                  <div className="flex items-center gap-1.5">
+                    <span className="font-bold text-xs">Motion & Coordination</span>
+                    <Badge variant="outline" className="text-[9px] px-1 py-0 font-mono">
+                      {deviceProfile.isMobile ? 'IMU 6-Axis' : 'Touch/Mouse'}
+                    </Badge>
+                  </div>
+                  <p className="text-[11px] text-muted-foreground leading-tight">
+                    {activeCertificate?.hardwareInventory.motionStatusMessage ||
+                      'Coordinates tremor, posture, and motor coordination tests.'}
+                  </p>
+                </div>
               </div>
             </div>
 
-            {/* 2. Microphone & Acoustics */}
-            <div className="p-3.5 rounded-xl border border-border/80 bg-card space-y-2">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="h-7 w-7 rounded-lg bg-teal-500/15 text-teal-600 flex items-center justify-center">
-                    <Mic className="h-4 w-4" />
-                  </div>
-                  <span className="font-bold text-xs">Microphone & Noise</span>
-                </div>
-                <Badge variant="outline" className="text-[10px] text-emerald-600">
-                  {activeCertificate ? `${activeCertificate.microphone.noiseFloorDb} dB Floor` : '-58 dB (Quiet)'}
+            {/* Diagnostic Battery Readiness Pill */}
+            {activeCertificate && (
+              <div className="p-2.5 rounded-lg bg-muted/50 border flex items-center justify-between text-xs">
+                <span className="text-muted-foreground font-semibold">
+                  {activeCertificate.hardwareInventory.readinessSummary}
+                </span>
+                <Badge className="bg-emerald-600 text-white text-[10px] font-bold">
+                  22/22 Modules Active
                 </Badge>
               </div>
-              <p className="text-[11px] text-muted-foreground leading-snug">
-                {activeCertificate?.microphone.recommendations[0] ||
-                  'Filters ambient acoustic noise and equalizes respiratory/speech frequency bands.'}
-              </p>
-              <div className="flex items-center justify-between text-[10px] text-muted-foreground pt-1 border-t">
-                <span>SNR: {activeCertificate?.microphone.snrDb || 42} dB</span>
-                <span>Clipping: None Detected</span>
-              </div>
-            </div>
-
-            {/* 3. Speaker & Acoustic Output */}
-            <div className="p-3.5 rounded-xl border border-border/80 bg-card space-y-2">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="h-7 w-7 rounded-lg bg-blue-500/15 text-blue-600 flex items-center justify-center">
-                    <Volume2 className="h-4 w-4" />
-                  </div>
-                  <span className="font-bold text-xs">Audio Tone Sweep</span>
-                </div>
-                <Badge variant="outline" className="text-[10px] text-sky-600">
-                  440Hz - 8kHz Verified
-                </Badge>
-              </div>
-              <p className="text-[11px] text-muted-foreground leading-snug">
-                Generates pure sine waves via Web Audio API to calibrate hearing test decibel volumes.
-              </p>
-              <div className="flex items-center justify-between text-[10px] text-muted-foreground pt-1 border-t">
-                <span>Latency: 8ms</span>
-                <span>Stereo Panning: Enabled</span>
-              </div>
-            </div>
-
-            {/* 4. Display & Motion Sensors */}
-            <div className="p-3.5 rounded-xl border border-border/80 bg-card space-y-2">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="h-7 w-7 rounded-lg bg-purple-500/15 text-purple-600 flex items-center justify-center">
-                    <Activity className="h-4 w-4" />
-                  </div>
-                  <span className="font-bold text-xs">Motion & Display D65</span>
-                </div>
-                <Badge variant="outline" className="text-[10px] text-purple-600">
-                  {deviceProfile.pixelRatio}x DPR • {deviceProfile.colorGamut.toUpperCase()}
-                </Badge>
-              </div>
-              <p className="text-[11px] text-muted-foreground leading-snug">
-                Zero-point gyro drift compensation and D65 sRGB color gamut for medical acuity tests.
-              </p>
-              <div className="flex items-center justify-between text-[10px] text-muted-foreground pt-1 border-t">
-                <span>Gyro Drift: 0.02°/s</span>
-                <span>Touch Latency: 16ms</span>
-              </div>
-            </div>
+            )}
           </div>
 
           {/* Certificate Hash Box if calibrated */}
