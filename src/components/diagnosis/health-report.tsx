@@ -17,10 +17,13 @@ import {
   MessageCircle,
   Mail,
   Share2,
-  Send
+  Send,
+  Sliders,
+  ShieldCheck
 } from 'lucide-react'
 import { useDiagnosisStore } from '@/lib/diagnosis-store'
 import { useAuthStore } from '@/lib/auth-store'
+import { useCalibrationStore } from '@/lib/calibration-store'
 import { downloadComprehensiveReportPdf } from '@/lib/pdf-generator'
 import { ReportShareDialog } from '@/components/diagnosis/report-share-dialog'
 import {
@@ -65,6 +68,7 @@ export function HealthReport({ onClose }: { onClose: () => void }) {
   } = useDiagnosisStore()
 
   const { currentUser, openAuthModal } = useAuthStore()
+  const { activeCertificate, openCalibrationModal } = useCalibrationStore()
 
   const [shareOpen, setShareOpen] = React.useState(false)
 
@@ -216,6 +220,43 @@ export function HealthReport({ onClose }: { onClose: () => void }) {
             className="bg-amber-600 hover:bg-amber-700 text-white text-xs h-7 font-bold shrink-0 ml-2"
           >
             Verify Now
+          </Button>
+        </div>
+      )}
+
+      {/* Verified Hardware Calibration Seal */}
+      {activeCertificate ? (
+        <div className="p-3 rounded-xl bg-emerald-50/40 dark:bg-emerald-950/30 border border-emerald-500/40 flex items-center justify-between flex-wrap gap-2 text-xs">
+          <div className="flex items-center gap-2.5">
+            <div className="h-7 w-7 rounded-lg bg-emerald-600/15 text-emerald-600 flex items-center justify-center">
+              <ShieldCheck className="h-4 w-4" />
+            </div>
+            <div>
+              <div className="font-bold text-foreground flex items-center gap-2">
+                <span>Verified Device Calibration</span>
+                <Badge variant="outline" className="text-[10px] text-emerald-600 font-mono">
+                  {activeCertificate.platformName}
+                </Badge>
+              </div>
+              <span className="text-muted-foreground text-[11px] font-mono">
+                Checksum: {activeCertificate.cryptographicHash} • Accuracy: {activeCertificate.overallAccuracyScore}%
+              </span>
+            </div>
+          </div>
+          <Badge className="bg-emerald-600 text-white text-[10px] font-bold">
+            Clinical Calibration ✓
+          </Badge>
+        </div>
+      ) : (
+        <div className="p-3 rounded-xl bg-muted/40 border border-border flex items-center justify-between text-xs">
+          <div className="flex items-center gap-2">
+            <Sliders className="h-4 w-4 text-muted-foreground" />
+            <span className="text-muted-foreground text-[11px]">
+              Default sensor baseline. Run auto-calibration to attach certified hardware seal.
+            </span>
+          </div>
+          <Button size="sm" variant="outline" onClick={openCalibrationModal} className="h-7 text-xs font-semibold">
+            Calibrate
           </Button>
         </div>
       )}

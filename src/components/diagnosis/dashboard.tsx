@@ -42,6 +42,7 @@ import {
   MessageCircle,
   Mail,
   User,
+  Sliders,
 } from 'lucide-react'
 import Link from 'next/link'
 import { useDiagnosisStore } from '@/lib/diagnosis-store'
@@ -49,6 +50,8 @@ import { useAuthStore } from '@/lib/auth-store'
 import { useCartStore } from '@/lib/cart-store'
 import { CartDrawer } from '@/components/store/cart-drawer'
 import { AuthModal } from '@/components/auth/auth-modal'
+import { CalibrationModal } from '@/components/diagnosis/calibration-modal'
+import { useCalibrationStore } from '@/lib/calibration-store'
 import { MobileBottomNav } from '@/components/diagnosis/mobile-bottom-nav'
 import { MobileQuickActions } from '@/components/diagnosis/mobile-quick-actions'
 import {
@@ -137,6 +140,7 @@ export function Dashboard() {
 
   const { currentUser, openAuthModal, logout } = useAuthStore()
   const { toggleCart, getTotalCount } = useCartStore()
+  const { isCalibrated, openCalibrationModal, activeCertificate } = useCalibrationStore()
 
   const [reportOpen, setReportOpen] = React.useState(false)
   const [profileOpen, setProfileOpen] = React.useState(false)
@@ -195,6 +199,8 @@ export function Dashboard() {
         return <RadiologyScanner />
       case 'lab-report':
         return <LabReportAnalyzer />
+      default:
+        return null
     }
   }
 
@@ -213,19 +219,18 @@ export function Dashboard() {
   ]
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-b from-background via-background to-muted/30">
-      {/* Header */}
-      <header className="sticky top-0 z-40 border-b bg-background/85 backdrop-blur-md">
-        <div className="container mx-auto max-w-6xl px-4 py-2.5 flex items-center justify-between gap-3">
+    <div className="min-h-screen bg-background text-foreground flex flex-col">
+      {/* Top Navigation */}
+      <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-sm">
+        <div className="container mx-auto max-w-6xl px-4 h-16 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-emerald-500 via-teal-600 to-cyan-700 flex items-center justify-center shadow-md ring-1 ring-white/20">
-              <HeartPulse className="h-5 w-5 text-white" />
+            <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-700 flex items-center justify-center text-white font-black text-lg shadow-md shadow-emerald-900/20">
+              N
             </div>
             <div>
-              <div className="flex items-center gap-1.5">
-                <span className="font-extrabold text-base tracking-tight leading-tight block">
-                  NSVAIR <span className="text-emerald-600 dark:text-emerald-400">Diagnosis</span>
-                </span>
+              <div className="text-base font-extrabold tracking-tight flex items-center gap-1.5">
+                <span>NSVAIR</span>
+                <span className="text-emerald-600 dark:text-emerald-400">Diagnosis</span>
               </div>
               <p className="text-[10px] font-semibold text-emerald-700 dark:text-emerald-300 uppercase tracking-wider leading-tight flex items-center gap-1">
                 <Building2 className="h-2.5 w-2.5 inline" /> Powered by NSVAIR GROUP OF INDUSTRY
@@ -239,13 +244,31 @@ export function Dashboard() {
               {completed}/{totalModules} completed
             </Badge>
 
+            {/* Hardware Auto-Calibration Button */}
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={openCalibrationModal}
+              className={cn(
+                'gap-1.5 text-xs font-semibold',
+                isCalibrated
+                  ? 'border-emerald-500/50 text-emerald-700 dark:text-emerald-300 bg-emerald-50/40 dark:bg-emerald-950/40'
+                  : 'border-amber-500/50 text-amber-700 dark:text-amber-300 hover:bg-amber-50/50'
+              )}
+            >
+              <Sliders className="h-3.5 w-3.5" />
+              <span className="hidden sm:inline">
+                {isCalibrated ? `Calibrated (${activeCertificate?.overallAccuracyScore || 98}%)` : 'Auto-Calibrate'}
+              </span>
+            </Button>
+
             <Link href="/store">
               <Button
                 size="sm"
                 className="gap-1.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-sm font-semibold text-xs"
               >
                 <ShoppingBag className="h-3.5 w-3.5" />
-                <span>Store (500+)</span>
+                <span className="hidden sm:inline">Store</span>
               </Button>
             </Link>
 
@@ -1067,6 +1090,9 @@ export function Dashboard() {
 
       {/* Patient Registration / Login Verification Modal */}
       <AuthModal />
+
+      {/* Automatic Hardware & Sensor Calibration Modal */}
+      <CalibrationModal />
 
       {/* Mobile Application Native Bottom Bar */}
       <MobileBottomNav
