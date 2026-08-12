@@ -196,9 +196,9 @@ export function HealthReport({ onClose }: { onClose: () => void }) {
           <div className="flex items-center gap-2">
             <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0" />
             <div>
-              <span className="font-bold text-foreground">Verified Patient: {currentUser.name}</span>
+              <span className="font-bold text-foreground">Verified Patient: {currentUser?.name || 'Authorized Patient'}</span>
               <span className="text-muted-foreground block text-[11px]">
-                {currentUser.authType === 'mobile' ? `📱 Mobile: ${currentUser.identifier}` : `✉️ Verified Gmail: ${currentUser.identifier}`}
+                {currentUser?.authType === 'mobile' ? `📱 Mobile: ${currentUser?.identifier || ''}` : `✉️ Verified Gmail: ${currentUser?.identifier || ''}`}
               </span>
             </div>
           </div>

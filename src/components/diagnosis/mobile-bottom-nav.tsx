@@ -156,14 +156,14 @@ export function MobileBottomNav({
           <div className="relative">
             {currentUser?.isVerified ? (
               <div className="h-5 w-5 rounded-full bg-emerald-100 dark:bg-emerald-950/80 text-emerald-600 flex items-center justify-center font-bold text-[10px] border border-emerald-500/40">
-                {currentUser.name.charAt(0).toUpperCase()}
+                {currentUser?.name ? currentUser.name.charAt(0).toUpperCase() : 'U'}
               </div>
             ) : (
               <User className="h-5 w-5" />
             )}
           </div>
           <span className="mt-1 truncate max-w-[48px]">
-            {currentUser?.isVerified ? currentUser.name.split(' ')[0] : 'Profile'}
+            {currentUser?.isVerified && currentUser?.name ? currentUser.name.split(' ')[0] : 'Profile'}
           </span>
         </button>
       </div>

@@ -292,7 +292,7 @@ export function Dashboard() {
                 className="gap-1.5 text-xs border-emerald-500/40 text-emerald-700 dark:text-emerald-300 font-semibold"
               >
                 <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
-                <span className="hidden sm:inline">{currentUser.name.split(' ')[0]}</span>
+                <span className="hidden sm:inline">{currentUser?.name ? currentUser.name.split(' ')[0] : 'Patient'}</span>
               </Button>
             ) : (
               <Button

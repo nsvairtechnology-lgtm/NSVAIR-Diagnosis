@@ -94,6 +94,8 @@ export function CalibrationModal() {
 
   const PlatformIcon = getPlatformIcon()
 
+  const inventory = activeCertificate?.hardwareInventory
+
   return (
     <Dialog open={calibrationModalOpen} onOpenChange={(open) => !open && closeCalibrationModal()}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto p-0 gap-0 border-emerald-500/30">
@@ -127,17 +129,17 @@ export function CalibrationModal() {
               </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <h4 className="font-extrabold text-sm">{deviceProfile.platformName}</h4>
+                  <h4 className="font-extrabold text-sm">{deviceProfile?.platformName || 'Standard Device'}</h4>
                   <Badge variant="outline" className="text-[10px] font-mono">
-                    {deviceProfile.browser}
+                    {deviceProfile?.browser || 'Browser Engine'}
                   </Badge>
                 </div>
                 <div className="text-xs text-muted-foreground flex items-center gap-2 mt-0.5">
-                  <span>Resolution: {deviceProfile.screenResolution}</span>
+                  <span>Resolution: {deviceProfile?.screenResolution || '1920x1080'}</span>
                   <span>•</span>
-                  <span>{deviceProfile.cpuCores} CPU Cores</span>
+                  <span>{deviceProfile?.cpuCores || 4} CPU Cores</span>
                   <span>•</span>
-                  <span className="uppercase text-emerald-600 font-semibold">{deviceProfile.colorGamut} Color</span>
+                  <span className="uppercase text-emerald-600 font-semibold">{deviceProfile?.colorGamut || 'sRGB'} Color</span>
                 </div>
               </div>
             </div>
@@ -179,7 +181,7 @@ export function CalibrationModal() {
               <div
                 className={cn(
                   'p-3 rounded-lg border flex items-start gap-2.5',
-                  activeCertificate?.hardwareInventory.cameraFound !== false
+                  inventory?.cameraFound !== false
                     ? 'bg-emerald-50/30 dark:bg-emerald-950/20 border-emerald-500/30'
                     : 'bg-amber-50/40 dark:bg-amber-950/30 border-amber-500/40'
                 )}
@@ -187,7 +189,7 @@ export function CalibrationModal() {
                 <div
                   className={cn(
                     'h-7 w-7 rounded-md flex items-center justify-center shrink-0 mt-0.5',
-                    activeCertificate?.hardwareInventory.cameraFound !== false
+                    inventory?.cameraFound !== false
                       ? 'bg-emerald-600/15 text-emerald-600'
                       : 'bg-amber-600/15 text-amber-600'
                   )}
@@ -197,7 +199,7 @@ export function CalibrationModal() {
                 <div className="space-y-0.5">
                   <div className="flex items-center gap-1.5">
                     <span className="font-bold text-xs">Optical Camera</span>
-                    {activeCertificate?.hardwareInventory.cameraFound !== false ? (
+                    {inventory?.cameraFound !== false ? (
                       <Badge className="bg-emerald-600 text-white text-[9px] px-1 py-0 font-bold">
                         Connected
                       </Badge>
@@ -208,7 +210,7 @@ export function CalibrationModal() {
                     )}
                   </div>
                   <p className="text-[11px] text-muted-foreground leading-tight">
-                    {activeCertificate?.hardwareInventory.cameraStatusMessage ||
+                    {inventory?.cameraStatusMessage ||
                       'Checks videoinput device availability and optical exposure.'}
                   </p>
                 </div>
@@ -218,7 +220,7 @@ export function CalibrationModal() {
               <div
                 className={cn(
                   'p-3 rounded-lg border flex items-start gap-2.5',
-                  activeCertificate?.hardwareInventory.micFound !== false
+                  inventory?.micFound !== false
                     ? 'bg-emerald-50/30 dark:bg-emerald-950/20 border-emerald-500/30'
                     : 'bg-amber-50/40 dark:bg-amber-950/30 border-amber-500/40'
                 )}
@@ -226,7 +228,7 @@ export function CalibrationModal() {
                 <div
                   className={cn(
                     'h-7 w-7 rounded-md flex items-center justify-center shrink-0 mt-0.5',
-                    activeCertificate?.hardwareInventory.micFound !== false
+                    inventory?.micFound !== false
                       ? 'bg-emerald-600/15 text-emerald-600'
                       : 'bg-amber-600/15 text-amber-600'
                   )}
@@ -236,7 +238,7 @@ export function CalibrationModal() {
                 <div className="space-y-0.5">
                   <div className="flex items-center gap-1.5">
                     <span className="font-bold text-xs">Microphone Input</span>
-                    {activeCertificate?.hardwareInventory.micFound !== false ? (
+                    {inventory?.micFound !== false ? (
                       <Badge className="bg-emerald-600 text-white text-[9px] px-1 py-0 font-bold">
                         Connected
                       </Badge>
@@ -247,7 +249,7 @@ export function CalibrationModal() {
                     )}
                   </div>
                   <p className="text-[11px] text-muted-foreground leading-tight">
-                    {activeCertificate?.hardwareInventory.micStatusMessage ||
+                    {inventory?.micStatusMessage ||
                       'Measures audioinput hardware and background noise floor.'}
                   </p>
                 </div>
@@ -266,7 +268,7 @@ export function CalibrationModal() {
                     </Badge>
                   </div>
                   <p className="text-[11px] text-muted-foreground leading-tight">
-                    {activeCertificate?.hardwareInventory.speakerStatusMessage ||
+                    {inventory?.speakerStatusMessage ||
                       'AudioContext frequency sweep active for audiometry.'}
                   </p>
                 </div>
@@ -281,11 +283,11 @@ export function CalibrationModal() {
                   <div className="flex items-center gap-1.5">
                     <span className="font-bold text-xs">Motion & Coordination</span>
                     <Badge variant="outline" className="text-[9px] px-1 py-0 font-mono">
-                      {deviceProfile.isMobile ? 'IMU 6-Axis' : 'Touch/Mouse'}
+                      {deviceProfile?.isMobile ? 'IMU 6-Axis' : 'Touch/Mouse'}
                     </Badge>
                   </div>
                   <p className="text-[11px] text-muted-foreground leading-tight">
-                    {activeCertificate?.hardwareInventory.motionStatusMessage ||
+                    {inventory?.motionStatusMessage ||
                       'Coordinates tremor, posture, and motor coordination tests.'}
                   </p>
                 </div>
@@ -296,7 +298,7 @@ export function CalibrationModal() {
             {activeCertificate && (
               <div className="p-2.5 rounded-lg bg-muted/50 border flex items-center justify-between text-xs">
                 <span className="text-muted-foreground font-semibold">
-                  {activeCertificate.hardwareInventory.readinessSummary}
+                  {inventory?.readinessSummary || 'All 22 Diagnostic Modules Ready.'}
                 </span>
                 <Badge className="bg-emerald-600 text-white text-[10px] font-bold">
                   22/22 Modules Active

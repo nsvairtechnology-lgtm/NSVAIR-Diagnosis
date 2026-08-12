@@ -73,7 +73,7 @@ export const useCalibrationStore = create<CalibrationState>()(
       },
     }),
     {
-      name: 'nsvair_device_calibration_v1',
+      name: 'nsvair_device_calibration_v2',
       partialize: (state) => ({
         isCalibrated: state.isCalibrated,
         activeCertificate: state.activeCertificate,
