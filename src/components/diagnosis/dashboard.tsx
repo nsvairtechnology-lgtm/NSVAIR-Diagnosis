@@ -41,11 +41,14 @@ import {
   Phone,
   MessageCircle,
   Mail,
+  User,
 } from 'lucide-react'
 import Link from 'next/link'
 import { useDiagnosisStore } from '@/lib/diagnosis-store'
+import { useAuthStore } from '@/lib/auth-store'
 import { useCartStore } from '@/lib/cart-store'
 import { CartDrawer } from '@/components/store/cart-drawer'
+import { AuthModal } from '@/components/auth/auth-modal'
 import {
   MODULES,
   CATEGORY_LABELS,
@@ -130,6 +133,7 @@ export function Dashboard() {
     completedCount,
   } = useDiagnosisStore()
 
+  const { currentUser, openAuthModal, logout } = useAuthStore()
   const { toggleCart, getTotalCount } = useCartStore()
 
   const [reportOpen, setReportOpen] = React.useState(false)
@@ -140,6 +144,14 @@ export function Dashboard() {
   const totalModules = MODULES.length
   const completed = completedCount()
   const progress = (completed / totalModules) * 100
+
+  const handleOpenReport = () => {
+    if (!currentUser?.isVerified) {
+      openAuthModal('report', () => setReportOpen(true))
+    } else {
+      setReportOpen(true)
+    }
+  }
 
   const active = activeModule ? MODULES.find((m) => m.id === activeModule) : null
 
@@ -235,32 +247,33 @@ export function Dashboard() {
               </Button>
             </Link>
 
+            {currentUser?.isVerified ? (
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => setProfileOpen(true)}
+                className="gap-1.5 text-xs border-emerald-500/40 text-emerald-700 dark:text-emerald-300 font-semibold"
+              >
+                <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
+                <span className="hidden sm:inline">{currentUser.name.split(' ')[0]}</span>
+              </Button>
+            ) : (
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => openAuthModal('general')}
+                className="gap-1.5 text-xs font-semibold"
+              >
+                <User className="h-3.5 w-3.5" />
+                <span className="hidden sm:inline">Login / Register</span>
+              </Button>
+            )}
+
             <Button
               size="sm"
-              variant="outline"
-              onClick={() => {
-                const event = new Event('nsvair-show-install')
-                window.dispatchEvent(event)
-              }}
-              className="gap-1.5 hidden sm:flex text-xs"
-            >
-              <Download className="h-3.5 w-3.5" />
-              <span>Install App</span>
-            </Button>
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => setProfileOpen(true)}
-              className="gap-1.5 text-xs"
-            >
-              <Cpu className="h-3.5 w-3.5" />
-              <span className="hidden sm:inline">Profile</span>
-            </Button>
-            <Button
-              size="sm"
-              onClick={() => setReportOpen(true)}
+              onClick={handleOpenReport}
               disabled={completed === 0}
-              className="gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm text-xs"
+              className="gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm text-xs font-bold"
             >
               <FileText className="h-3.5 w-3.5" />
               <span className="hidden sm:inline">Report</span>
@@ -1050,6 +1063,9 @@ export function Dashboard() {
           </span>
         </button>
       )}
+
+      {/* Patient Registration / Login Verification Modal */}
+      <AuthModal />
 
       {/* PWA one-click install banner (Android & iOS) */}
       <PWAInstall />

@@ -21,6 +21,7 @@ import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
 import type { DiagnosisResult, RiskLevel, Severity } from '@/lib/types'
 import { useDiagnosisStore } from '@/lib/diagnosis-store'
+import { useAuthStore } from '@/lib/auth-store'
 import { downloadSingleTestPdf } from '@/lib/pdf-generator'
 import { ReportShareDialog } from '@/components/diagnosis/report-share-dialog'
 import {
@@ -38,30 +39,56 @@ const severityStyles: Record<Severity, string> = {
   critical: 'bg-red-200 text-red-900 dark:bg-red-900/60 dark:text-red-200 animate-pulse',
 }
 
-const riskStyles: Record<RiskLevel, { bg: string; text: string; bar: string }> = {
-  low: { bg: 'bg-emerald-500', text: 'text-emerald-600 dark:text-emerald-400', bar: 'bg-emerald-500' },
-  moderate: { bg: 'bg-yellow-500', text: 'text-yellow-600 dark:text-yellow-400', bar: 'bg-yellow-500' },
-  high: { bg: 'bg-orange-500', text: 'text-orange-600 dark:text-orange-400', bar: 'bg-orange-500' },
-  critical: { bg: 'bg-red-500', text: 'text-red-600 dark:text-red-400', bar: 'bg-red-500' },
+const riskStyles: Record<RiskLevel, { text: string; bar: string }> = {
+  low: { text: 'text-emerald-600 dark:text-emerald-400', bar: 'bg-emerald-500' },
+  moderate: { text: 'text-yellow-600 dark:text-yellow-400', bar: 'bg-yellow-500' },
+  high: { text: 'text-orange-600 dark:text-orange-400', bar: 'bg-orange-500' },
+  critical: { text: 'text-red-600 dark:text-red-400', bar: 'bg-red-500' },
 }
 
 export function DiagnosisResultView({ result }: { result: DiagnosisResult }) {
   const { userProfile } = useDiagnosisStore()
+  const { currentUser, openAuthModal } = useAuthStore()
   const [shareOpen, setShareOpen] = React.useState(false)
   const risk = riskStyles[result.riskLevel]
 
   const handleDownloadPdf = () => {
+    if (!currentUser?.isVerified) {
+      openAuthModal('download', () => {
+        downloadSingleTestPdf(result, userProfile)
+        toast.success(`Opening ${result.moduleName} PDF Report...`)
+      })
+      return
+    }
     downloadSingleTestPdf(result, userProfile)
     toast.success(`Opening ${result.moduleName} PDF Report...`)
   }
 
   const handleWhatsApp = () => {
+    if (!currentUser?.isVerified) {
+      openAuthModal('whatsapp', () => {
+        const msg = formatSingleTestWhatsAppMessage(result, userProfile)
+        openWhatsApp('9599497690', msg)
+        toast.success('Opening WhatsApp for 9599497690...')
+      })
+      return
+    }
     const msg = formatSingleTestWhatsAppMessage(result, userProfile)
     openWhatsApp('9599497690', msg)
     toast.success('Opening WhatsApp for 9599497690...')
   }
 
   const handleGmail = () => {
+    if (!currentUser?.isVerified) {
+      openAuthModal('gmail', () => {
+        const msg = formatSingleTestWhatsAppMessage(result, userProfile).replace(/\*/g, '')
+        const patientName = userProfile?.name || 'Patient'
+        const subject = `[Diagnostic Result] NSVAIR Diagnosis ${result.moduleName} — ${patientName}`
+        openEmail('nsvairdiagnosis@gmail.com', subject, msg, true)
+        toast.success('Opening Gmail for nsvairdiagnosis@gmail.com...')
+      })
+      return
+    }
     const msg = formatSingleTestWhatsAppMessage(result, userProfile).replace(/\*/g, '')
     const patientName = userProfile?.name || 'Patient'
     const subject = `[Diagnostic Result] NSVAIR Diagnosis ${result.moduleName} — ${patientName}`

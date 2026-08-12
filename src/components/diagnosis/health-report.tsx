@@ -20,6 +20,7 @@ import {
   Send
 } from 'lucide-react'
 import { useDiagnosisStore } from '@/lib/diagnosis-store'
+import { useAuthStore } from '@/lib/auth-store'
 import { downloadComprehensiveReportPdf } from '@/lib/pdf-generator'
 import { ReportShareDialog } from '@/components/diagnosis/report-share-dialog'
 import {
@@ -63,6 +64,8 @@ export function HealthReport({ onClose }: { onClose: () => void }) {
     setReportLoading,
   } = useDiagnosisStore()
 
+  const { currentUser, openAuthModal } = useAuthStore()
+
   const [shareOpen, setShareOpen] = React.useState(false)
 
   const completedResults = React.useMemo(
@@ -72,26 +75,12 @@ export function HealthReport({ onClose }: { onClose: () => void }) {
     [results]
   )
 
-  // Actually, let me fix this type
-  const completed = React.useMemo(
-    () =>
-      (Object.values(results).filter(Boolean) as unknown as Array<
-        NonNullable<(typeof results)[keyof typeof results]>
-      >),
-    [results]
-  )
+  const completed = completedResults
 
-  const [history, setHistory] = React.useState<
-    Array<{ id: string; userName: string | null; summary: string; riskScore: number; createdAt: string }>
-  >([])
+  const [history, setHistory] = React.useState<any[]>([])
   const [showHistory, setShowHistory] = React.useState(false)
 
   const generate = async () => {
-    if (completed.length === 0) {
-      toast.error('Complete at least one screening before generating a report')
-      return
-    }
-
     setReportLoading(true)
     try {
       const res = await fetch('/api/report/generate', {
@@ -102,15 +91,10 @@ export function HealthReport({ onClose }: { onClose: () => void }) {
           results: completed,
         }),
       })
-
       const data = await res.json()
       if (data.error) throw new Error(data.error)
-
-      setLastReport({
-        ...data,
-        createdAt: new Date().toISOString(),
-      })
-      toast.success('Comprehensive report generated!')
+      setLastReport(data.report)
+      toast.success('Multi-modal health analysis complete')
     } catch (e) {
       toast.error((e as Error).message || 'Failed to generate report')
     } finally {
@@ -151,8 +135,49 @@ export function HealthReport({ onClose }: { onClose: () => void }) {
 
   const download = () => {
     if (!lastReport) return
+    if (!currentUser?.isVerified) {
+      openAuthModal('download', () => {
+        downloadComprehensiveReportPdf(lastReport, completed, userProfile)
+        toast.success('Generated Comprehensive Medical PDF Report!')
+      })
+      return
+    }
     downloadComprehensiveReportPdf(lastReport, completed, userProfile)
     toast.success('Generated Comprehensive Medical PDF Report!')
+  }
+
+  const handleWhatsAppShare = () => {
+    if (!currentUser?.isVerified) {
+      openAuthModal('whatsapp', () => {
+        openWhatsApp('9599497690', formatComprehensiveReportWhatsAppMessage(lastReport, completed, userProfile))
+        toast.success('Opening WhatsApp for 9599497690...')
+      })
+      return
+    }
+    openWhatsApp('9599497690', formatComprehensiveReportWhatsAppMessage(lastReport, completed, userProfile))
+    toast.success('Opening WhatsApp for 9599497690...')
+  }
+
+  const handleGmailShare = () => {
+    if (!currentUser?.isVerified) {
+      openAuthModal('gmail', () => {
+        const em = formatComprehensiveReportEmail(lastReport, completed, userProfile)
+        openEmail('nsvairdiagnosis@gmail.com', em.subject, em.body, true)
+        toast.success('Opening Gmail for nsvairdiagnosis@gmail.com...')
+      })
+      return
+    }
+    const em = formatComprehensiveReportEmail(lastReport, completed, userProfile)
+    openEmail('nsvairdiagnosis@gmail.com', em.subject, em.body, true)
+    toast.success('Opening Gmail for nsvairdiagnosis@gmail.com...')
+  }
+
+  const handleCustomShare = () => {
+    if (!currentUser?.isVerified) {
+      openAuthModal('report', () => setShareOpen(true))
+      return
+    }
+    setShareOpen(true)
   }
 
   React.useEffect(() => {
@@ -161,6 +186,40 @@ export function HealthReport({ onClose }: { onClose: () => void }) {
 
   return (
     <div className="space-y-4">
+      {/* Patient Verification Status Banner */}
+      {currentUser?.isVerified ? (
+        <div className="p-3 rounded-xl bg-emerald-50/60 dark:bg-emerald-950/40 border border-emerald-500/30 flex items-center justify-between text-xs">
+          <div className="flex items-center gap-2">
+            <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0" />
+            <div>
+              <span className="font-bold text-foreground">Verified Patient: {currentUser.name}</span>
+              <span className="text-muted-foreground block text-[11px]">
+                {currentUser.authType === 'mobile' ? `📱 Mobile: ${currentUser.identifier}` : `✉️ Verified Gmail: ${currentUser.identifier}`}
+              </span>
+            </div>
+          </div>
+          <Badge className="bg-emerald-600 text-white text-[10px] font-bold">
+            Authenticated
+          </Badge>
+        </div>
+      ) : (
+        <div className="p-3 rounded-xl bg-amber-50/60 dark:bg-amber-950/40 border border-amber-500/30 flex items-center justify-between text-xs">
+          <div className="flex items-center gap-2">
+            <AlertTriangle className="h-4 w-4 text-amber-500 shrink-0" />
+            <span className="text-muted-foreground">
+              Patient verification required to download official PDF or dispatch to WhatsApp/Gmail.
+            </span>
+          </div>
+          <Button
+            size="sm"
+            onClick={() => openAuthModal('report')}
+            className="bg-amber-600 hover:bg-amber-700 text-white text-xs h-7 font-bold shrink-0 ml-2"
+          >
+            Verify Now
+          </Button>
+        </div>
+      )}
+
       {/* Action bar */}
       <div className="flex flex-wrap gap-2 sticky top-0 bg-background py-2 z-10 border-b pb-3 items-center">
         <Button
@@ -182,27 +241,20 @@ export function HealthReport({ onClose }: { onClose: () => void }) {
               <Download className="h-3.5 w-3.5" /> Download PDF
             </Button>
             <Button
-              onClick={() => {
-                openWhatsApp('9599497690', formatComprehensiveReportWhatsAppMessage(lastReport, completed, userProfile))
-                toast.success('Opening WhatsApp for 9599497690...')
-              }}
+              onClick={handleWhatsAppShare}
               size="sm"
               className="gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm text-xs"
             >
               <MessageCircle className="h-3.5 w-3.5" /> WhatsApp
             </Button>
             <Button
-              onClick={() => {
-                const em = formatComprehensiveReportEmail(lastReport, completed, userProfile)
-                openEmail('nsvairdiagnosis@gmail.com', em.subject, em.body, true)
-                toast.success('Opening Gmail for nsvairdiagnosis@gmail.com...')
-              }}
+              onClick={handleGmailShare}
               size="sm"
               className="gap-1.5 bg-red-600 hover:bg-red-700 text-white shadow-sm text-xs"
             >
               <Mail className="h-3.5 w-3.5" /> Gmail
             </Button>
-            <Button onClick={() => setShareOpen(true)} size="sm" variant="outline" className="gap-1.5 text-xs">
+            <Button onClick={handleCustomShare} size="sm" variant="outline" className="gap-1.5 text-xs">
               <Share2 className="h-3.5 w-3.5" /> Custom Share
             </Button>
             <Button onClick={save} size="sm" variant="outline" className="gap-1.5 text-xs">
