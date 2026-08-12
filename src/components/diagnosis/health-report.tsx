@@ -13,10 +13,23 @@ import {
   History,
   Download,
   ShieldAlert,
-  Printer
+  Printer,
+  MessageCircle,
+  Mail,
+  Share2,
+  Send
 } from 'lucide-react'
 import { useDiagnosisStore } from '@/lib/diagnosis-store'
 import { downloadComprehensiveReportPdf } from '@/lib/pdf-generator'
+import { ReportShareDialog } from '@/components/diagnosis/report-share-dialog'
+import {
+  openWhatsApp,
+  openEmail,
+  formatComprehensiveReportWhatsAppMessage,
+  formatComprehensiveReportEmail,
+  DEFAULT_WHATSAPP_NUMBER,
+  DEFAULT_GMAIL_ADDRESS,
+} from '@/lib/report-sharing'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -50,6 +63,8 @@ export function HealthReport({ onClose }: { onClose: () => void }) {
     setReportLoading,
   } = useDiagnosisStore()
 
+  const [shareOpen, setShareOpen] = React.useState(false)
+
   const completedResults = React.useMemo(
     () => Object.values(results).filter(Boolean) as NonNullable<
       ReturnType<typeof Object.values<typeof results>>[number]
@@ -73,28 +88,29 @@ export function HealthReport({ onClose }: { onClose: () => void }) {
 
   const generate = async () => {
     if (completed.length === 0) {
-      toast.error('Complete at least one diagnostic module first')
+      toast.error('Complete at least one screening before generating a report')
       return
     }
+
     setReportLoading(true)
     try {
       const res = await fetch('/api/report/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ results: completed, userProfile }),
+        body: JSON.stringify({
+          userProfile,
+          results: completed,
+        }),
       })
+
       const data = await res.json()
       if (data.error) throw new Error(data.error)
+
       setLastReport({
-        overallSummary: data.overallSummary,
-        overallRiskScore: data.overallRiskScore,
-        topFindings: data.topFindings,
-        prioritizedRecommendations: data.prioritizedRecommendations,
-        redFlags: data.redFlags,
-        nextSteps: data.nextSteps,
+        ...data,
         createdAt: new Date().toISOString(),
       })
-      toast.success('Comprehensive report generated')
+      toast.success('Comprehensive report generated!')
     } catch (e) {
       toast.error((e as Error).message || 'Failed to generate report')
     } finally {
@@ -125,7 +141,7 @@ export function HealthReport({ onClose }: { onClose: () => void }) {
 
   const loadHistory = async () => {
     try {
-      const res = await fetch('/api/report/save')
+      const res = await fetch('/api/report/list')
       const data = await res.json()
       setHistory(data.reports || [])
     } catch {
@@ -146,7 +162,7 @@ export function HealthReport({ onClose }: { onClose: () => void }) {
   return (
     <div className="space-y-4">
       {/* Action bar */}
-      <div className="flex flex-wrap gap-2 sticky top-0 bg-background py-2 z-10 border-b pb-3">
+      <div className="flex flex-wrap gap-2 sticky top-0 bg-background py-2 z-10 border-b pb-3 items-center">
         <Button
           onClick={generate}
           disabled={reportLoading || completed.length === 0}
@@ -162,14 +178,35 @@ export function HealthReport({ onClose }: { onClose: () => void }) {
         </Button>
         {lastReport && (
           <>
-            <Button onClick={download} size="sm" className="gap-1.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-sm">
-              <Download className="h-3.5 w-3.5" /> Download Official PDF
+            <Button onClick={download} size="sm" className="gap-1.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-sm text-xs">
+              <Download className="h-3.5 w-3.5" /> Download PDF
             </Button>
-            <Button onClick={download} size="sm" variant="outline" className="gap-1.5">
-              <Printer className="h-3.5 w-3.5" /> Print Medical Report
+            <Button
+              onClick={() => {
+                openWhatsApp('9599497690', formatComprehensiveReportWhatsAppMessage(lastReport, completed, userProfile))
+                toast.success('Opening WhatsApp for 9599497690...')
+              }}
+              size="sm"
+              className="gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm text-xs"
+            >
+              <MessageCircle className="h-3.5 w-3.5" /> WhatsApp
             </Button>
-            <Button onClick={save} size="sm" variant="outline" className="gap-1.5">
-              <Save className="h-3.5 w-3.5" /> Save to Cloud History
+            <Button
+              onClick={() => {
+                const em = formatComprehensiveReportEmail(lastReport, completed, userProfile)
+                openEmail('nsvairdiagnosis@gmail.com', em.subject, em.body, true)
+                toast.success('Opening Gmail for nsvairdiagnosis@gmail.com...')
+              }}
+              size="sm"
+              className="gap-1.5 bg-red-600 hover:bg-red-700 text-white shadow-sm text-xs"
+            >
+              <Mail className="h-3.5 w-3.5" /> Gmail
+            </Button>
+            <Button onClick={() => setShareOpen(true)} size="sm" variant="outline" className="gap-1.5 text-xs">
+              <Share2 className="h-3.5 w-3.5" /> Custom Share
+            </Button>
+            <Button onClick={save} size="sm" variant="outline" className="gap-1.5 text-xs">
+              <Save className="h-3.5 w-3.5" /> Save
             </Button>
           </>
         )}
@@ -180,11 +217,19 @@ export function HealthReport({ onClose }: { onClose: () => void }) {
           }}
           size="sm"
           variant="ghost"
-          className="gap-1.5 ml-auto"
+          className="gap-1.5 ml-auto text-xs"
         >
           <History className="h-3.5 w-3.5" /> History
         </Button>
       </div>
+
+      <ReportShareDialog
+        open={shareOpen}
+        onOpenChange={setShareOpen}
+        report={lastReport}
+        results={completed}
+        userProfile={userProfile}
+      />
 
       {showHistory && (
         <Card>
