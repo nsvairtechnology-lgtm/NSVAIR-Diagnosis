@@ -42,6 +42,7 @@ import { openWhatsApp } from '@/lib/report-sharing'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
 import Link from 'next/link'
+import { MobileBottomNav } from '@/components/diagnosis/mobile-bottom-nav'
 
 const ITEMS_PER_PAGE = 24
 
@@ -128,7 +129,7 @@ export function StoreFront() {
   }
 
   return (
-    <div className="min-h-screen bg-background text-foreground space-y-8 pb-16">
+    <div className="min-h-screen bg-background text-foreground space-y-8 pb-24 md:pb-16">
       <CartDrawer />
 
       {/* Top Banner Navigation Bar */}
@@ -510,6 +511,16 @@ export function StoreFront() {
           © {new Date().getFullYear()} NSVAIR GROUP OF INDUSTRY. All diagnostic products, AI passes, and clinical devices are protected under international medical standards.
         </p>
       </footer>
+
+      {/* Mobile Application Native Bottom Bar */}
+      <MobileBottomNav
+        onOpenReport={() => {
+          window.location.href = '/?action=report'
+        }}
+        onOpenProfile={() => {
+          window.location.href = '/?action=profile'
+        }}
+      />
     </div>
   )
 }

@@ -49,6 +49,8 @@ import { useAuthStore } from '@/lib/auth-store'
 import { useCartStore } from '@/lib/cart-store'
 import { CartDrawer } from '@/components/store/cart-drawer'
 import { AuthModal } from '@/components/auth/auth-modal'
+import { MobileBottomNav } from '@/components/diagnosis/mobile-bottom-nav'
+import { MobileQuickActions } from '@/components/diagnosis/mobile-quick-actions'
 import {
   MODULES,
   CATEGORY_LABELS,
@@ -289,7 +291,7 @@ export function Dashboard() {
         </div>
       </header>
 
-      <main className="flex-1 container mx-auto max-w-6xl px-4 py-6">
+      <main className="flex-1 container mx-auto max-w-6xl px-3 sm:px-4 py-4 sm:py-6 pb-24 md:pb-8">
         {active ? (
           // Module view
           <div className="space-y-4 animate-in fade-in slide-in-from-bottom-2 duration-300">
@@ -298,17 +300,11 @@ export function Dashboard() {
                 variant="ghost"
                 size="sm"
                 onClick={() => setActiveModule(null)}
-                className="gap-1.5 hover:bg-muted"
+                className="gap-1.5 text-muted-foreground hover:text-foreground -ml-2"
               >
-                <ArrowLeft className="h-4 w-4" /> All Diagnostic Modules
+                <ArrowLeft className="h-4 w-4" /> Back to Dashboard
               </Button>
               <div className="flex items-center gap-2">
-                {results[active.id] && (
-                  <Badge className="gap-1 bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
-                    <CheckCircle2 className="h-3 w-3" /> Completed
-                  </Badge>
-                )}
-                <Badge variant="outline" className="gap-1">
                   <Clock className="h-3 w-3" /> {active.estimatedTime}
                 </Badge>
               </div>
@@ -562,7 +558,7 @@ export function Dashboard() {
                 ))}
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2.5 sm:gap-4">
                 {filteredModules.map((m) => {
                   const Icon = iconMap[m.icon] || Activity
                   const result = results[m.id]
@@ -570,57 +566,60 @@ export function Dashboard() {
                   return (
                     <Card
                       key={m.id}
-                      onClick={() => setActiveModule(m.id)}
+                      onClick={() => {
+                        setActiveModule(m.id)
+                        window.scrollTo({ top: 0, behavior: 'smooth' })
+                      }}
                       className={cn(
-                        'group cursor-pointer hover:shadow-md hover:-translate-y-1 transition-all duration-200 relative overflow-hidden border',
-                        isDone && 'ring-1 ring-emerald-500/50 bg-emerald-50/10 dark:bg-emerald-950/10'
+                        'group cursor-pointer hover:shadow-md active:scale-95 transition-all duration-200 relative overflow-hidden border rounded-2xl',
+                        isDone && 'ring-1 ring-emerald-500/50 bg-emerald-50/20 dark:bg-emerald-950/20'
                       )}
                     >
-                      <CardContent className="p-5 space-y-3">
+                      <CardContent className="p-3.5 sm:p-5 space-y-2 sm:space-y-3">
                         <div className="flex items-start justify-between">
                           <div
                             className={cn(
-                              'h-11 w-11 rounded-xl bg-gradient-to-br flex items-center justify-center shadow-sm',
+                              'h-10 w-10 sm:h-12 sm:w-12 rounded-2xl bg-gradient-to-br flex items-center justify-center shadow-md transition-transform group-hover:scale-105 border border-white/20',
                               m.gradient
                             )}
                           >
-                            <Icon className={cn('h-6 w-6', m.color)} />
+                            <Icon className={cn('h-5 w-5 sm:h-6 sm:w-6 text-white drop-shadow-sm')} />
                           </div>
-                          <div className="flex items-center gap-1.5">
+                          <div className="flex items-center gap-1">
                             {m.isNew && !isDone && (
-                              <Badge className="bg-gradient-to-r from-sky-500 to-emerald-500 text-white text-[10px] font-bold px-1.5 py-0 border-0 shadow-sm">
+                              <Badge className="bg-gradient-to-r from-sky-500 to-emerald-500 text-white text-[9px] font-extrabold px-1.5 py-0 border-0 shadow-sm">
                                 NEW
                               </Badge>
                             )}
                             {isDone ? (
-                              <Badge className="bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300 gap-1 border border-emerald-300 dark:border-emerald-800 text-[11px]">
-                                <CheckCircle2 className="h-3 w-3" /> Done
+                              <Badge className="bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300 gap-0.5 border border-emerald-300 dark:border-emerald-800 text-[10px] px-1.5 font-bold">
+                                <CheckCircle2 className="h-2.5 w-2.5" /> Done
                               </Badge>
                             ) : (
-                              <Badge variant="outline" className="text-[11px] text-muted-foreground font-normal">
+                              <span className="text-[10px] text-muted-foreground font-mono">
                                 {m.estimatedTime}
-                              </Badge>
+                              </span>
                             )}
                           </div>
                         </div>
 
                         <div>
-                          <h4 className="font-semibold text-sm group-hover:text-emerald-600 transition-colors flex items-center gap-1">
+                          <h4 className="font-extrabold text-xs sm:text-sm group-hover:text-emerald-600 transition-colors line-clamp-1 flex items-center gap-0.5">
                             {m.name}
-                            <ChevronRight className="h-3.5 w-3.5 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-emerald-500" />
+                            <ChevronRight className="h-3 w-3 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-emerald-500 hidden sm:inline" />
                           </h4>
-                          <p className="text-xs text-muted-foreground line-clamp-2 mt-1">
+                          <p className="text-[10px] sm:text-xs text-muted-foreground line-clamp-2 mt-0.5">
                             {m.description}
                           </p>
                         </div>
 
-                        <div className="flex flex-wrap gap-1 pt-1">
+                        <div className="hidden sm:flex flex-wrap gap-1 pt-1">
                           {(m.sensors || []).map((s) => {
                             const SensorIcon = sensorLabels[s]?.icon || Activity
                             return (
                               <span
                                 key={s}
-                                className="inline-flex items-center gap-1 rounded bg-muted/80 px-2 py-0.5 text-[10px] text-muted-foreground"
+                                className="inline-flex items-center gap-1 rounded bg-muted/80 px-1.5 py-0.5 text-[9px] text-muted-foreground"
                               >
                                 <SensorIcon className="h-2.5 w-2.5" />
                                 {sensorLabels[s]?.label || s}
@@ -630,11 +629,11 @@ export function Dashboard() {
                         </div>
 
                         {isDone && (
-                          <div className="pt-2 border-t flex items-center justify-between">
-                            <span className="text-xs text-muted-foreground font-medium">Risk score</span>
+                          <div className="pt-1.5 border-t flex items-center justify-between text-[11px]">
+                            <span className="text-muted-foreground">Score</span>
                             <span
                               className={cn(
-                                'text-sm font-bold font-mono',
+                                'font-bold font-mono',
                                 result!.riskScore < 30
                                   ? 'text-emerald-600'
                                   : result!.riskScore < 60
@@ -1066,6 +1065,12 @@ export function Dashboard() {
 
       {/* Patient Registration / Login Verification Modal */}
       <AuthModal />
+
+      {/* Mobile Application Native Bottom Bar */}
+      <MobileBottomNav
+        onOpenReport={handleOpenReport}
+        onOpenProfile={() => setProfileOpen(true)}
+      />
 
       {/* PWA one-click install banner (Android & iOS) */}
       <PWAInstall />
