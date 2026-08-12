@@ -1,4 +1,5 @@
 import type { MetadataRoute } from 'next'
+import { getAllProducts, CATEGORY_DEFINITIONS } from '@/lib/products-data'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://nsvair-diagnosis.onrender.com'
@@ -29,6 +30,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const entries: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
+      lastModified: now,
+      changeFrequency: 'daily',
+      priority: 1.0,
+    },
+    {
+      url: `${baseUrl}/store`,
       lastModified: now,
       changeFrequency: 'daily',
       priority: 1.0,
@@ -71,9 +78,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ]
 
-  // Index each diagnostic test via query routes and anchor routes for maximum search discoverability
+  // Index each diagnostic test via query routes and anchor routes
   for (const test of allTests) {
-    // Direct module query entry
     entries.push({
       url: `${baseUrl}/?module=${test.id}`,
       lastModified: now,
@@ -81,12 +87,32 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: test.priority,
     })
 
-    // Section anchor entry
     entries.push({
       url: `${baseUrl}/#${test.anchor}`,
       lastModified: now,
       changeFrequency: 'weekly',
       priority: test.priority,
+    })
+  }
+
+  // Index store category routes
+  for (const catKey of Object.keys(CATEGORY_DEFINITIONS)) {
+    entries.push({
+      url: `${baseUrl}/store?category=${catKey}`,
+      lastModified: now,
+      changeFrequency: 'daily',
+      priority: 0.92,
+    })
+  }
+
+  // Index ALL 500+ individual store products for search engine discovery & ranking
+  const allProducts = getAllProducts()
+  for (const product of allProducts) {
+    entries.push({
+      url: `${baseUrl}/store/${product.slug}`,
+      lastModified: now,
+      changeFrequency: 'weekly',
+      priority: 0.85,
     })
   }
 

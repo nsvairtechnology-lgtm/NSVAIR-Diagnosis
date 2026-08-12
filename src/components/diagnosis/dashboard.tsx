@@ -36,8 +36,12 @@ import {
   Globe,
   Lock,
   ChevronRight,
+  ShoppingBag,
 } from 'lucide-react'
+import Link from 'next/link'
 import { useDiagnosisStore } from '@/lib/diagnosis-store'
+import { useCartStore } from '@/lib/cart-store'
+import { CartDrawer } from '@/components/store/cart-drawer'
 import {
   MODULES,
   CATEGORY_LABELS,
@@ -122,10 +126,13 @@ export function Dashboard() {
     completedCount,
   } = useDiagnosisStore()
 
+  const { toggleCart, getTotalCount } = useCartStore()
+
   const [reportOpen, setReportOpen] = React.useState(false)
   const [profileOpen, setProfileOpen] = React.useState(false)
   const [activeCategory, setActiveCategory] = React.useState<ModuleCategory | 'all'>('all')
 
+  const totalCartCount = getTotalCount()
   const totalModules = MODULES.length
   const completed = completedCount()
   const progress = (completed / totalModules) * 100
@@ -213,6 +220,17 @@ export function Dashboard() {
               <Sparkles className="h-3 w-3 text-emerald-500" />
               {completed}/{totalModules} completed
             </Badge>
+
+            <Link href="/store">
+              <Button
+                size="sm"
+                className="gap-1.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-sm font-semibold text-xs"
+              >
+                <ShoppingBag className="h-3.5 w-3.5" />
+                <span>Store (500+)</span>
+              </Button>
+            </Link>
+
             <Button
               size="sm"
               variant="outline"
@@ -220,16 +238,16 @@ export function Dashboard() {
                 const event = new Event('nsvair-show-install')
                 window.dispatchEvent(event)
               }}
-              className="gap-1.5"
+              className="gap-1.5 hidden sm:flex text-xs"
             >
               <Download className="h-3.5 w-3.5" />
-              <span className="hidden sm:inline">Install App</span>
+              <span>Install App</span>
             </Button>
             <Button
               size="sm"
               variant="outline"
               onClick={() => setProfileOpen(true)}
-              className="gap-1.5"
+              className="gap-1.5 text-xs"
             >
               <Cpu className="h-3.5 w-3.5" />
               <span className="hidden sm:inline">Profile</span>
@@ -238,7 +256,7 @@ export function Dashboard() {
               size="sm"
               onClick={() => setReportOpen(true)}
               disabled={completed === 0}
-              className="gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm"
+              className="gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm text-xs"
             >
               <FileText className="h-3.5 w-3.5" />
               <span className="hidden sm:inline">Report</span>
@@ -764,6 +782,68 @@ export function Dashboard() {
               </div>
             </section>
 
+            {/* NSVAIR Medical Store Hub Banner */}
+            <section id="store-banner" className="space-y-3 scroll-mt-20">
+              <Card className="overflow-hidden border border-emerald-500/30 bg-gradient-to-br from-emerald-950/60 via-background to-teal-950/40 shadow-md">
+                <CardContent className="p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6">
+                  <div className="space-y-2.5 max-w-2xl">
+                    <div className="flex items-center gap-2">
+                      <Badge className="bg-emerald-600 text-white font-bold text-[10px]">
+                        NEW • 500+ PRODUCTS
+                      </Badge>
+                      <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">
+                        Official Medical Marketplace
+                      </span>
+                    </div>
+                    <h2 className="text-xl md:text-2xl font-extrabold tracking-tight">
+                      NSVAIR Diagnosis Hardware &amp; Clinical Pass Store
+                    </h2>
+                    <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">
+                      Equip your home clinic or practice with handheld wireless ultrasound probes, smart dermatoscopes, at-home blood test kits, and multi-modal AI screening credits. ISO 13485 certified with rapid worldwide clinic delivery.
+                    </p>
+                    <div className="flex flex-wrap gap-4 text-xs font-medium text-foreground pt-1">
+                      <span className="flex items-center gap-1.5">
+                        <ShieldCheck className="h-4 w-4 text-emerald-500" />
+                        100% Medical Grade
+                      </span>
+                      <span className="flex items-center gap-1.5">
+                        <Truck className="h-4 w-4 text-sky-500" />
+                        Free Clinical Shipping
+                      </span>
+                      <span className="flex items-center gap-1.5">
+                        <Award className="h-4 w-4 text-amber-500" />
+                        FDA &amp; CE Registered
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="shrink-0 flex flex-col sm:flex-row md:flex-col gap-2.5 w-full md:w-auto">
+                    <Link href="/store" className="w-full">
+                      <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs h-10 px-6 shadow-sm gap-2">
+                        <ShoppingBag className="h-4 w-4" />
+                        <span>Explore 500+ Store Items</span>
+                        <ChevronRight className="h-3.5 w-3.5" />
+                      </Button>
+                    </Link>
+                    <a
+                      href="https://wa.me/919599497690?text=Hello%20NSVAIR%20Diagnosis%20Team%2C%20I%20would%20like%20to%20inquire%20about%20your%20medical%20products."
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full"
+                    >
+                      <Button
+                        variant="outline"
+                        className="w-full text-xs font-semibold h-10 border-emerald-500/40 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 gap-2"
+                      >
+                        <Phone className="h-3.5 w-3.5" />
+                        <span>Order via WhatsApp (+91 9599497690)</span>
+                      </Button>
+                    </a>
+                  </div>
+                </CardContent>
+              </Card>
+            </section>
+
             {/* FAQ section */}
             <section id="faq" className="space-y-3 scroll-mt-20">
               <h2 className="text-xl font-bold">
@@ -948,6 +1028,23 @@ export function Dashboard() {
           </div>
         </SheetContent>
       </Sheet>
+
+      {/* Shopping Cart Drawer */}
+      <CartDrawer />
+
+      {/* Floating Shopping Cart Trigger */}
+      {totalCartCount > 0 && (
+        <button
+          onClick={toggleCart}
+          className="fixed bottom-6 right-6 z-40 h-14 w-14 rounded-full bg-gradient-to-tr from-emerald-600 to-teal-600 text-white shadow-xl flex items-center justify-center hover:scale-105 active:scale-95 transition-transform"
+          aria-label="Open Shopping Cart"
+        >
+          <ShoppingBag className="h-6 w-6" />
+          <span className="absolute -top-1 -right-1 h-6 min-w-[24px] px-1 rounded-full bg-amber-400 text-slate-900 font-extrabold text-xs flex items-center justify-center shadow-md border-2 border-background">
+            {totalCartCount}
+          </span>
+        </button>
+      )}
 
       {/* PWA one-click install banner (Android & iOS) */}
       <PWAInstall />

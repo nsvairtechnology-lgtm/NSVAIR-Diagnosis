@@ -481,6 +481,11 @@ const jsonLdService = {
   provider: { "@id": `${SITE_URL}/#organization` },
   parentOrganization: { "@id": `${SITE_URL}/#parent-organization` },
   areaServed: "Worldwide",
+  hasOfferCatalog: {
+    "@type": "OfferCatalog",
+    name: "NSVAIR Diagnostic Products & Medical Hardware Catalog",
+    url: `${SITE_URL}/store`,
+  },
 };
 
 export default function RootLayout({
