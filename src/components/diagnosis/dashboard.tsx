@@ -38,6 +38,9 @@ import {
   ChevronRight,
   ShoppingBag,
   Truck,
+  Phone,
+  MessageCircle,
+  Mail,
 } from 'lucide-react'
 import Link from 'next/link'
 import { useDiagnosisStore } from '@/lib/diagnosis-store'
@@ -974,11 +977,12 @@ export function Dashboard() {
             <div className="space-y-2">
               <h4 className="text-xs font-bold text-foreground uppercase tracking-wider">Group &amp; Platform</h4>
               <ul className="space-y-1.5 text-xs text-muted-foreground">
+                <li><Link href="/store" className="hover:text-emerald-600 transition-colors font-semibold text-emerald-600">🛍️ Medical Store (500+ Items)</Link></li>
                 <li><a href="#about-nsvair" className="hover:text-emerald-600 transition-colors">About NSVAIR GROUP</a></li>
                 <li><a href="#how-it-works" className="hover:text-emerald-600 transition-colors">How AI Diagnostics Work</a></li>
                 <li><a href="#features" className="hover:text-emerald-600 transition-colors">Platform Features</a></li>
                 <li><a href="#faq" className="hover:text-emerald-600 transition-colors">FAQ &amp; Support</a></li>
-                <li><a href="#modules" className="hover:text-emerald-600 transition-colors">Start Health Screening</a></li>
+                <li><Link href="/admin" className="hover:text-emerald-600 transition-colors text-[11px] opacity-75 hover:opacity-100">⚙️ Super Admin Panel</Link></li>
               </ul>
             </div>
           </div>

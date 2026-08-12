@@ -30,6 +30,7 @@ import {
   type Product,
   type ProductCategory
 } from '@/lib/products-data'
+import { useAdminStore } from '@/lib/admin-store'
 import { useCartStore } from '@/lib/cart-store'
 import { ProductImage } from '@/components/store/product-image'
 import { CartDrawer } from '@/components/store/cart-drawer'
@@ -46,16 +47,56 @@ const ITEMS_PER_PAGE = 24
 
 export function StoreFront() {
   const { addItem, toggleCart, getTotalCount } = useCartStore()
+  const { getEffectiveProducts } = useAdminStore()
 
+  const [mounted, setMounted] = React.useState(false)
   const [searchQuery, setSearchQuery] = React.useState('')
   const [selectedCategory, setSelectedCategory] = React.useState<ProductCategory | 'all'>('all')
   const [selectedSort, setSelectedSort] = React.useState<'popular' | 'price-asc' | 'price-desc' | 'rating'>('popular')
   const [currentPage, setCurrentPage] = React.useState(1)
 
+  React.useEffect(() => {
+    setMounted(true)
+  }, [])
+
   // Filtered & Sorted Product List
   const filteredProducts = React.useMemo(() => {
-    return searchProducts(searchQuery, selectedCategory, selectedSort)
-  }, [searchQuery, selectedCategory, selectedSort])
+    let list = mounted ? getEffectiveProducts() : getAllProducts()
+
+    if (selectedCategory !== 'all') {
+      list = list.filter((p) => p.category === selectedCategory)
+    }
+
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase()
+      list = list.filter(
+        (p) =>
+          p.name.toLowerCase().includes(q) ||
+          p.shortDescription.toLowerCase().includes(q) ||
+          p.sku.toLowerCase().includes(q) ||
+          p.subCategory.toLowerCase().includes(q) ||
+          p.tags.some((t) => t.toLowerCase().includes(q))
+      )
+    }
+
+    switch (selectedSort) {
+      case 'price-asc':
+        list.sort((a, b) => a.price - b.price)
+        break
+      case 'price-desc':
+        list.sort((a, b) => b.price - a.price)
+        break
+      case 'rating':
+        list.sort((a, b) => b.rating - a.rating)
+        break
+      case 'popular':
+      default:
+        list.sort((a, b) => b.reviewCount - a.reviewCount)
+        break
+    }
+
+    return list
+  }, [mounted, getEffectiveProducts, searchQuery, selectedCategory, selectedSort])
 
   // Pagination calculation
   const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE)
@@ -129,6 +170,16 @@ export function StoreFront() {
               <Phone className="h-3.5 w-3.5" />
               <span>+91 9599497690</span>
             </a>
+
+            <Link href="/admin">
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-9 px-2.5 text-xs text-muted-foreground hover:text-foreground gap-1"
+              >
+                <span>Admin</span>
+              </Button>
+            </Link>
 
             <Button
               onClick={toggleCart}
